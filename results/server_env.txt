@@ -1,0 +1,15 @@
+# Written by 00_setup_env.sh on 2026-09-19T18:01:27+02:00
+host: CTexT-GPU
+git_commit: 3b361f2
+python: 3.13.13
+hf_hub: reachable
+## packages
+datasets==3.6.0
+huggingface-hub==0.33.0
+pandas==2.2.3
+PyYAML==6.0.2
+tqdm==4.67.1
+## gpus
+0, NVIDIA RTX A5000, 24564 MiB, 535.309.01
+1, NVIDIA RTX A5000, 24564 MiB, 535.309.01
+2, NVIDIA RTX A5000, 24564 MiB, 535.309.01
