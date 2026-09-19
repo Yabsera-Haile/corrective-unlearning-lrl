@@ -1,0 +1,55 @@
+{
+  "downloads": {
+    "muri-it": {
+      "repo": "akoksal/muri-it",
+      "revision": "d4a210119d09c61ca0c427af2114a54faaf0293c",
+      "local_dir": "data/raw/muri-it",
+      "allow_patterns": [
+        "data/*.parquet",
+        "README.md"
+      ],
+      "n_files": 16,
+      "total_bytes": 3850786032,
+      "files": {
+        "README.md": 22166,
+        "data/test-00000-of-00001.parquet": 191872322,
+        "data/train-00000-of-00013.parquet": 268375684,
+        "data/train-00001-of-00013.parquet": 264394587,
+        "data/train-00002-of-00013.parquet": 267365546,
+        "data/train-00003-of-00013.parquet": 266898945,
+        "data/train-00004-of-00013.parquet": 266224975,
+        "data/train-00005-of-00013.parquet": 266688304,
+        "data/train-00006-of-00013.parquet": 266664537,
+        "data/train-00007-of-00013.parquet": 266902405,
+        "data/train-00008-of-00013.parquet": 268001240,
+        "data/train-00009-of-00013.parquet": 266556476,
+        "data/train-00010-of-00013.parquet": 264734260,
+        "data/train-00011-of-00013.parquet": 266386460,
+        "data/train-00012-of-00013.parquet": 267480006,
+        "data/validation-00000-of-00001.parquet": 192218119
+      },
+      "downloaded": "2026-09-19T16:22:51+00:00"
+    },
+    "tulu-3-sft-mixture": {
+      "repo": "allenai/tulu-3-sft-mixture",
+      "revision": "b14afda60f1bbebe55d5d2fa1e4df5042f97f8be",
+      "local_dir": "data/raw/tulu-3-sft-mixture",
+      "allow_patterns": [
+        "data/*.parquet",
+        "README.md"
+      ],
+      "n_files": 7,
+      "total_bytes": 1412962575,
+      "files": {
+        "README.md": 7707,
+        "data/train-00000-of-00006.parquet": 361046463,
+        "data/train-00001-of-00006.parquet": 477019443,
+        "data/train-00002-of-00006.parquet": 146926607,
+        "data/train-00003-of-00006.parquet": 162138577,
+        "data/train-00004-of-00006.parquet": 149552548,
+        "data/train-00005-of-00006.parquet": 116271230
+      },
+      "downloaded": "2026-09-19T16:23:21+00:00"
+    }
+  }
+}

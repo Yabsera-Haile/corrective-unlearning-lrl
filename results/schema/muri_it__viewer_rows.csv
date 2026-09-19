@@ -1,0 +1,4 @@
+config,split,num_rows,num_bytes_parquet_files
+default,train,2005648,3466673425
+default,validation,111424,192218119
+default,test,111427,191872322

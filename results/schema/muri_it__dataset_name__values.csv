@@ -1,0 +1,7 @@
+value,format,n_total,n_test,n_train,n_validation
+MRI,XX/XXX (upper-case code),1718449,85923,1546604,85922
+xP3,word(s) / name,184000,9200,165600,9200
+SuperNaturalInstructionv2,word(s) / name,161986,8100,145787,8099
+flan_v2_tulu,word(s) / name,100000,5000,90000,5000
+WikiHow,word(s) / name,54578,2729,49120,2729
+OpenAssistant,word(s) / name,9486,475,8537,474

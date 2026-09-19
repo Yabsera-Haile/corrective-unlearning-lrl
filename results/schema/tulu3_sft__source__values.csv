@@ -1,0 +1,20 @@
+value,format,n_total,n_train
+ai2-adapt-dev/personahub_math_v5_regen_149960,word(s) / name,149960,149960
+ai2-adapt-dev/evol_codealpaca_heval_decontaminated,word(s) / name,107276,107276
+ai2-adapt-dev/tulu_v3.9_aya_100k,word(s) / name,100000,100000
+ai2-adapt-dev/tulu_v3.9_wildchat_100k,word(s) / name,100000,100000
+ai2-adapt-dev/flan_v2_converted,word(s) / name,89982,89982
+ai2-adapt-dev/numinamath_tir_math_decontaminated,word(s) / name,64312,64312
+ai2-adapt-dev/tulu_v3.9_synthetic_finalresp_wildguardmixtrain_decontaminated_50k,word(s) / name,50000,50000
+ai2-adapt-dev/tulu_v3.9_wildjailbreak_decontaminated_50k,word(s) / name,50000,50000
+ai2-adapt-dev/tulu_v3.9_open_math_2_gsm8k_50k,word(s) / name,50000,50000
+allenai/tulu-3-sft-personas-math-grade,word(s) / name,49980,49980
+ai2-adapt-dev/personahub_code_v2_34999,word(s) / name,34999,34999
+ai2-adapt-dev/personahub_ifdata_manual_seed_v3_29980,word(s) / name,29980,29980
+ai2-adapt-dev/tulu_v3.9_personahub_math_interm_algebra_20k,word(s) / name,20000,20000
+ai2-adapt-dev/coconot_converted,word(s) / name,10983,10983
+ai2-adapt-dev/tulu_v3.9_sciriff_10k,word(s) / name,10000,10000
+ai2-adapt-dev/no_robots_converted,word(s) / name,9500,9500
+ai2-adapt-dev/oasst1_converted,word(s) / name,7131,7131
+ai2-adapt-dev/tulu_v3.9_table_gpt_5k,word(s) / name,5000,5000
+ai2-adapt-dev/tulu_hard_coded_repeated_10,word(s) / name,240,240

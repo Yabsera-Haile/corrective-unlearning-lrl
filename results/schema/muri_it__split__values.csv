@@ -1,0 +1,4 @@
+value,format,n_total,n_test,n_train,n_validation
+train,word(s) / name,2005648,0,2005648,0
+test,word(s) / name,111427,111427,0,0
+validation,word(s) / name,111424,0,0,111424
