@@ -5,11 +5,44 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$REPO_ROOT"
 
 VENV_DIR="$REPO_ROOT/.venv"
-# Keep HF caches inside the gitignored data/ dir, not in ~/.cache.
-export HF_HOME="$REPO_ROOT/data/hf_cache"
+# Keep HF caches inside the gitignored data/ dir, not in ~/.cache. Set the cache
+# dirs individually rather than HF_HOME: HF_HOME would also move the token file,
+# so a plain `huggingface-cli login` would stop being seen by these scripts.
+export HF_HUB_CACHE="$REPO_ROOT/data/hf_cache/hub"
+export HF_DATASETS_CACHE="$REPO_ROOT/data/hf_cache/datasets"
+export HF_XET_CACHE="$REPO_ROOT/data/hf_cache/xet"
 export PYTHONPATH="$REPO_ROOT${PYTHONPATH:+:$PYTHONPATH}"
 
+# CPUs on the server are shared: cap every worker pool. Override per run with
+# CU_NUM_PROC=8 bash scripts/server/NN_name.sh
+export CU_NUM_PROC="${CU_NUM_PROC:-4}"
+export OMP_NUM_THREADS="$CU_NUM_PROC" MKL_NUM_THREADS="$CU_NUM_PROC" RAYON_NUM_THREADS="$CU_NUM_PROC"
+export TOKENIZERS_PARALLELISM=false
+
 step() { echo; echo "==> $*"; }
+
+# Warn (don't fail) when no usable HF token: only gated sources are affected.
+check_hf_token() {
+    if ! python - <<'PY'
+import sys
+from huggingface_hub import HfApi, get_token
+token = get_token()
+if not token:
+    sys.exit(1)
+try:
+    print(f"HF token: present (user: {HfApi().whoami(token=token)['name']})")
+except Exception as e:
+    print(f"HF token: present but whoami failed ({type(e).__name__})")
+    sys.exit(1)
+PY
+    then
+        echo "WARNING: no usable HuggingFace token. Gated FLORES sources will fail in inspection." >&2
+        echo "  1) Accept the terms (same HF account, any browser):" >&2
+        echo "       https://huggingface.co/datasets/facebook/flores" >&2
+        echo "       https://huggingface.co/datasets/openlanguagedata/flores_plus" >&2
+        echo "  2) On this server, with the venv active: huggingface-cli login" >&2
+    fi
+}
 
 activate_venv() {
     if [[ ! -f "$VENV_DIR/bin/activate" ]]; then

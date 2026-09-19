@@ -45,11 +45,46 @@ data/ outputs/ logs/       gitignored; created by 00_setup_env.sh
 Every `scripts/server/NN_name.sh`:
 
 1. Is run from the repo root as `bash scripts/server/NN_name.sh`.
-2. Sources `scripts/server/_common.sh` (strict mode, `cd` to repo root, `HF_HOME=data/hf_cache`,
-   venv activation, log mirroring to `logs/`).
+2. Sources `scripts/server/_common.sh` (strict mode, `cd` to repo root, HF caches under
+   `data/hf_cache/`, CPU cap `CU_NUM_PROC` (default 4), venv activation, log mirroring to `logs/`).
 3. Echoes each action (`==> ...`) before doing it.
 4. Writes its primary output to `results/`, bulky output to `data/` or `outputs/`.
 5. Ends with a short `SUMMARY` block that fits in one terminal screen.
+
+## Working rules
+
+- **Write code on LOCAL, run data work on SERVER.** Datasets are never downloaded on LOCAL.
+- **Import-test every server module on LOCAL before pushing**, even when it can't run there:
+  `python -c "import src.data.<module>"` from the repo root, using the pinned venv
+  (LOCAL keeps it outside OneDrive at `~/.venvs/cu-lrl`).
+- **Streaming loads and explicit worker caps.** The server's GPUs are dedicated but its CPUs
+  are shared; every pool uses `src.utils.io.num_proc()` / `CU_NUM_PROC`.
+- **Inspect, don't guess.** When a dataset's structure or language-code format is uncertain,
+  inspect it on the server and read the report before writing logic against it.
+
+## Step 1 — language selection (current)
+
+Sources: MURI-IT (`akoksal/muri-it`), NLLB-200 (`facebook/nllb-200-distilled-600M`, codes only),
+FLORES-200 (`facebook/flores`, gated), FLORES+ (`openlanguagedata/flores_plus`, gated),
+Belebele (`facebook/belebele`), Tülu 3 SFT (`allenai/tulu-3-sft-mixture`, for Step 2).
+
+**One-time:** accept the terms for both FLORES datasets on huggingface.co (any browser, same
+account), then on the server run `source .venv/bin/activate && huggingface-cli login`.
+
+```bash
+# SERVER — round trip 1: download + schema inspection (1.2)
+git pull
+bash scripts/server/01_download_data.sh                # ~5.3 GB into data/raw/
+bash scripts/server/02_profile_languages.sh --inspect-only
+git add results/ && git commit -m "Step 1.2 schema inspection" && git push
+
+# LOCAL — code_maps.py (1.3) and profile_languages.py (1.4) are written against
+#         results/schema_inspection.md and results/schema/*
+
+# SERVER — round trip 2: profiling (1.4/1.5)
+git pull && bash scripts/server/02_profile_languages.sh
+git add results/ && git commit -m "Step 1.4 language profile" && git push
+```
 
 ## First-time server setup (SERVER, via AnyDesk)
 

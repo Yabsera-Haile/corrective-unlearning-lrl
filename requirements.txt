@@ -2,5 +2,7 @@
 datasets==3.6.0
 huggingface_hub==0.33.0
 pandas==2.2.3
+# imported directly (parquet scans); 20.x supports Python 3.9-3.13
+pyarrow==20.0.0
 pyyaml==6.0.2
 tqdm==4.67.1

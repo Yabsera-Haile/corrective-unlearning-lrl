@@ -8,6 +8,7 @@ so writes there go through `write_result`, which warns when a file exceeds the
 from __future__ import annotations
 
 import json
+import os
 import sys
 from pathlib import Path
 from typing import Any
@@ -16,12 +17,22 @@ import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 RESULTS_DIR = REPO_ROOT / "results"
+SCHEMA_DIR = RESULTS_DIR / "schema"
 DATA_DIR = REPO_ROOT / "data"
+RAW_DIR = DATA_DIR / "raw"
 OUTPUTS_DIR = REPO_ROOT / "outputs"
 LOGS_DIR = REPO_ROOT / "logs"
 CONFIGS_DIR = REPO_ROOT / "configs"
 
 RESULT_SIZE_BUDGET = 1_000_000  # bytes
+
+
+def num_proc() -> int:
+    """CPU worker cap. The server's CPUs are shared: never assume more than this.
+
+    Set via CU_NUM_PROC (scripts/server/_common.sh defaults it to 4).
+    """
+    return max(1, int(os.environ.get("CU_NUM_PROC", "4")))
 
 
 def ensure_dirs() -> None:
