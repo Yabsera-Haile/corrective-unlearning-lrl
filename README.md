@@ -82,9 +82,14 @@ git add results/ && git commit -m "Step 1.2 schema inspection" && git push
 #         results/schema_inspection.md and results/schema/*
 
 # SERVER — round trip 2: profiling (1.4/1.5)
-git pull && bash scripts/server/02_profile_languages.sh
+git pull && bash scripts/server/02_profile_languages.sh --skip-inspect
 git add results/ && git commit -m "Step 1.4 language profile" && git push
 ```
+
+`python -m src.data.profile_languages --preview` reproduces the mapping, attrition and
+threshold tables on LOCAL from committed counts (pre-dedup) into `outputs/preview/`.
+Reference tables for code mapping and Joshi levels live in `configs/reference/`
+(see `PROVENANCE.md`).
 
 ## First-time server setup (SERVER, via AnyDesk)
 
