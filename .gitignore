@@ -1,0 +1,21 @@
+# Bulky / machine-local — never committed
+/data/
+/outputs/
+/logs/
+*.safetensors
+*.bin
+*.arrow
+
+# Python
+__pycache__/
+*.py[cod]
+/.venv/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# NOTE: results/ is intentionally NOT ignored. It is the SERVER -> LOCAL
+# return channel. Keep each file there under ~1 MB.

@@ -1,0 +1,6 @@
+# Step 1 is CPU-only. torch / transformers are added in a later step.
+datasets==3.6.0
+huggingface_hub==0.33.0
+pandas==2.2.3
+pyyaml==6.0.2
+tqdm==4.67.1

@@ -1,0 +1,5 @@
+# Populated at the end of Step 1 (language selection).
+# Expected shape per entry (subject to Step 1 spec):
+#   - code: <canonical code, see src/data/code_maps.py>
+#     name: <language name>
+languages: []
