@@ -26,8 +26,8 @@ step "Checking which GPU packages are installable on this Python"
     python -c 'import sys, platform; print(f"python {platform.python_version()} ({sys.executable})")'
     while read -r pkg; do
         [[ -z "$pkg" || "$pkg" == \#* ]] && continue
-        printf '%-18s ' "$pkg"
-        python -m pip index versions "$pkg" 2>&1 | head -n 1 | sed 's/^/=> /'
+        printf "%-18s " "$pkg"
+        python -m pip index versions "$pkg" </dev/null 2>&1 | head -n 1 | sed 's/^/=> /'
     done < requirements-gpu.txt
 } > results/step2/gpu_deps_resolution.txt 2>&1
 cat results/step2/gpu_deps_resolution.txt

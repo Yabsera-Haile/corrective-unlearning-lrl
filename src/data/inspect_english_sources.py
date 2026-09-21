@@ -42,7 +42,7 @@ import pyarrow.parquet as pq
 from datasets import load_dataset
 
 from src.data.inspect_schema import Report, _short, find_id_columns, guarded, SourceSummary, Source
-from src.utils.io import RAW_DIR, REPO_ROOT, num_proc, write_result
+from src.utils.io import RAW_DIR, REPO_ROOT, RESULTS_DIR, num_proc, write_result
 
 MURI_DIR = RAW_DIR / "muri-it"
 LONGFORM_REPO = "akoksal/LongForm"
@@ -50,6 +50,13 @@ MRI_SUBSET = "MRI"
 
 PER_LANGUAGE_NEED = 8_600  # 7,000 + 495, +15% headroom
 N_LANGUAGES = 4
+
+# D2.2: the genre-matched part of LongForm. Exact names as they appear in its `source`
+# column; substring matching would wrongly admit WikiHow.
+LONGFORM_PREFERRED = ("C4", "Wikipedia")
+# A source whose median response is shorter than this cannot carry the clean length
+# distribution through translation (D2.9).
+MIN_RESPONSE_P50 = 500
 
 # Filter previews. Each is (name, predicate on the row dict, why). Reported separately so the
 # real 2A filter set can be chosen from the counts instead of guessed at now.
@@ -211,20 +218,47 @@ def load_longform(rep: Report, n_probe: int) -> Rows:
     return Rows("LongForm", rows, columns + ["_split"], instr, resp, subset)
 
 
-def allocation_section(rep: Report, counts: pd.DataFrame) -> None:
+def is_preferred(row) -> bool:
+    """D2.2 genre match: MURI's own English MRI, plus LongForm's C4/Wikipedia subsets only.
+
+    Matched by exact subset name. A substring match on "wiki" would also pull in LongForm's
+    WikiHow, which the spec excludes from the preferred set.
+    """
+    if row["source"] == "MURI-eng":
+        return True
+    return row["source"] == "LongForm" and row["subset"] in LONGFORM_PREFERRED
+
+
+def allocation_section(rep: Report, counts: pd.DataFrame, lengths: pd.DataFrame | None = None) -> None:
     rep.h(2, "Allocation feasibility")
     need_total = PER_LANGUAGE_NEED * N_LANGUAGES
-    preferred = counts[(counts["source"] == "MURI-eng")
-                       | (counts["subset"].str.contains("c4|wiki", case=False, na=False))]
-    other = counts.drop(preferred.index)
+    mask = counts.apply(is_preferred, axis=1)
+    preferred, other = counts[mask], counts[~mask]
     rep.kv("need", f"{PER_LANGUAGE_NEED:,} per language x {N_LANGUAGES} = **{need_total:,}** "
                    f"for fully disjoint allocations (7,000 mixture + 495 dev + ~15% headroom)")
     rep.kv("preferred sources (MURI-eng + LongForm C4/Wikipedia)",
            f"{int(preferred['n'].sum()):,} raw, **{int(preferred['kept_all_filters'].sum()):,}** "
            "after the filter preview")
-    rep.kv("other LongForm subsets (only if short; report separately if used)",
+    for r in preferred.itertuples(index=False):
+        rep(f"  - {r.source} / {r.subset}: {r.kept_all_filters:,}")
+    rep.kv("other subsets (StackExchange, WikiHow, NLP tasks, ...; only if short, and then "
+           "reported separately in every table)",
            f"{int(other['n'].sum()):,} raw, {int(other['kept_all_filters'].sum()):,} after preview")
     have = int(preferred["kept_all_filters"].sum())
+
+    # D2.9 length matching needs sources whose responses can match the clean length
+    # distribution; very short responses cannot, whatever the translation does to them.
+    if lengths is not None:
+        med = lengths.set_index(["source", "subset"])["resp_p50"]
+        short = [(s, sub) for (s, sub), m in med.items()
+                 if m < MIN_RESPONSE_P50 and is_preferred({"source": s, "subset": sub})]
+        if short:
+            lost = int(sum(preferred.set_index(["source", "subset"]).loc[k, "kept_all_filters"] for k in short))
+            rep()
+            rep(f"- **length compatibility:** {', '.join(f'{s}/{sub} (p50={int(med[(s, sub)])} chars)' for s, sub in short)} "
+                f"sit below the {MIN_RESPONSE_P50}-character median used by the other preferred sources. "
+                f"Excluding them leaves **{have - lost:,}** length-compatible candidates "
+                f"({have - lost:,} vs {have:,}); see D2.9.")
     if have >= need_total:
         rep(f"\n**Sufficient**: {have:,} >= {need_total:,}. Four disjoint per-language allocations "
             "are possible from the preferred sources alone.")
@@ -248,9 +282,24 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--muri-only", action="store_true")
     ap.add_argument("--longform-only", action="store_true")
     ap.add_argument("--probe-rows", type=int, default=500, help="rows used to infer column roles")
+    ap.add_argument("--from-counts", action="store_true",
+                    help="LOCAL: recompute only the allocation section from the committed "
+                         "results/step2 CSVs (no data scan, no network)")
     args = ap.parse_args(argv)
     pa.set_cpu_count(num_proc())
     pa.set_io_thread_count(num_proc())
+
+    if args.from_counts:
+        counts_df = pd.read_csv(RESULTS_DIR / "step2/english_source_counts.csv")
+        lengths_df = pd.read_csv(RESULTS_DIR / "step2/english_source_lengths.csv")
+        rep = Report()
+        rep("# English source allocation (Step 2A, recomputed from committed counts)")
+        rep()
+        rep.kv("inputs", "`results/step2/english_source_counts.csv`, `english_source_lengths.csv`")
+        allocation_section(rep, counts_df, lengths_df)
+        out = write_result(rep.text(), "step2/english_source_allocation.md")
+        print(f"wrote {out.relative_to(REPO_ROOT).as_posix()}")
+        return 0
 
     rep = Report()
     rep("# English contamination-source inspection (Step 2A)")
@@ -280,7 +329,7 @@ def main(argv: list[str] | None = None) -> int:
     if counts:
         counts_df = pd.concat(counts, ignore_index=True)
         lengths_df = pd.concat(lengths, ignore_index=True)
-        allocation_section(rep, counts_df)
+        allocation_section(rep, counts_df, lengths_df)
         write_result(counts_df, "step2/english_source_counts.csv")
         write_result(lengths_df, "step2/english_source_lengths.csv")
     out = write_result(rep.text(), "step2/english_source_inspection.md")
