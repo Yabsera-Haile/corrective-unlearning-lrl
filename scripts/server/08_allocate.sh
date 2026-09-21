@@ -15,9 +15,9 @@ python -m src.data.allocate "$@"
 
 echo
 echo "================ 08_allocate: SUMMARY ================"
-sed -n '/## Per language/,/## Predicted/p' results/step2/allocation_plan.md | grep '^|'
+sed -n '/## Per language/,/## Predicted/p' results/step2/allocation_plan.md | grep '^|' || true
 echo "-- overlap --"
-sed -n '/## Cross-language overlap/,/## Per-bin/p' results/step2/allocation_plan.md | grep '^|'
+sed -n '/## Cross-language overlap/,/## Per-bin/p' results/step2/allocation_plan.md | grep '^|' || true
 echo "log:  ${LOG_FILE#$REPO_ROOT/}"
 echo "next: git add results/ && git commit -m 'Step 2 bundle: env, pools, pilot, coherence, allocation' && git push"
 echo "      then STOP — 2B waits for approval of the allocation"

@@ -20,7 +20,7 @@ python -m src.data.english_pool
 
 echo
 echo "================ 05_clean_pools: SUMMARY ================"
-grep -E '^\| (ben|swh|amh|tel)' results/step2/clean_length_quantiles.md | head -n 12
+grep -E '^\| (ben|swh|amh|tel)' results/step2/clean_length_quantiles.md | head -n 12 || true
 echo "pilot documents: $(wc -l < results/step2/pilot_origin_ids.txt)"
 echo "log:  ${LOG_FILE#$REPO_ROOT/}"
 echo "next: bash scripts/server/06_translation_pilot.sh"

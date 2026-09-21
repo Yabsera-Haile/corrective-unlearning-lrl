@@ -49,8 +49,8 @@ python -m src.data.profile_languages ${THRESHOLD:+--threshold "$THRESHOLD"}
 
 echo
 echo "================ 02_profile_languages: SUMMARY ================"
-sed -n '/## Intersection attrition/,/## Unmapped/p' results/language_profile_summary.md | grep '^|'
-sed -n '/## Volume threshold/,/## Top 25/p' results/language_profile_summary.md | grep '^|'
+sed -n '/## Intersection attrition/,/## Unmapped/p' results/language_profile_summary.md | grep '^|' || true
+sed -n '/## Volume threshold/,/## Top 25/p' results/language_profile_summary.md | grep '^|' || true
 echo "full summary: results/language_profile_summary.md"
 echo "log:  ${LOG_FILE#$REPO_ROOT/}"
 echo "next: git add results/ && git commit -m 'Step 1.4 language profile' && git push"

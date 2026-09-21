@@ -14,8 +14,8 @@ python -m src.data.coherence "$@"
 
 echo
 echo "================ 07_coherence: SUMMARY ================"
-sed -n '/## Encoder coverage/,/## Coherence by group/p' results/step2/coherence.md | grep '^|' | head -n 8
-grep -E '^\| (clean|english) ' results/step2/coherence.md | head -n 8
+sed -n '/## Encoder coverage/,/## Coherence by group/p' results/step2/coherence.md | grep '^|' | head -n 8 || true
+grep -E '^\| (clean|english) ' results/step2/coherence.md | head -n 8 || true
 echo "log:  ${LOG_FILE#$REPO_ROOT/}"
 echo "next: bash scripts/server/08_allocate.sh"
 echo "======================================================="

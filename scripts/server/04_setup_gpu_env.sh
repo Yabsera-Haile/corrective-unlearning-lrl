@@ -76,21 +76,28 @@ else
           ls -d "$HOME"/{miniconda3,anaconda3,mambaforge,miniforge3}/envs/*/ "$HOME"/.conda/envs/*/ \
                 /opt/conda/envs/*/ 2>/dev/null; } | head -n 30)
 fi
+# NB: no pipeline around this loop. Assignments inside a `{ ... } | tee` run in a subshell
+# and are lost, which silently disabled the reuse and, with pipefail, failed the stage.
+PINS_FILE="results/step2/env_pins.txt"
 REUSE_FREEZE=""
-{
-    echo "# pin reuse, $(date -Iseconds)"
-    for v in "${CANDIDATE_VENVS[@]}"; do
-        py="$v/bin/python"; [[ -x "$py" ]] || py="$v"
-        [[ -x "$py" ]] || continue
-        frz="$("$py" -m pip freeze 2>/dev/null)" || continue
-        marks="$(echo "$frz" | grep -icE '^(fasttext|lm[-_]eval|glotlid)' || true)"
-        echo "## $v  (python $("$py" -c 'import platform;print(platform.python_version())' 2>/dev/null), \
-glotlid/lm-eval markers: $marks)"
-        echo "$frz" | grep -iE '^(torch|transformers|accelerate|sentencepiece|protobuf|pysbd|sentence-transformers|fasttext[a-z-]*|numpy|lm[-_]eval)==' || true
-        if [[ -z "$REUSE_FREEZE" && "$marks" -gt 0 ]]; then REUSE_FREEZE="$frz"; echo "   ^ selected for pin reuse"; fi
-    done
-    [[ -z "$REUSE_FREEZE" ]] && echo "(no project with GlotLID/lm-eval found; using this repo's own pins)"
-} | tee results/step2/env_pins.txt
+say() { echo "$*" | tee -a "$PINS_FILE"; }
+: > "$PINS_FILE"
+say "# pin reuse, $(date -Iseconds)"
+for v in "${CANDIDATE_VENVS[@]}"; do
+    py="$v/bin/python"; [[ -x "$py" ]] || py="$v"
+    [[ -x "$py" ]] || continue
+    frz="$("$py" -m pip freeze 2>/dev/null)" || continue
+    marks="$(echo "$frz" | grep -icE '^(fasttext|lm[-_]eval|glotlid)' || true)"
+    say "## $v  (python $("$py" -c 'import platform;print(platform.python_version())' 2>/dev/null), glotlid/lm-eval markers: $marks)"
+    say "$(echo "$frz" | grep -iE '^(torch|transformers|accelerate|sentencepiece|protobuf|pysbd|sentence-transformers|fasttext[a-z-]*|numpy|lm[-_]eval)==' || true)"
+    if [[ -z "$REUSE_FREEZE" && "$marks" -gt 0 ]]; then
+        REUSE_FREEZE="$frz"
+        say "   ^ selected for pin reuse"
+    fi
+done
+if [[ -z "$REUSE_FREEZE" ]]; then
+    say "(no project with GlotLID/lm-eval found; using this repo's own pins)"
+fi
 
 step "Creating $VENV311"
 [[ -d "$VENV311" ]] || "$PY311" -m venv "$VENV311"
@@ -147,9 +154,20 @@ fi
 step "Installing torch from the CUDA 12.1 index: $TORCH_SPEC"
 python -m pip install --quiet --index-url "$TORCH_INDEX" "$TORCH_SPEC"
 
-step "Installing the Step 1 requirements and $RESOLVED"
-python -m pip install --quiet -r "$REPO_ROOT/requirements.txt"
-python -m pip install --quiet -r "$RESOLVED"
+# One resolver pass over BOTH files: installing them separately lets pip quietly upgrade a
+# Step 1 pin (a reused transformers is newer than ours and wants a newer huggingface_hub),
+# leaving an environment that no longer matches requirements.txt.
+step "Installing requirements.txt + $(basename "$RESOLVED") in a single resolver pass"
+if ! python -m pip install --quiet -r "$REPO_ROOT/requirements.txt" -r "$RESOLVED"; then
+    echo "  pins conflict; retrying with the Step 1 library pins relaxed (versions still recorded below)" >&2
+    grep -vE '^(huggingface_hub|datasets|pyarrow|pandas)==' "$REPO_ROOT/requirements.txt" \
+        > "$REPO_ROOT/outputs/requirements-step1.relaxed.txt" || true
+    grep -oE '^(huggingface_hub|datasets|pyarrow|pandas)==.*' "$REPO_ROOT/requirements.txt" \
+        | sed 's/==.*//' >> "$PINS_FILE" || true
+    echo "  relaxed: $(grep -cE '^(huggingface_hub|datasets|pyarrow|pandas)==' "$REPO_ROOT/requirements.txt") Step 1 pins" | tee -a "$PINS_FILE"
+    python -m pip install --quiet -r "$REPO_ROOT/outputs/requirements-step1.relaxed.txt" -r "$RESOLVED"
+    python -m pip install --quiet "huggingface_hub" "datasets" "pandas" "pyarrow"
+fi
 
 step "Probing: versions, a real matmul on every GPU, GlotLID, LaBSE, pysbd"
 PROBE_RC=0
@@ -159,7 +177,7 @@ step "Recording the installed environment"
 {
     echo "# .venv311 as installed, $(date -Iseconds)"
     python -c 'import platform,sys;print(f"python {platform.python_version()} ({sys.executable})")'
-    python -m pip freeze | grep -iE '^(torch|transformers|accelerate|sentencepiece|protobuf|pysbd|sentence-transformers|fasttext[a-z-]*|numpy|datasets|pandas|pyarrow|huggingface)'
+    python -m pip freeze | grep -iE '^(torch|transformers|accelerate|sentencepiece|protobuf|pysbd|sentence-transformers|fasttext[a-z-]*|numpy|datasets|pandas|pyarrow|huggingface)' || true
 } >> results/step2/env_pins.txt
 
 echo

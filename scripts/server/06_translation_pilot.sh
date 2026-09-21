@@ -47,7 +47,7 @@ python -m src.mt.pilot_report
 echo
 echo "================ 06_translation_pilot: SUMMARY ================"
 cat results/step2/translation_status.md
-sed -n '/## Per language/,/## Character expansion/p' results/step2/pilot_report.md | grep '^|'
+sed -n '/## Per language/,/## Character expansion/p' results/step2/pilot_report.md | grep '^|' || true
 echo "log:  ${LOG_FILE#$REPO_ROOT/}"
 echo "next: bash scripts/server/07_coherence.sh"
 echo "==============================================================="

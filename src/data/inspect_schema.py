@@ -32,6 +32,8 @@ import subprocess
 import time
 import traceback
 import unicodedata
+import urllib.parse
+import urllib.request
 from collections import Counter, defaultdict
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
@@ -46,7 +48,6 @@ import pyarrow.compute as pc
 import pyarrow.parquet as pq
 from datasets import get_dataset_config_names, load_dataset
 from huggingface_hub import HfApi, get_token, hf_hub_download
-from huggingface_hub.utils import get_session
 
 from src.utils.io import RAW_DIR, REPO_ROOT, RESULTS_DIR, SCHEMA_DIR, num_proc, write_result
 
@@ -280,11 +281,14 @@ def inspect_configs(src: Source, info: Any, rep: Report, summary: SourceSummary)
 
 def inspect_viewer_sizes(src: Source, rep: Report, summary: SourceSummary) -> None:
     """Row counts per config/split from the HF dataset-viewer API (no data download)."""
+    # stdlib rather than huggingface_hub.utils.get_session: that helper is an internal and
+    # has moved between hub versions, and this module must keep importing cleanly whatever
+    # hub version the GPU environment resolves to.
     token = get_token()
-    headers = {"Authorization": f"Bearer {token}"} if token else {}
-    r = get_session().get(VIEWER_SIZE_URL, params={"dataset": src.repo}, headers=headers, timeout=120)
-    r.raise_for_status()
-    payload = r.json()
+    url = f"{VIEWER_SIZE_URL}?{urllib.parse.urlencode({'dataset': src.repo})}"
+    req = urllib.request.Request(url, headers={"Authorization": f"Bearer {token}"} if token else {})
+    with urllib.request.urlopen(req, timeout=120) as resp:
+        payload = json.loads(resp.read().decode("utf-8"))
     splits = (payload.get("size") or {}).get("splits")
     if not splits:
         rep(f"- dataset-viewer size API returned no split table; top-level keys: {list(payload)}")
