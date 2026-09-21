@@ -15,6 +15,10 @@ export HF_DATASETS_CACHE="$REPO_ROOT/data/hf_cache/datasets"
 export HF_XET_CACHE="$REPO_ROOT/data/hf_cache/xet"
 export PYTHONPATH="$REPO_ROOT${PYTHONPATH:+:$PYTHONPATH}"
 
+# The hub link from this machine is slow (~0.5 MB/s observed) and Xet transfers have
+# failed mid-stream here ("error decoding response body" on GlotLID's 1.7 GB file).
+export HF_HUB_DISABLE_XET="${HF_HUB_DISABLE_XET:-1}"
+
 # CPUs on the server are shared: cap every worker pool. Override per run with
 # CU_NUM_PROC=8 bash scripts/server/NN_name.sh
 export CU_NUM_PROC="${CU_NUM_PROC:-4}"
@@ -53,6 +57,8 @@ activate_venv() {
     fi
     # shellcheck disable=SC1091
     source "$VENV_DIR/bin/activate"
+    # hf_transfer parallelises chunk downloads; MADLAD alone is 11.8 GB over a slow link.
+    if python -c 'import hf_transfer' 2>/dev/null; then export HF_HUB_ENABLE_HF_TRANSFER=1; fi
 }
 
 # Mirror all output of the calling script to logs/<script>_<timestamp>.log

@@ -27,12 +27,18 @@ LABSE_MODEL = "sentence-transformers/LaBSE"
 
 # Short sentences for the four target languages plus English, used to prove that GlotLID
 # labels them correctly and that LaBSE places each next to its English counterpart.
+# One sentence per language, each on a DIFFERENT topic: the LaBSE check asks whether a
+# sentence is nearest to its own translation, so two languages sharing an English sentence
+# would tie and look like a failure.
 SAMPLES: dict[str, tuple[str, str]] = {
-    "eng_Latn": ("Good morning, today is a fine day.", "Good morning, today is a fine day."),
-    "amh_Ethi": ("ሰላም ለሁላችሁ። ዛሬ ጥሩ ቀን ነው።", "Hello everyone. Today is a good day."),
+    "eng_Latn": ("The committee published its report yesterday.",
+                 "The committee published its report yesterday."),
+    "amh_Ethi": ("ኢትዮጵያ በምሥራቅ አፍሪካ የምትገኝ ሀገር ናት።",
+                 "Ethiopia is a country located in East Africa."),
     "ben_Beng": ("আজ আবহাওয়া খুব ভালো।", "The weather is very good today."),
-    "swh_Latn": ("Habari ya asubuhi, leo ni siku njema.", "Good morning, today is a good day."),
-    "tel_Telu": ("ఈ రోజు వాతావరణం చాలా బాగుంది.", "The weather is very good today."),
+    "swh_Latn": ("Watoto wanacheza mpira uwanjani.",
+                 "The children are playing football on the field."),
+    "tel_Telu": ("ఈ పుస్తకం చాలా ఆసక్తికరంగా ఉంది.", "This book is very interesting."),
 }
 
 MATMUL_N = 4096
@@ -71,6 +77,8 @@ def probe_gpus(L: list[str]) -> bool:
             dev = torch.device(f"cuda:{i}")
             a = torch.randn(MATMUL_N, MATMUL_N, device=dev, dtype=torch.bfloat16)
             b = torch.randn(MATMUL_N, MATMUL_N, device=dev, dtype=torch.bfloat16)
+            for _ in range(3):   # warm up: the first device would otherwise be charged for
+                c = a @ b        # CUDA context creation and cuBLAS autotuning
             torch.cuda.synchronize(dev)
             t0 = time.time()
             for _ in range(MATMUL_ITERS):
@@ -92,8 +100,8 @@ def probe_gpus(L: list[str]) -> bool:
 def probe_glotlid(L: list[str]) -> bool:
     try:
         import fasttext
-        from huggingface_hub import hf_hub_download
-        path = hf_hub_download(GLOTLID_REPO, GLOTLID_FILE)
+        from src.utils.hf import download_with_retry
+        path = download_with_retry(GLOTLID_REPO, GLOTLID_FILE)
         t0 = time.time()
         model = fasttext.load_model(path)
         L.append(f"- loaded `{GLOTLID_REPO}/{GLOTLID_FILE}` in {time.time() - t0:.1f}s "

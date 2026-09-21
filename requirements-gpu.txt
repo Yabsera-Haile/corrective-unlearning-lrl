@@ -13,6 +13,8 @@ accelerate==1.1.1
 sentencepiece==0.2.0
 protobuf==5.28.3
 pysbd==0.3.4
+# parallel chunked hub downloads: the link to huggingface.co here is ~0.5 MB/s
+hf_transfer==0.1.8
 sentence-transformers==3.3.1
 # GlotLID needs fasttext. fasttext-wheel ships prebuilt wheels; plain `fasttext` builds
 # from source and needs a compiler. 04 prefers whichever the data-selection project uses.

@@ -19,9 +19,9 @@ PILOT_IN="data/pools/pilot_candidates.jsonl"
 
 step "Pre-fetching the MT models once (three parallel jobs would otherwise each pull ~14 GB)"
 python - <<'PY_FETCH'
-from huggingface_hub import snapshot_download
+from src.utils.hf import download_with_retry
 for repo in ("google/madlad400-3b-mt", "facebook/nllb-200-distilled-600M"):
-    path = snapshot_download(repo, allow_patterns=["*.json", "*.model", "*.safetensors", "*.bin"])
+    path = download_with_retry(repo, None, allow_patterns=["*.json", "*.model", "*.safetensors", "*.bin"])
     print(f"  {repo} -> {path}", flush=True)
 PY_FETCH
 

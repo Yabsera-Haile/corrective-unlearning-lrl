@@ -23,8 +23,8 @@ class LanguageID:
 
     def __init__(self, repo: str = GLOTLID_REPO, filename: str = GLOTLID_FILE):
         import fasttext
-        from huggingface_hub import hf_hub_download
-        self.model = fasttext.load_model(hf_hub_download(repo, filename))
+        from src.utils.hf import download_with_retry
+        self.model = fasttext.load_model(download_with_retry(repo, filename))
 
     @staticmethod
     def _clean(text: str) -> str:

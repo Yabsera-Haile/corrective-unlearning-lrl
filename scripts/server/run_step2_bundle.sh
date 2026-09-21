@@ -14,6 +14,7 @@
 source "$(dirname "$0")/_common.sh"
 start_log
 
+PREFETCH_STARTED=0
 for s in 04_setup_gpu_env 05_clean_pools 06_translation_pilot 07_coherence 08_allocate; do
     echo
     echo "############################################################"
@@ -21,6 +22,13 @@ for s in 04_setup_gpu_env 05_clean_pools 06_translation_pilot 07_coherence 08_al
     echo "############################################################"
     rc=0
     bash "scripts/server/$s.sh" || rc=$?
+    # ~17.7 GB of models over a ~0.5 MB/s link is the long pole: fetch it in the
+    # background while the CPU stages run, rather than waiting for it at stage 06.
+    if [[ "$s" == "04_setup_gpu_env" && $rc -eq 0 && $PREFETCH_STARTED -eq 0 ]]; then
+        nohup bash scripts/server/prefetch_models.sh > logs/prefetch_models.out 2>&1 &
+        PREFETCH_STARTED=1
+        echo "## model prefetch started in the background (pid $!, logs/prefetch_models.out)"
+    fi
     if [[ $rc -ne 0 ]]; then
         echo "STOPPED at $s (exit $rc). Fix, then re-run: bash scripts/server/$s.sh" >&2
         exit "$rc"
