@@ -1,198 +1,198 @@
-flores_code,language_name,script,muri_codes,mapping_method,mapping_confidence,muri_n_examples,muri_n_train,muri_n_mri,muri_n_after_dedup,muri_n_empty,mean_instruction_len,mean_response_len,in_nllb,in_flores,in_belebele,joshi_level,joshi_match,joshi_match_method,in_pool,passes_ge_500,passes_ge_1000,passes_ge_2000,passes_ge_5000,passes_volume_threshold
-eng_Latn,English,Latn,eng,direct,exact,125995,113395,15000,125984,20,1061.7,645.4,True,True,True,5,english,name,True,True,True,True,True,
-spa_Latn,Spanish,Latn,spa,direct,exact,38090,34281,15000,38090,1,352.6,1893.6,True,True,True,5,spanish,name,True,True,True,True,True,
-hin_Deva,Hindi,Deva,hin,direct,exact,30291,27262,15000,30204,0,283.1,1705.9,True,True,True,4,hindi,name,True,True,True,True,True,
-zho_Hans,Chinese,Hans,zho,decision,assumed,29630,26667,15000,29586,1,196.8,606.0,True,True,True,5,mandarin,alias,True,True,True,True,True,
-fra_Latn,French,Latn,fra,direct,exact,29559,26604,15000,29558,1,252.8,2488.6,True,True,True,5,french,name,True,True,True,True,True,
-pes_Arab,Iranian Persian,Arab,fas,decision,assumed,28595,25735,15000,28595,0,272.5,970.5,True,True,True,4,persian,muri-name,True,True,True,True,True,
-jpn_Jpan,Japanese,Jpan,jpn,direct,exact,28448,25603,15000,28448,1,145.3,1268.0,True,True,True,5,japanese,name,True,True,True,True,True,
-arb_Arab,Standard Arabic,Arab,ara,decision,assumed,26403,23762,15000,26394,0,272.7,1163.6,True,True,True,5,arabic,muri-name,True,True,True,True,True,
-ben_Beng,Bengali,Beng,ben,direct,exact,25674,23107,15000,25673,0,214.9,1515.9,True,True,True,3,bengali,name,True,True,True,True,True,
-vie_Latn,Vietnamese,Latn,vie,direct,exact,25087,22579,15000,25085,0,235.7,1954.8,True,True,True,4,vietnamese,name,True,True,True,True,True,
-zsm_Latn,Standard Malay,Latn,msa,decision,assumed,24567,22110,15000,24544,0,248.3,1576.5,True,True,True,3,malay,muri-name,True,True,True,True,True,
-tel_Telu,Telugu,Telu,tel,direct,exact,23914,21523,15000,23914,0,205.4,2062.3,True,True,True,1,telugu,name,True,True,True,True,True,
-guj_Gujr,Gujarati,Gujr,guj,direct,exact,24227,21804,15000,23888,0,180.5,1479.1,True,True,True,1,gujarati,name,True,True,True,True,True,
-ita_Latn,Italian,Latn,ita,direct,exact,23836,21453,15000,23833,0,123.5,2682.2,True,True,True,4,italian,name,True,True,True,True,True,
-tam_Taml,Tamil,Taml,tam,direct,exact,23565,21208,15000,23565,1,211.8,1724.9,True,True,True,3,tamil,name,True,True,True,True,True,
-por_Latn,Portuguese,Latn,por,direct,exact,23351,21016,15000,23350,0,267.2,2028.8,True,True,True,4,portuguese,name,True,True,True,True,True,
-deu_Latn,German,Latn,deu,direct,exact,22670,20402,15000,22670,1,190.2,3076.1,True,True,True,5,german,name,True,True,True,True,True,
-mal_Mlym,Malayalam,Mlym,mal,direct,exact,22576,20318,15000,22575,0,135.0,1690.1,True,True,True,1,malayalam,name,True,True,True,True,True,
-mar_Deva,Marathi,Deva,mar,direct,exact,22456,20210,15000,22271,0,166.4,1386.6,True,True,True,2,marathi,name,True,True,True,True,True,
-cat_Latn,Catalan,Latn,cat,direct,exact,22025,19822,15000,22025,0,219.1,2005.4,True,True,True,4,catalan,name,True,True,True,True,True,
-nld_Latn,Dutch,Latn,nld,direct,exact,21860,19674,15000,21859,0,112.3,2236.6,True,True,True,4,dutch,name,True,True,True,True,True,
-ory_Orya,Odia,Orya,ori,macro->member,inferred,21775,19597,15000,21756,0,119.7,1305.7,True,True,True,1,odia,name,True,True,True,True,True,
-urd_Arab,Urdu,Arab,urd,direct,exact,21763,19587,15000,21748,0,240.5,1738.2,True,True,True,3,urdu,name,True,True,True,True,True,
-pan_Guru,Panjabi,Guru,pan,direct,exact,21688,19519,15000,21682,0,153.5,1700.5,True,True,True,2,eastern punjabi,alias,True,True,True,True,True,
-rus_Cyrl,Russian,Cyrl,rus,direct,exact,21416,19274,15000,21415,0,109.9,3021.2,True,True,True,4,russian,name,True,True,True,True,True,
-tha_Thai,Thai,Thai,tha,direct,exact,21406,19265,15000,21404,0,405.7,2392.8,True,True,True,3,thai,name,True,True,True,True,True,
-pol_Latn,Polish,Latn,pol,direct,exact,20557,18501,15000,20557,0,154.0,1762.0,True,True,True,4,polish,name,True,True,True,True,True,
-kor_Hang,Korean,Hang,kor,direct,exact,20207,18187,15000,20207,1,58.4,1540.8,True,True,True,4,korean,name,True,True,True,True,True,
-swh_Latn,Swahili,Latn,swa,macro->member,inferred,20500,18450,15000,19995,0,132.8,937.1,True,True,True,2,swahili,name,True,True,True,True,True,
-kan_Knda,Kannada,Knda,kan,direct,exact,20000,18000,15000,19885,0,108.0,3140.5,True,True,True,1,kannada,name,True,True,True,True,True,
-asm_Beng,Assamese,Beng,asm,direct,exact,19500,17550,15000,19434,0,92.7,2483.1,True,True,True,1,assamese,name,True,True,True,True,True,
-eus_Latn,Basque,Latn,eus,direct,exact,19000,17100,15000,18991,0,81.5,1924.0,True,True,True,4,basque,name,True,True,True,True,True,
-tur_Latn,Turkish,Latn,tur,direct,exact,18010,16209,15000,18008,0,98.3,2185.9,True,True,True,4,turkish,name,True,True,True,True,True,
-ces_Latn,Czech,Latn,ces,direct,exact,17638,15875,15000,17637,0,67.5,2992.3,True,True,True,4,czech,name,True,True,True,True,True,
-bul_Cyrl,Bulgarian,Cyrl,bul,direct,exact,17104,15394,15000,17096,0,143.2,2507.9,True,True,True,3,bulgarian,name,True,True,True,True,True,
-heb_Hebr,Hebrew,Hebr,heb,direct,exact,16975,15278,15000,16905,0,58.8,3375.7,True,True,True,3,hebrew,name,True,True,True,True,True,
-swe_Latn,Swedish,Latn,swe,direct,exact,16800,15120,15000,16800,0,98.1,1918.3,True,True,True,4,swedish,name,True,True,True,True,True,
-est_Latn,Estonian,Latn,est,direct,exact,16000,14400,15000,16000,0,75.5,3044.5,True,True,True,3,estonian,name,True,True,True,True,True,
-npi_Deva,Nepali,Deva,nep,macro->member,inferred,15656,14090,11456,15644,0,132.1,1565.2,True,True,True,1,nepali,name,True,True,True,True,True,
-fin_Latn,Finnish,Latn,fin,direct,exact,15600,14040,15000,15600,0,92.2,2756.2,True,True,True,4,finnish,name,True,True,True,True,True,
-khm_Khmr,Khmer,Khmr,khm,direct,exact,15712,14140,14795,15587,0,67.9,2448.3,True,True,True,1,khmer,name,True,True,True,True,True,
-mya_Mymr,Burmese,Mymr,mya,direct,exact,15443,13899,15000,15435,0,61.9,1924.4,True,True,True,1,burmese,name,True,True,True,True,True,
-ron_Latn,Romanian,Latn,ron,direct,exact,15400,13860,15000,15400,0,68.7,2731.2,True,True,True,3,romanian,name,True,True,True,True,True,
-nob_Latn,Norwegian Bokmål,Latn,nor,decision,assumed,15200,13680,15000,15193,0,66.5,1926.5,True,True,True,1,norwegian,muri-name,True,True,True,True,True,
-sin_Sinh,Sinhala,Sinh,sin,direct,exact,15400,13860,15000,15061,0,54.2,3120.4,True,True,True,1,sinhalese,alias,True,True,True,True,True,
-afr_Latn,Afrikaans,Latn,afr,direct,exact,15000,13500,15000,15000,0,54.0,3683.7,True,True,True,3,afrikaans,name,True,True,True,True,True,
-ceb_Latn,Cebuano,Latn,ceb,direct,exact,15000,13500,15000,15000,0,62.6,1361.5,True,True,True,3,cebuano,name,True,True,True,True,True,
-dan_Latn,Danish,Latn,dan,direct,exact,15000,13500,15000,15000,0,63.4,2754.4,True,True,True,3,danish,name,True,True,True,True,True,
-ell_Grek,Modern Greek (1453-),Grek,ell,direct,exact,15000,13500,15000,15000,0,70.2,3229.7,True,True,True,3,greek,last-word,True,True,True,True,True,
-hun_Latn,Hungarian,Latn,hun,direct,exact,15000,13500,15000,15000,0,63.6,3059.9,True,True,True,4,hungarian,name,True,True,True,True,True,
-isl_Latn,Icelandic,Latn,isl,direct,exact,15000,13500,15000,15000,0,55.9,2578.7,True,True,True,2,icelandic,name,True,True,True,True,True,
-kaz_Cyrl,Kazakh,Cyrl,kaz,direct,exact,15000,13500,15000,15000,0,62.7,2599.5,True,True,True,3,kazakh,name,True,True,True,True,True,
-lit_Latn,Lithuanian,Latn,lit,direct,exact,15000,13500,15000,15000,0,63.4,2666.2,True,True,True,3,lithuanian,name,True,True,True,True,True,
-lvs_Latn,Standard Latvian,Latn,lav,decision,assumed,15000,13500,15000,15000,0,63.6,2775.1,True,True,True,3,latvian,muri-name,True,True,True,True,True,
-slv_Latn,Slovenian,Latn,slv,direct,exact,15000,13500,15000,15000,0,64.4,3491.1,True,True,True,3,slovenian,name,True,True,True,True,True,
-tgk_Cyrl,Tajik,Cyrl,tgk,direct,exact,15000,13500,15000,15000,0,60.7,2108.0,True,True,True,1,tajik,name,True,True,True,True,True,
-slk_Latn,Slovak,Latn,slk,direct,exact,15000,13500,15000,14989,0,59.8,2243.8,True,True,True,3,slovak,name,True,True,True,True,True,
-kat_Geor,Georgian,Geor,kat,direct,exact,15000,13500,15000,14987,0,53.7,2296.6,True,True,True,3,georgian,name,True,True,True,True,True,
-khk_Cyrl,Halh Mongolian,Cyrl,mon,macro->member,inferred,15000,13500,15000,14977,0,57.0,2659.5,True,True,True,1,mongolian,muri-name,True,True,True,True,True,
-plt_Latn,Plateau Malagasy,Latn,mlg,macro->member,inferred,15000,13500,15000,14893,0,66.2,2503.1,True,True,True,1,malagasy,muri-name,True,True,True,True,True,
-mkd_Cyrl,Macedonian,Cyrl,mkd,direct,exact,15000,13500,15000,14879,0,55.9,2775.9,True,True,True,1,macedonian,name,True,True,True,True,True,
-snd_Arab,Sindhi,Arab,snd,direct,exact,15000,13500,15000,14864,0,49.4,2547.6,True,True,True,1,sindhi,name,True,True,True,True,True,
-als_Latn,Tosk Albanian,Latn,sqi,macro->member,inferred,15000,13500,15000,14850,0,53.7,2175.5,True,True,True,1,albanian,muri-name,True,True,True,True,True,
-pbt_Arab,Southern Pashto,Arab,pus,macro->member,inferred,15000,13500,15000,14726,0,45.8,3255.0,True,True,True,1,pashto,last-word,True,True,True,True,True,
-azj_Latn,North Azerbaijani,Latn,aze,macro->member,inferred,15000,13500,15000,14605,0,57.4,2496.6,True,True,True,1,azerbaijani,muri-name,True,True,True,True,True,
-amh_Ethi,Amharic,Ethi,amh,direct,exact,14954,13459,14954,14540,0,37.8,2026.1,True,True,True,2,amharic,name,True,True,True,True,True,
-ibo_Latn,Igbo,Latn,ibo,direct,exact,14141,12727,9741,14141,0,102.6,1711.8,True,True,True,1,igbo,name,True,True,True,True,True,
-mlt_Latn,Maltese,Latn,mlt,direct,exact,13537,12183,13537,13537,0,76.0,5756.4,True,True,True,2,maltese,name,True,True,True,True,True,
-zul_Latn,Zulu,Latn,zul,direct,exact,12491,11242,8491,12491,0,74.4,386.9,True,True,True,2,zulu,name,True,True,True,True,True,
-sna_Latn,Shona,Latn,sna,direct,exact,12285,11057,8285,12284,0,122.3,552.8,True,True,True,1,shona,name,True,True,True,True,True,
-lao_Laoo,Lao,Laoo,lao,direct,exact,11948,10753,11051,11868,0,72.5,1798.7,True,True,True,2,lao,name,True,True,True,True,True,
-war_Latn,Waray (Philippines),Latn,war,direct,exact,10854,9769,10854,10854,0,92.7,330.9,True,True,True,1,waray,name,True,True,True,True,True,
-nso_Latn,Pedi,Latn,nso,direct,exact,10854,9769,6854,10651,0,98.0,173.1,True,True,True,1,northern sotho,alias,True,True,True,True,True,
-uzn_Latn,Northern Uzbek,Latn,uzb,macro->member,inferred,10099,9089,10099,10099,0,63.6,2523.8,True,True,True,3,uzbek,muri-name,True,True,True,True,True,
-shn_Mymr,Shan,Mymr,shn,direct,exact,9647,8682,9647,9461,0,56.1,761.7,True,True,True,0,shan,name,True,True,True,True,True,
-hau_Latn,Hausa,Latn,hau,direct,exact,8939,8045,8939,8914,0,54.7,2205.9,True,True,True,2,hausa,name,True,True,True,True,True,
-hat_Latn,Haitian,Latn,hat,direct,exact,9876,8888,8876,8781,0,97.3,622.4,True,True,True,2,haitian,name,True,True,True,True,True,
-jav_Latn,Javanese,Latn,jav,direct,exact,8485,7636,8485,8484,0,48.8,817.8,True,True,True,1,javanese,name,True,True,True,True,True,
-ukr_Cyrl,Ukrainian,Cyrl,ukr,direct,exact,8435,7592,8435,8435,0,63.0,3332.2,True,True,True,3,ukrainian,name,True,True,True,True,True,
-som_Latn,Somali,Latn,som,direct,exact,8362,7526,7818,8362,0,70.7,1366.4,True,True,True,1,somali,name,True,True,True,True,True,
-kin_Latn,Kinyarwanda,Latn,kin,direct,exact,8237,7413,4237,8235,0,87.4,789.7,True,True,True,1,kinyarwanda,name,True,True,True,True,True,
-kir_Cyrl,Kirghiz,Cyrl,kir,direct,exact,7464,6718,7464,7464,0,77.0,3279.5,True,True,True,1,kirghiz,name,True,True,True,True,True,
-hye_Armn,Armenian,Armn,hye,direct,exact,7259,6533,7259,7259,0,72.6,2869.4,True,True,True,1,armenian,name,True,True,True,True,True,
-lug_Latn,Ganda,Latn,lug,direct,exact,7126,6413,3126,7122,0,115.9,819.4,True,True,True,1,luganda,alias,True,True,True,True,True,
-mri_Latn,Maori,Latn,mri,direct,exact,7064,6358,7064,6783,0,58.4,444.3,True,True,True,1,maori,name,True,True,True,True,True,
-yor_Latn,Yoruba,Latn,yor,direct,exact,5945,5351,145,5911,0,279.4,92.7,True,True,True,2,yoruba,name,True,True,True,True,True,
-xho_Latn,Xhosa,Latn,xho,direct,exact,5901,5311,1501,5901,0,128.1,381.8,True,True,True,2,xhosa,name,True,True,True,True,True,
-tsn_Latn,Tswana,Latn,tsn,direct,exact,5187,4668,1187,5187,0,121.1,793.4,True,True,True,2,tswana,name,True,True,True,True,True,
-grn_Latn,Guarani,Latn,grn,direct,exact,5178,4660,5178,5178,0,50.9,1104.1,True,True,True,1,guarani,name,True,True,True,True,True,
-wol_Latn,Wolof,Latn,wol,direct,exact,4952,4457,952,4952,0,143.8,479.6,True,True,True,2,wolof,name,True,True,True,True,False,
-nya_Latn,Chichewa,Latn,nya,direct,exact,4948,4453,948,4948,0,136.5,354.1,True,True,True,1,chichewa,name,True,True,True,True,False,
-sot_Latn,Southern Sotho,Latn,sot,direct,exact,4731,4258,731,4731,0,168.4,252.6,True,True,True,1,sesotho,alias,True,True,True,True,False,
-bam_Latn,Bambara,Latn,bam,direct,exact,4690,4221,690,4690,0,160.9,176.7,True,True,True,1,bambara,name,True,True,True,True,False,
-lin_Latn,Lingala,Latn,lin,direct,exact,4679,4211,679,4678,0,148.6,166.2,True,True,True,1,lingala,name,True,True,True,True,False,
-tso_Latn,Tsonga,Latn,tso,direct,exact,4629,4166,629,4629,0,129.9,221.9,True,True,True,1,tsonga,name,True,True,True,True,False,
-bod_Tibt,Tibetan,Tibt,bod,direct,exact,3679,3311,3679,3583,0,71.5,9099.4,True,True,True,1,tibetan,name,True,True,True,True,False,
-ilo_Latn,Iloko,Latn,ilo,direct,exact,1892,1703,1892,1834,0,86.2,416.1,True,True,True,1,ilocano,alias,True,True,True,False,False,
-gaz_Latn,West Central Oromo,Latn,orm,macro->member,inferred,1595,1436,1595,1595,0,70.7,1708.2,True,True,True,1,oromo,muri-name,True,True,True,False,False,
-fuv_Latn,Nigerian Fulfulde,Latn,ful,macro->member,inferred,1565,1409,1565,1565,0,57.7,658.5,True,True,True,1,fula,alias,True,True,True,False,False,
-tgl_Latn,Tagalog,Latn,fil+tgl,decision+direct,inferred,1443,1299,0,1443,0,330.6,108.2,True,True,True,3,tagalog,name,True,True,True,False,False,
-ssw_Latn,Swati,Latn,ssw,direct,exact,445,401,445,445,0,105.1,1235.0,True,True,True,1,swati,name,True,False,False,False,False,
-tir_Ethi,Tigrinya,Ethi,tir,direct,exact,166,149,166,166,0,49.6,707.9,True,True,True,2,tigrinya,name,True,False,False,False,False,
-sun_Latn,Sundanese,Latn,sun,direct,exact,112,101,112,112,0,39.6,891.4,True,True,True,1,sundanese,name,True,False,False,False,False,
-glg_Latn,Galician,Latn,glg,direct,exact,16371,14734,14354,16371,0,78.4,2703.1,True,True,False,3,galician,name,False,False,False,False,False,
-tat_Cyrl,Tatar,Cyrl,tat,direct,exact,15000,13500,15000,14999,0,61.5,1893.3,True,True,False,1,tatar,name,False,False,False,False,False,
-cym_Latn,Welsh,Latn,cym,direct,exact,15000,13500,15000,14998,0,54.7,2240.4,True,True,False,1,welsh,name,False,False,False,False,False,
-epo_Latn,Esperanto,Latn,epo,direct,exact,15000,13500,15000,14989,0,47.5,3527.1,True,True,False,1,esperanto,name,False,False,False,False,False,
-bel_Cyrl,Belarusian,Cyrl,bel,direct,exact,15000,13500,15000,14988,0,51.5,2582.2,True,True,False,3,belarusian,name,False,False,False,False,False,
-gla_Latn,Scottish Gaelic,Latn,gla,direct,exact,15000,13500,15000,14943,0,62.3,1189.9,True,True,False,1,scottish gaelic,name,False,False,False,False,False,
-oci_Latn,Occitan (post 1500),Latn,oci,direct,exact,15000,13500,15000,14920,0,50.0,889.9,True,True,False,1,occitan,name,False,False,False,False,False,
-ltz_Latn,Luxembourgish,Latn,ltz,direct,exact,15000,13500,15000,14884,0,58.1,2369.5,True,True,False,1,luxembourgish,name,False,False,False,False,False,
-ydd_Hebr,Eastern Yiddish,Hebr,yid,macro->member,inferred,15000,13500,15000,14862,0,51.8,2944.8,True,True,False,1,yiddish,muri-name,False,False,False,False,False,
-gle_Latn,Irish,Latn,gle,direct,exact,15000,13500,15000,14751,0,63.0,2734.0,True,True,False,2,irish,name,False,False,False,False,False,
-bak_Cyrl,Bashkir,Cyrl,bak,direct,exact,15000,13500,15000,14662,0,58.6,2724.2,True,True,False,1,bashkir,name,False,False,False,False,False,
-nds_Latn,Low German,Latn,nds,constructed,inferred,14923,13431,14923,14645,0,52.2,1485.0,False,False,False,0,low german,name,False,False,False,False,False,
-uig_Arab,Uighur,Arab,uig,direct,exact,15000,13500,15000,14583,0,66.8,3808.3,True,True,False,,,none,False,False,False,False,False,
-tuk_Latn,Turkmen,Latn,tuk,direct,exact,15000,13500,15000,14281,0,73.6,1221.1,True,True,False,1,turkmen,name,False,False,False,False,False,
-chv_Cyrl,Chuvash,Cyrl,chv,constructed,inferred,14503,13053,14503,14051,0,62.5,1531.4,False,False,False,1,chuvash,name,False,False,False,False,False,
-bre_Latn,Breton,Latn,bre,constructed,inferred,15000,13500,15000,12885,0,42.7,1018.3,False,False,False,1,breton,name,False,False,False,False,False,
-sah_Cyrl,Yakut,Cyrl,sah,constructed,inferred,14339,12905,14339,12850,0,71.6,2269.7,False,False,False,0,yakut,name,False,False,False,False,False,
-lat_Latn,Latin,Latn,lat,constructed,inferred,13297,11967,13297,12806,0,57.7,2420.7,False,False,False,3,latin,name,False,False,False,False,False,
-div_Thaa,Dhivehi,Thaa,div,constructed,inferred,11822,10640,11822,11410,0,82.8,2553.6,False,False,False,0,dhivehi,name,False,False,False,False,False,
-ido_Latn,Ido,Latn,ido,constructed,inferred,10382,9344,10382,10382,0,50.2,812.8,False,False,False,1,ido,name,False,False,False,False,False,
-san_Deva,Sanskrit,Deva,san,direct,exact,14168,12751,14168,10082,0,61.9,2629.4,True,True,False,2,sanskrit,name,False,False,False,False,False,
-new_Deva,Nepal Bhasa,Deva,new,constructed,inferred,10297,9267,10297,10048,0,62.6,812.3,False,False,False,,,none,False,False,False,False,False,
-oss_Cyrl,Iron Ossetic,Cyrl,oss,constructed,inferred,13496,12146,13496,9830,0,70.1,2203.1,False,False,False,0,ossetic,last-word,False,False,False,False,False,
-wln_Latn,Walloon,Latn,wln,constructed,inferred,9545,8590,9545,9302,0,45.5,847.5,False,False,False,1,walloon,name,False,False,False,False,False,
-aka_Latn,Akan,Latn,aka,direct,exact,8000,7200,0,8000,0,178.6,127.1,True,True,False,1,akan,name,False,False,False,False,False,
-ace_Latn,Achinese,Latn,ace,direct,inferred,7777,6999,7777,7771,0,45.9,284.3,True,True,False,,,none,False,False,False,False,False,
-lim_Latn,Limburgan,Latn,lim,direct,exact,7572,6815,7572,7572,0,69.7,1919.4,True,True,False,,,none,False,False,False,False,False,
-lij_Latn,Ligurian,Latn,lij,direct,exact,7461,6715,7461,7127,0,74.1,1081.5,True,True,False,1,ligurian,name,False,False,False,False,False,
-arg_Latn,Aragonese,Latn,arg,constructed,inferred,7108,6397,7108,6908,0,61.0,1035.4,False,False,False,1,aragonese,name,False,False,False,False,False,
-ban_Latn,Balinese,Latn,ban,direct,exact,6696,6026,6696,6648,0,67.7,699.3,True,True,False,0,balinese,name,False,False,False,False,False,
-fry_Latn,Western Frisian,Latn,fry,constructed,inferred,6626,5963,6626,6626,0,59.6,2669.4,False,False,False,0,frisian,last-word,False,False,False,False,False,
-fao_Latn,Faroese,Latn,fao,direct,exact,6739,6065,6739,6424,0,54.0,987.2,True,True,False,1,faroese,name,False,False,False,False,False,
-hif_Latn,Fiji Hindi,Latn,hif,constructed,inferred,6264,5638,6264,6238,0,82.6,401.9,False,False,False,1,fiji hindi,name,False,False,False,False,False,
-srd_Latn,Sardinian,Latn,srd,direct,exact,6229,5606,6229,6229,0,52.7,1685.6,True,True,False,1,sardinian,name,False,False,False,False,False,
-crh_Latn,Crimean Tatar,Latn,crh,direct,exact,6179,5561,6179,6178,0,63.8,196.4,True,True,False,1,crimean tatar,name,False,False,False,False,False,
-nav_Latn,Navajo,Latn,nav,constructed,inferred,6056,5450,6056,6056,0,98.8,430.7,False,False,False,1,navajo,name,False,False,False,False,False,
-sme_Latn,Northern Sami,Latn,sme,constructed,inferred,6622,5960,6622,6054,0,46.2,394.6,False,False,False,1,northern sami,name,False,False,False,False,False,
-scn_Latn,Sicilian,Latn,scn,direct,exact,6681,6013,6681,6019,0,51.6,667.3,True,True,False,1,sicilian,name,False,False,False,False,False,
-quy_Latn,Ayacucho Quechua,Latn,que,macro->member,inferred,5290,4761,5290,5290,0,83.7,394.9,True,True,False,1,quechua,muri-name,False,False,False,False,False,
-szl_Latn,Silesian,Latn,szl,direct,exact,5283,4755,5283,5283,0,44.2,288.8,True,True,False,1,silesian,name,False,False,False,False,False,
-vec_Latn,Venetian,Latn,vec,direct,exact,6123,5511,6123,5265,0,52.6,565.6,True,True,False,1,venetian,name,False,False,False,False,False,
-kom_Cyrl,Komi,Cyrl,kom,constructed,inferred,5268,4741,5268,5206,0,76.2,531.6,False,False,False,1,komi,name,False,False,False,False,False,
-fon_Latn,Fon,Latn,fon,direct,exact,4329,3896,329,4329,0,169.4,167.1,True,True,False,,,none,False,False,False,False,False,
-run_Latn,Rundi,Latn,run,direct,exact,4106,3695,106,4106,0,319.6,208.3,True,True,False,1,kirundi,alias,False,False,False,False,False,
-chm_Cyrl,Mari (Russia),Cyrl,chm,constructed,inferred,4107,3696,4107,4100,0,68.7,421.7,False,False,False,0,mari,name,False,False,False,False,False,
-cos_Latn,Corsican,Latn,cos,constructed,inferred,4258,3832,4258,4090,0,51.1,1214.2,False,False,False,1,corsican,name,False,False,False,False,False,
-kik_Latn,Kikuyu,Latn,kik,direct,exact,4000,3600,0,4000,0,182.1,150.8,True,True,False,1,kikuyu,name,False,False,False,False,False,
-tum_Latn,Tumbuka,Latn,tum,direct,exact,4000,3600,0,4000,0,180.7,167.6,True,True,False,1,tumbuka,name,False,False,False,False,False,
-bug_Latn,Buginese,Latn,bug,direct,exact,6151,5536,6151,3833,0,52.7,140.7,True,True,False,1,buginese,name,False,False,False,False,False,
-fur_Latn,Friulian,Latn,fur,direct,exact,3460,3114,3460,3460,0,55.7,934.0,True,True,False,1,friulian,name,False,False,False,False,False,
-bar_Latn,Bavarian,Latn,bar,constructed,inferred,3411,3070,3411,3411,0,66.6,1017.3,False,False,False,1,bavarian,name,False,False,False,False,False,
-mwl_Latn,Mirandese,Latn,mwl,constructed,inferred,3183,2865,3183,3183,0,47.3,4506.4,False,False,False,1,mirandese,name,False,False,False,False,False,
-myv_Cyrl,Erzya,Cyrl,myv,constructed,inferred,2889,2600,2889,2822,0,61.7,600.1,False,False,False,1,erzya,name,False,False,False,False,False,
-udm_Cyrl,Udmurt,Cyrl,udm,constructed,inferred,2751,2476,2751,2751,0,65.9,561.1,False,False,False,1,udmurt,name,False,False,False,False,False,
-pap_Latn,Papiamento,Latn,pap,direct,exact,2759,2483,2759,2665,0,70.9,1008.8,True,True,False,,,none,False,False,False,False,False,
-glv_Latn,Manx,Latn,glv,constructed,inferred,2594,2335,2594,2547,0,97.2,1049.9,False,False,False,1,manx,name,False,False,False,False,False,
-lmo_Latn,Lombard,Latn,lmo,direct,exact,2516,2264,2516,2516,0,72.5,252.6,True,True,False,1,lombard,name,False,False,False,False,False,
-cor_Latn,Cornish,Latn,cor,constructed,inferred,2410,2169,2410,2410,0,70.8,621.2,False,False,False,1,cornish,name,False,False,False,False,False,
-roh_Latn,Romansh,Latn,roh,constructed,inferred,2318,2086,2318,2318,0,72.8,3989.1,False,False,False,1,romansh,name,False,False,False,False,False,
-kas_Arab,Kashmiri,Arab,kas,direct,inferred,2093,1884,2093,2093,0,50.6,287.1,True,True,False,1,kashmiri,name,False,False,False,False,False,
-ava_Cyrl,Avaric,Cyrl,ava,constructed,inferred,1808,1627,1808,1807,0,82.4,918.6,False,False,False,,,none,False,False,False,False,False,
-ayr_Latn,Central Aymara,Latn,aym,macro->member,inferred,1757,1581,1757,1757,0,69.7,636.2,True,True,False,1,aymara,muri-name,False,False,False,False,False,
-tyv_Cyrl,Tuvinian,Cyrl,tyv,constructed,inferred,1589,1430,1589,1589,0,62.4,1948.1,False,False,False,,,none,False,False,False,False,False,
-kbp_Latn,Kabiyè,Latn,kbp,direct,exact,1564,1408,1564,1564,0,89.0,1423.4,True,True,False,1,kabiye,name,False,False,False,False,False,
-krc_Cyrl,Karachay-Balkar,Cyrl,krc,constructed,inferred,2089,1880,2089,1543,0,67.9,1283.8,False,False,False,1,karachay-balkar,name,False,False,False,False,False,
-mai_Deva,Maithili,Deva,mai,direct,exact,1359,1223,1359,1284,0,42.5,569.2,True,True,False,1,maithili,name,False,False,False,False,False,
-nia_Latn,Nias,Latn,nia,constructed,inferred,1253,1128,1253,1253,0,67.0,899.0,False,False,False,0,nias,name,False,False,False,False,False,
-ton_Latn,Tonga (Tonga Islands),Latn,ton,constructed,inferred,1212,1091,1212,1212,0,74.6,485.5,False,False,False,0,tonga,name,False,False,False,False,False,
-mdf_Cyrl,Moksha,Cyrl,mdf,constructed,inferred,1163,1047,1163,1163,0,52.4,473.9,False,False,False,1,moksha,name,False,False,False,False,False,
-lah_Arab,Lahnda,Arab,lah,constructed,inferred,1158,1042,1158,1158,0,64.0,2710.3,False,False,False,,,none,False,False,False,False,False,
-stq_Latn,Saterfriesisch,Latn,stq,constructed,inferred,1130,1017,1130,1130,0,88.1,1066.0,False,False,False,,,none,False,False,False,False,False,
-fij_Latn,Fijian,Latn,fij,direct,exact,992,893,992,992,0,68.7,447.2,True,True,False,1,fijian,name,False,False,False,False,False,
-smo_Latn,Samoan,Latn,smo,direct,exact,960,864,960,960,0,59.6,721.8,True,True,False,1,samoan,name,False,False,False,False,False,
-pag_Latn,Pangasinan,Latn,pag,direct,exact,1686,1517,1686,951,0,101.7,442.2,True,True,False,1,pangasinan,name,False,False,False,False,False,
-ewe_Latn,Ewe,Latn,ewe,direct,exact,946,851,946,946,0,64.4,743.0,True,True,False,1,ewe,name,False,False,False,False,False,
-haw_Latn,Hawaiian,Latn,haw,constructed,inferred,809,728,809,799,0,77.1,894.8,False,False,False,1,hawaiian,name,False,False,False,False,False,
-bis_Latn,Bislama,Latn,bis,constructed,inferred,781,703,781,781,0,104.1,173.5,False,False,False,1,bislama,name,False,False,False,False,False,
-ven_Latn,Venda,Latn,ven,constructed,inferred,646,581,646,646,0,75.8,342.0,False,False,False,1,venda,name,False,False,False,False,False,
-alt_Cyrl,Southern Altai,Cyrl,alt,constructed,inferred,608,547,608,608,0,72.3,3936.3,False,False,False,0,altai,last-word,False,False,False,False,False,
-srn_Latn,Sranan Tongo,Latn,srn,constructed,inferred,603,543,603,603,0,76.5,468.6,False,False,False,,,none,False,False,False,False,False,
-xal_Cyrl,Kalmyk,Cyrl,xal,constructed,inferred,640,576,640,594,0,83.6,290.7,False,False,False,1,kalmyk,name,False,False,False,False,False,
-kbd_Cyrl,Kabardian,Cyrl,kbd,constructed,inferred,572,515,572,572,0,76.8,994.5,False,False,False,1,kabardian,name,False,False,False,False,False,
-dzo_Tibt,Dzongkha,Tibt,dzo,direct,exact,505,455,505,501,0,76.1,3949.0,True,True,False,1,dzongkha,name,False,False,False,False,False,
-awa_Deva,Awadhi,Deva,awa,direct,exact,466,419,466,466,0,69.1,355.8,True,True,False,0,awadhi,name,False,False,False,False,False,
-kon_Latn,Kongo,Latn,kon,direct,exact,377,339,377,373,0,101.9,138.8,True,True,False,1,kongo,name,False,False,False,False,False,
-chr_Cher,Cherokee,Cher,chr,constructed,inferred,368,331,368,368,0,57.0,283.3,False,False,False,1,cherokee,name,False,False,False,False,False,
-iku_Cans,Inuktitut,Cans,iku,constructed,inferred,292,263,292,292,0,40.8,217.9,False,False,False,1,inuktitut,name,False,False,False,False,False,
-dik_Latn,Southwestern Dinka,Latn,din,macro->member,inferred,284,256,284,284,0,67.9,1303.4,True,True,False,1,dinka,muri-name,False,False,False,False,False,
-jam_Latn,Jamaican Creole English,Latn,jam,constructed,inferred,250,225,250,250,0,77.2,890.1,False,False,False,5,english,last-word,False,False,False,False,False,
-kal_Latn,Kalaallisut,Latn,kal,constructed,inferred,210,189,210,210,0,83.0,1106.5,False,False,False,,,none,False,False,False,False,False,
-guc_Latn,Wayuu,Latn,guc,constructed,inferred,168,151,168,168,0,85.7,1087.7,False,False,False,,,none,False,False,False,False,False,
-zha_Latn,Zhuang,Latn,zha,constructed,inferred,128,115,0,128,0,570.6,85.5,False,False,False,1,zhuang,name,False,False,False,False,False,
-ady_Cyrl,Adyghe,Cyrl,ady,constructed,inferred,104,94,104,104,0,103.2,737.3,False,False,False,1,adyghe,name,False,False,False,False,False,
-sag_Latn,Sango,Latn,sag,direct,exact,104,94,104,104,0,94.0,113.7,True,True,False,1,sango,name,False,False,False,False,False,
+flores_code,language_name,script,muri_codes,mapping_method,mapping_confidence,muri_n_examples,muri_n_train,muri_n_mri,muri_n_after_dedup,muri_n_empty,mean_instruction_len,mean_response_len,in_nllb,in_flores,in_belebele,joshi_level,joshi_match,joshi_match_method,in_pool,mri_clean_lo,mri_clean_hi,volume_for_threshold,passes_ge_500,passes_ge_1000,passes_ge_2000,passes_ge_5000,passes_volume_threshold
+spa_Latn,Spanish,Latn,spa,direct,exact,38090,34281,15000,38090,1,352.6,1893.6,True,True,True,5,spanish,name,True,15000,15000,15000,True,True,True,True,True
+pes_Arab,Iranian Persian,Arab,fas,decision,assumed,28595,25735,15000,28595,0,272.5,970.5,True,True,True,4,persian,muri-name,True,15000,15000,15000,True,True,True,True,True
+jpn_Jpan,Japanese,Jpan,jpn,direct,exact,28448,25603,15000,28448,1,145.3,1268.0,True,True,True,5,japanese,name,True,15000,15000,15000,True,True,True,True,True
+tel_Telu,Telugu,Telu,tel,direct,exact,23914,21523,15000,23914,0,205.4,2062.3,True,True,True,1,telugu,name,True,15000,15000,15000,True,True,True,True,True
+tam_Taml,Tamil,Taml,tam,direct,exact,23565,21208,15000,23565,1,211.8,1724.9,True,True,True,3,tamil,name,True,15000,15000,15000,True,True,True,True,True
+deu_Latn,German,Latn,deu,direct,exact,22670,20402,15000,22670,1,190.2,3076.1,True,True,True,5,german,name,True,15000,15000,15000,True,True,True,True,True
+cat_Latn,Catalan,Latn,cat,direct,exact,22025,19822,15000,22025,0,219.1,2005.4,True,True,True,4,catalan,name,True,15000,15000,15000,True,True,True,True,True
+pol_Latn,Polish,Latn,pol,direct,exact,20557,18501,15000,20557,0,154.0,1762.0,True,True,True,4,polish,name,True,15000,15000,15000,True,True,True,True,True
+kor_Hang,Korean,Hang,kor,direct,exact,20207,18187,15000,20207,1,58.4,1540.8,True,True,True,4,korean,name,True,15000,15000,15000,True,True,True,True,True
+swe_Latn,Swedish,Latn,swe,direct,exact,16800,15120,15000,16800,0,98.1,1918.3,True,True,True,4,swedish,name,True,15000,15000,15000,True,True,True,True,True
+est_Latn,Estonian,Latn,est,direct,exact,16000,14400,15000,16000,0,75.5,3044.5,True,True,True,3,estonian,name,True,15000,15000,15000,True,True,True,True,True
+fin_Latn,Finnish,Latn,fin,direct,exact,15600,14040,15000,15600,0,92.2,2756.2,True,True,True,4,finnish,name,True,15000,15000,15000,True,True,True,True,True
+ron_Latn,Romanian,Latn,ron,direct,exact,15400,13860,15000,15400,0,68.7,2731.2,True,True,True,3,romanian,name,True,15000,15000,15000,True,True,True,True,True
+afr_Latn,Afrikaans,Latn,afr,direct,exact,15000,13500,15000,15000,0,54.0,3683.7,True,True,True,3,afrikaans,name,True,15000,15000,15000,True,True,True,True,True
+ceb_Latn,Cebuano,Latn,ceb,direct,exact,15000,13500,15000,15000,0,62.6,1361.5,True,True,True,3,cebuano,name,True,15000,15000,15000,True,True,True,True,True
+dan_Latn,Danish,Latn,dan,direct,exact,15000,13500,15000,15000,0,63.4,2754.4,True,True,True,3,danish,name,True,15000,15000,15000,True,True,True,True,True
+ell_Grek,Modern Greek (1453-),Grek,ell,direct,exact,15000,13500,15000,15000,0,70.2,3229.7,True,True,True,3,greek,last-word,True,15000,15000,15000,True,True,True,True,True
+hun_Latn,Hungarian,Latn,hun,direct,exact,15000,13500,15000,15000,0,63.6,3059.9,True,True,True,4,hungarian,name,True,15000,15000,15000,True,True,True,True,True
+isl_Latn,Icelandic,Latn,isl,direct,exact,15000,13500,15000,15000,0,55.9,2578.7,True,True,True,2,icelandic,name,True,15000,15000,15000,True,True,True,True,True
+kaz_Cyrl,Kazakh,Cyrl,kaz,direct,exact,15000,13500,15000,15000,0,62.7,2599.5,True,True,True,3,kazakh,name,True,15000,15000,15000,True,True,True,True,True
+lit_Latn,Lithuanian,Latn,lit,direct,exact,15000,13500,15000,15000,0,63.4,2666.2,True,True,True,3,lithuanian,name,True,15000,15000,15000,True,True,True,True,True
+lvs_Latn,Standard Latvian,Latn,lav,decision,assumed,15000,13500,15000,15000,0,63.6,2775.1,True,True,True,3,latvian,muri-name,True,15000,15000,15000,True,True,True,True,True
+slv_Latn,Slovenian,Latn,slv,direct,exact,15000,13500,15000,15000,0,64.4,3491.1,True,True,True,3,slovenian,name,True,15000,15000,15000,True,True,True,True,True
+tgk_Cyrl,Tajik,Cyrl,tgk,direct,exact,15000,13500,15000,15000,0,60.7,2108.0,True,True,True,1,tajik,name,True,15000,15000,15000,True,True,True,True,True
+fra_Latn,French,Latn,fra,direct,exact,29559,26604,15000,29558,1,252.8,2488.6,True,True,True,5,french,name,True,14999,15000,14999,True,True,True,True,True
+ben_Beng,Bengali,Beng,ben,direct,exact,25674,23107,15000,25673,0,214.9,1515.9,True,True,True,3,bengali,name,True,14999,15000,14999,True,True,True,True,True
+por_Latn,Portuguese,Latn,por,direct,exact,23351,21016,15000,23350,0,267.2,2028.8,True,True,True,4,portuguese,name,True,14999,15000,14999,True,True,True,True,True
+mal_Mlym,Malayalam,Mlym,mal,direct,exact,22576,20318,15000,22575,0,135.0,1690.1,True,True,True,1,malayalam,name,True,14999,15000,14999,True,True,True,True,True
+nld_Latn,Dutch,Latn,nld,direct,exact,21860,19674,15000,21859,0,112.3,2236.6,True,True,True,4,dutch,name,True,14999,15000,14999,True,True,True,True,True
+rus_Cyrl,Russian,Cyrl,rus,direct,exact,21416,19274,15000,21415,0,109.9,3021.2,True,True,True,4,russian,name,True,14999,15000,14999,True,True,True,True,True
+ces_Latn,Czech,Latn,ces,direct,exact,17638,15875,15000,17637,0,67.5,2992.3,True,True,True,4,czech,name,True,14999,15000,14999,True,True,True,True,True
+vie_Latn,Vietnamese,Latn,vie,direct,exact,25087,22579,15000,25085,0,235.7,1954.8,True,True,True,4,vietnamese,name,True,14998,15000,14998,True,True,True,True,True
+tha_Thai,Thai,Thai,tha,direct,exact,21406,19265,15000,21404,0,405.7,2392.8,True,True,True,3,thai,name,True,14998,15000,14998,True,True,True,True,True
+tur_Latn,Turkish,Latn,tur,direct,exact,18010,16209,15000,18008,0,98.3,2185.9,True,True,True,4,turkish,name,True,14998,15000,14998,True,True,True,True,True
+ita_Latn,Italian,Latn,ita,direct,exact,23836,21453,15000,23833,0,123.5,2682.2,True,True,True,4,italian,name,True,14997,15000,14997,True,True,True,True,True
+pan_Guru,Panjabi,Guru,pan,direct,exact,21688,19519,15000,21682,0,153.5,1700.5,True,True,True,2,eastern punjabi,alias,True,14994,15000,14994,True,True,True,True,True
+nob_Latn,Norwegian Bokmål,Latn,nor,decision,assumed,15200,13680,15000,15193,0,66.5,1926.5,True,True,True,1,norwegian,muri-name,True,14993,15000,14993,True,True,True,True,True
+bul_Cyrl,Bulgarian,Cyrl,bul,direct,exact,17104,15394,15000,17096,0,143.2,2507.9,True,True,True,3,bulgarian,name,True,14992,15000,14992,True,True,True,True,True
+mya_Mymr,Burmese,Mymr,mya,direct,exact,15443,13899,15000,15435,0,61.9,1924.4,True,True,True,1,burmese,name,True,14992,15000,14992,True,True,True,True,True
+arb_Arab,Standard Arabic,Arab,ara,decision,assumed,26403,23762,15000,26394,0,272.7,1163.6,True,True,True,5,arabic,muri-name,True,14991,15000,14991,True,True,True,True,True
+eus_Latn,Basque,Latn,eus,direct,exact,19000,17100,15000,18991,0,81.5,1924.0,True,True,True,4,basque,name,True,14991,15000,14991,True,True,True,True,True
+eng_Latn,English,Latn,eng,direct,exact,125995,113395,15000,125984,20,1061.7,645.4,True,True,True,5,english,name,True,14989,15000,14989,True,True,True,True,True
+slk_Latn,Slovak,Latn,slk,direct,exact,15000,13500,15000,14989,0,59.8,2243.8,True,True,True,3,slovak,name,True,14989,14989,14989,True,True,True,True,True
+kat_Geor,Georgian,Geor,kat,direct,exact,15000,13500,15000,14987,0,53.7,2296.6,True,True,True,3,georgian,name,True,14987,14987,14987,True,True,True,True,True
+urd_Arab,Urdu,Arab,urd,direct,exact,21763,19587,15000,21748,0,240.5,1738.2,True,True,True,3,urdu,name,True,14985,15000,14985,True,True,True,True,True
+ory_Orya,Odia,Orya,ori,macro->member,inferred,21775,19597,15000,21756,0,119.7,1305.7,True,True,True,1,odia,name,True,14981,15000,14981,True,True,True,True,True
+zsm_Latn,Standard Malay,Latn,msa,decision,assumed,24567,22110,15000,24544,0,248.3,1576.5,True,True,True,3,malay,muri-name,True,14977,15000,14977,True,True,True,True,True
+khk_Cyrl,Halh Mongolian,Cyrl,mon,macro->member,inferred,15000,13500,15000,14977,0,57.0,2659.5,True,True,True,1,mongolian,muri-name,True,14977,14977,14977,True,True,True,True,True
+zho_Hans,Chinese,Hans,zho,decision,assumed,29630,26667,15000,29586,1,196.8,606.0,True,True,True,5,mandarin,alias,True,14956,15000,14956,True,True,True,True,True
+asm_Beng,Assamese,Beng,asm,direct,exact,19500,17550,15000,19434,0,92.7,2483.1,True,True,True,1,assamese,name,True,14934,15000,14934,True,True,True,True,True
+heb_Hebr,Hebrew,Hebr,heb,direct,exact,16975,15278,15000,16905,0,58.8,3375.7,True,True,True,3,hebrew,name,True,14930,15000,14930,True,True,True,True,True
+hin_Deva,Hindi,Deva,hin,direct,exact,30291,27262,15000,30204,0,283.1,1705.9,True,True,True,4,hindi,name,True,14913,15000,14913,True,True,True,True,True
+plt_Latn,Plateau Malagasy,Latn,mlg,macro->member,inferred,15000,13500,15000,14893,0,66.2,2503.1,True,True,True,1,malagasy,muri-name,True,14893,14893,14893,True,True,True,True,True
+kan_Knda,Kannada,Knda,kan,direct,exact,20000,18000,15000,19885,0,108.0,3140.5,True,True,True,1,kannada,name,True,14885,15000,14885,True,True,True,True,True
+mkd_Cyrl,Macedonian,Cyrl,mkd,direct,exact,15000,13500,15000,14879,0,55.9,2775.9,True,True,True,1,macedonian,name,True,14879,14879,14879,True,True,True,True,True
+snd_Arab,Sindhi,Arab,snd,direct,exact,15000,13500,15000,14864,0,49.4,2547.6,True,True,True,1,sindhi,name,True,14864,14864,14864,True,True,True,True,True
+als_Latn,Tosk Albanian,Latn,sqi,macro->member,inferred,15000,13500,15000,14850,0,53.7,2175.5,True,True,True,1,albanian,muri-name,True,14850,14850,14850,True,True,True,True,True
+mar_Deva,Marathi,Deva,mar,direct,exact,22456,20210,15000,22271,0,166.4,1386.6,True,True,True,2,marathi,name,True,14815,15000,14815,True,True,True,True,True
+pbt_Arab,Southern Pashto,Arab,pus,macro->member,inferred,15000,13500,15000,14726,0,45.8,3255.0,True,True,True,1,pashto,last-word,True,14726,14726,14726,True,True,True,True,True
+khm_Khmr,Khmer,Khmr,khm,direct,exact,15712,14140,14795,15587,0,67.9,2448.3,True,True,True,1,khmer,name,True,14670,14795,14670,True,True,True,True,True
+guj_Gujr,Gujarati,Gujr,guj,direct,exact,24227,21804,15000,23888,0,180.5,1479.1,True,True,True,1,gujarati,name,True,14661,15000,14661,True,True,True,True,True
+sin_Sinh,Sinhala,Sinh,sin,direct,exact,15400,13860,15000,15061,0,54.2,3120.4,True,True,True,1,sinhalese,alias,True,14661,15000,14661,True,True,True,True,True
+azj_Latn,North Azerbaijani,Latn,aze,macro->member,inferred,15000,13500,15000,14605,0,57.4,2496.6,True,True,True,1,azerbaijani,muri-name,True,14605,14605,14605,True,True,True,True,True
+amh_Ethi,Amharic,Ethi,amh,direct,exact,14954,13459,14954,14540,0,37.8,2026.1,True,True,True,2,amharic,name,True,14540,14540,14540,True,True,True,True,True
+swh_Latn,Swahili,Latn,swa,macro->member,inferred,20500,18450,15000,19995,0,132.8,937.1,True,True,True,2,swahili,name,True,14495,15000,14495,True,True,True,True,True
+mlt_Latn,Maltese,Latn,mlt,direct,exact,13537,12183,13537,13537,0,76.0,5756.4,True,True,True,2,maltese,name,True,13537,13537,13537,True,True,True,True,True
+npi_Deva,Nepali,Deva,nep,macro->member,inferred,15656,14090,11456,15644,0,132.1,1565.2,True,True,True,1,nepali,name,True,11444,11456,11444,True,True,True,True,True
+lao_Laoo,Lao,Laoo,lao,direct,exact,11948,10753,11051,11868,0,72.5,1798.7,True,True,True,2,lao,name,True,10971,11051,10971,True,True,True,True,True
+war_Latn,Waray (Philippines),Latn,war,direct,exact,10854,9769,10854,10854,0,92.7,330.9,True,True,True,1,waray,name,True,10854,10854,10854,True,True,True,True,True
+uzn_Latn,Northern Uzbek,Latn,uzb,macro->member,inferred,10099,9089,10099,10099,0,63.6,2523.8,True,True,True,3,uzbek,muri-name,True,10099,10099,10099,True,True,True,True,True
+ibo_Latn,Igbo,Latn,ibo,direct,exact,14141,12727,9741,14141,0,102.6,1711.8,True,True,True,1,igbo,name,True,9741,9741,9741,True,True,True,True,True
+shn_Mymr,Shan,Mymr,shn,direct,exact,9647,8682,9647,9461,0,56.1,761.7,True,True,True,0,shan,name,True,9461,9461,9461,True,True,True,True,True
+hau_Latn,Hausa,Latn,hau,direct,exact,8939,8045,8939,8914,0,54.7,2205.9,True,True,True,2,hausa,name,True,8914,8914,8914,True,True,True,True,True
+zul_Latn,Zulu,Latn,zul,direct,exact,12491,11242,8491,12491,0,74.4,386.9,True,True,True,2,zulu,name,True,8491,8491,8491,True,True,True,True,True
+jav_Latn,Javanese,Latn,jav,direct,exact,8485,7636,8485,8484,0,48.8,817.8,True,True,True,1,javanese,name,True,8484,8484,8484,True,True,True,True,True
+ukr_Cyrl,Ukrainian,Cyrl,ukr,direct,exact,8435,7592,8435,8435,0,63.0,3332.2,True,True,True,3,ukrainian,name,True,8435,8435,8435,True,True,True,True,True
+sna_Latn,Shona,Latn,sna,direct,exact,12285,11057,8285,12284,0,122.3,552.8,True,True,True,1,shona,name,True,8284,8285,8284,True,True,True,True,True
+som_Latn,Somali,Latn,som,direct,exact,8362,7526,7818,8362,0,70.7,1366.4,True,True,True,1,somali,name,True,7818,7818,7818,True,True,True,True,True
+hat_Latn,Haitian,Latn,hat,direct,exact,9876,8888,8876,8781,0,97.3,622.4,True,True,True,2,haitian,name,True,7781,8781,7781,True,True,True,True,True
+kir_Cyrl,Kirghiz,Cyrl,kir,direct,exact,7464,6718,7464,7464,0,77.0,3279.5,True,True,True,1,kirghiz,name,True,7464,7464,7464,True,True,True,True,True
+hye_Armn,Armenian,Armn,hye,direct,exact,7259,6533,7259,7259,0,72.6,2869.4,True,True,True,1,armenian,name,True,7259,7259,7259,True,True,True,True,True
+mri_Latn,Maori,Latn,mri,direct,exact,7064,6358,7064,6783,0,58.4,444.3,True,True,True,1,maori,name,True,6783,6783,6783,True,True,True,True,True
+nso_Latn,Pedi,Latn,nso,direct,exact,10854,9769,6854,10651,0,98.0,173.1,True,True,True,1,northern sotho,alias,True,6651,6854,6651,True,True,True,True,True
+grn_Latn,Guarani,Latn,grn,direct,exact,5178,4660,5178,5178,0,50.9,1104.1,True,True,True,1,guarani,name,True,5178,5178,5178,True,True,True,True,True
+kin_Latn,Kinyarwanda,Latn,kin,direct,exact,8237,7413,4237,8235,0,87.4,789.7,True,True,True,1,kinyarwanda,name,True,4235,4237,4235,True,True,True,False,False
+bod_Tibt,Tibetan,Tibt,bod,direct,exact,3679,3311,3679,3583,0,71.5,9099.4,True,True,True,1,tibetan,name,True,3583,3583,3583,True,True,True,False,False
+lug_Latn,Ganda,Latn,lug,direct,exact,7126,6413,3126,7122,0,115.9,819.4,True,True,True,1,luganda,alias,True,3122,3126,3122,True,True,True,False,False
+ilo_Latn,Iloko,Latn,ilo,direct,exact,1892,1703,1892,1834,0,86.2,416.1,True,True,True,1,ilocano,alias,True,1834,1834,1834,True,True,False,False,False
+gaz_Latn,West Central Oromo,Latn,orm,macro->member,inferred,1595,1436,1595,1595,0,70.7,1708.2,True,True,True,1,oromo,muri-name,True,1595,1595,1595,True,True,False,False,False
+fuv_Latn,Nigerian Fulfulde,Latn,ful,macro->member,inferred,1565,1409,1565,1565,0,57.7,658.5,True,True,True,1,fula,alias,True,1565,1565,1565,True,True,False,False,False
+xho_Latn,Xhosa,Latn,xho,direct,exact,5901,5311,1501,5901,0,128.1,381.8,True,True,True,2,xhosa,name,True,1501,1501,1501,True,True,False,False,False
+tsn_Latn,Tswana,Latn,tsn,direct,exact,5187,4668,1187,5187,0,121.1,793.4,True,True,True,2,tswana,name,True,1187,1187,1187,True,True,False,False,False
+wol_Latn,Wolof,Latn,wol,direct,exact,4952,4457,952,4952,0,143.8,479.6,True,True,True,2,wolof,name,True,952,952,952,True,False,False,False,False
+nya_Latn,Chichewa,Latn,nya,direct,exact,4948,4453,948,4948,0,136.5,354.1,True,True,True,1,chichewa,name,True,948,948,948,True,False,False,False,False
+sot_Latn,Southern Sotho,Latn,sot,direct,exact,4731,4258,731,4731,0,168.4,252.6,True,True,True,1,sesotho,alias,True,731,731,731,True,False,False,False,False
+bam_Latn,Bambara,Latn,bam,direct,exact,4690,4221,690,4690,0,160.9,176.7,True,True,True,1,bambara,name,True,690,690,690,True,False,False,False,False
+lin_Latn,Lingala,Latn,lin,direct,exact,4679,4211,679,4678,0,148.6,166.2,True,True,True,1,lingala,name,True,678,679,678,True,False,False,False,False
+tso_Latn,Tsonga,Latn,tso,direct,exact,4629,4166,629,4629,0,129.9,221.9,True,True,True,1,tsonga,name,True,629,629,629,True,False,False,False,False
+ssw_Latn,Swati,Latn,ssw,direct,exact,445,401,445,445,0,105.1,1235.0,True,True,True,1,swati,name,True,445,445,445,False,False,False,False,False
+tir_Ethi,Tigrinya,Ethi,tir,direct,exact,166,149,166,166,0,49.6,707.9,True,True,True,2,tigrinya,name,True,166,166,166,False,False,False,False,False
+sun_Latn,Sundanese,Latn,sun,direct,exact,112,101,112,112,0,39.6,891.4,True,True,True,1,sundanese,name,True,112,112,112,False,False,False,False,False
+yor_Latn,Yoruba,Latn,yor,direct,exact,5945,5351,145,5911,0,279.4,92.7,True,True,True,2,yoruba,name,True,111,145,111,False,False,False,False,False
+tgl_Latn,Tagalog,Latn,fil+tgl,decision+direct,inferred,1443,1299,0,1443,0,330.6,108.2,True,True,True,3,tagalog,name,True,0,0,0,False,False,False,False,False
+tat_Cyrl,Tatar,Cyrl,tat,direct,exact,15000,13500,15000,14999,0,61.5,1893.3,True,True,False,1,tatar,name,False,14999,14999,14999,False,False,False,False,False
+cym_Latn,Welsh,Latn,cym,direct,exact,15000,13500,15000,14998,0,54.7,2240.4,True,True,False,1,welsh,name,False,14998,14998,14998,False,False,False,False,False
+epo_Latn,Esperanto,Latn,epo,direct,exact,15000,13500,15000,14989,0,47.5,3527.1,True,True,False,1,esperanto,name,False,14989,14989,14989,False,False,False,False,False
+bel_Cyrl,Belarusian,Cyrl,bel,direct,exact,15000,13500,15000,14988,0,51.5,2582.2,True,True,False,3,belarusian,name,False,14988,14988,14988,False,False,False,False,False
+gla_Latn,Scottish Gaelic,Latn,gla,direct,exact,15000,13500,15000,14943,0,62.3,1189.9,True,True,False,1,scottish gaelic,name,False,14943,14943,14943,False,False,False,False,False
+oci_Latn,Occitan (post 1500),Latn,oci,direct,exact,15000,13500,15000,14920,0,50.0,889.9,True,True,False,1,occitan,name,False,14920,14920,14920,False,False,False,False,False
+ltz_Latn,Luxembourgish,Latn,ltz,direct,exact,15000,13500,15000,14884,0,58.1,2369.5,True,True,False,1,luxembourgish,name,False,14884,14884,14884,False,False,False,False,False
+ydd_Hebr,Eastern Yiddish,Hebr,yid,macro->member,inferred,15000,13500,15000,14862,0,51.8,2944.8,True,True,False,1,yiddish,muri-name,False,14862,14862,14862,False,False,False,False,False
+gle_Latn,Irish,Latn,gle,direct,exact,15000,13500,15000,14751,0,63.0,2734.0,True,True,False,2,irish,name,False,14751,14751,14751,False,False,False,False,False
+bak_Cyrl,Bashkir,Cyrl,bak,direct,exact,15000,13500,15000,14662,0,58.6,2724.2,True,True,False,1,bashkir,name,False,14662,14662,14662,False,False,False,False,False
+nds_Latn,Low German,Latn,nds,constructed,inferred,14923,13431,14923,14645,0,52.2,1485.0,False,False,False,0,low german,name,False,14645,14645,14645,False,False,False,False,False
+uig_Arab,Uighur,Arab,uig,direct,exact,15000,13500,15000,14583,0,66.8,3808.3,True,True,False,,,none,False,14583,14583,14583,False,False,False,False,False
+glg_Latn,Galician,Latn,glg,direct,exact,16371,14734,14354,16371,0,78.4,2703.1,True,True,False,3,galician,name,False,14354,14354,14354,False,False,False,False,False
+tuk_Latn,Turkmen,Latn,tuk,direct,exact,15000,13500,15000,14281,0,73.6,1221.1,True,True,False,1,turkmen,name,False,14281,14281,14281,False,False,False,False,False
+chv_Cyrl,Chuvash,Cyrl,chv,constructed,inferred,14503,13053,14503,14051,0,62.5,1531.4,False,False,False,1,chuvash,name,False,14051,14051,14051,False,False,False,False,False
+bre_Latn,Breton,Latn,bre,constructed,inferred,15000,13500,15000,12885,0,42.7,1018.3,False,False,False,1,breton,name,False,12885,12885,12885,False,False,False,False,False
+sah_Cyrl,Yakut,Cyrl,sah,constructed,inferred,14339,12905,14339,12850,0,71.6,2269.7,False,False,False,0,yakut,name,False,12850,12850,12850,False,False,False,False,False
+lat_Latn,Latin,Latn,lat,constructed,inferred,13297,11967,13297,12806,0,57.7,2420.7,False,False,False,3,latin,name,False,12806,12806,12806,False,False,False,False,False
+div_Thaa,Dhivehi,Thaa,div,constructed,inferred,11822,10640,11822,11410,0,82.8,2553.6,False,False,False,0,dhivehi,name,False,11410,11410,11410,False,False,False,False,False
+ido_Latn,Ido,Latn,ido,constructed,inferred,10382,9344,10382,10382,0,50.2,812.8,False,False,False,1,ido,name,False,10382,10382,10382,False,False,False,False,False
+san_Deva,Sanskrit,Deva,san,direct,exact,14168,12751,14168,10082,0,61.9,2629.4,True,True,False,2,sanskrit,name,False,10082,10082,10082,False,False,False,False,False
+new_Deva,Nepal Bhasa,Deva,new,constructed,inferred,10297,9267,10297,10048,0,62.6,812.3,False,False,False,,,none,False,10048,10048,10048,False,False,False,False,False
+oss_Cyrl,Iron Ossetic,Cyrl,oss,constructed,inferred,13496,12146,13496,9830,0,70.1,2203.1,False,False,False,0,ossetic,last-word,False,9830,9830,9830,False,False,False,False,False
+wln_Latn,Walloon,Latn,wln,constructed,inferred,9545,8590,9545,9302,0,45.5,847.5,False,False,False,1,walloon,name,False,9302,9302,9302,False,False,False,False,False
+ace_Latn,Achinese,Latn,ace,direct,inferred,7777,6999,7777,7771,0,45.9,284.3,True,True,False,,,none,False,7771,7771,7771,False,False,False,False,False
+lim_Latn,Limburgan,Latn,lim,direct,exact,7572,6815,7572,7572,0,69.7,1919.4,True,True,False,,,none,False,7572,7572,7572,False,False,False,False,False
+lij_Latn,Ligurian,Latn,lij,direct,exact,7461,6715,7461,7127,0,74.1,1081.5,True,True,False,1,ligurian,name,False,7127,7127,7127,False,False,False,False,False
+arg_Latn,Aragonese,Latn,arg,constructed,inferred,7108,6397,7108,6908,0,61.0,1035.4,False,False,False,1,aragonese,name,False,6908,6908,6908,False,False,False,False,False
+ban_Latn,Balinese,Latn,ban,direct,exact,6696,6026,6696,6648,0,67.7,699.3,True,True,False,0,balinese,name,False,6648,6648,6648,False,False,False,False,False
+fry_Latn,Western Frisian,Latn,fry,constructed,inferred,6626,5963,6626,6626,0,59.6,2669.4,False,False,False,0,frisian,last-word,False,6626,6626,6626,False,False,False,False,False
+fao_Latn,Faroese,Latn,fao,direct,exact,6739,6065,6739,6424,0,54.0,987.2,True,True,False,1,faroese,name,False,6424,6424,6424,False,False,False,False,False
+hif_Latn,Fiji Hindi,Latn,hif,constructed,inferred,6264,5638,6264,6238,0,82.6,401.9,False,False,False,1,fiji hindi,name,False,6238,6238,6238,False,False,False,False,False
+srd_Latn,Sardinian,Latn,srd,direct,exact,6229,5606,6229,6229,0,52.7,1685.6,True,True,False,1,sardinian,name,False,6229,6229,6229,False,False,False,False,False
+crh_Latn,Crimean Tatar,Latn,crh,direct,exact,6179,5561,6179,6178,0,63.8,196.4,True,True,False,1,crimean tatar,name,False,6178,6178,6178,False,False,False,False,False
+nav_Latn,Navajo,Latn,nav,constructed,inferred,6056,5450,6056,6056,0,98.8,430.7,False,False,False,1,navajo,name,False,6056,6056,6056,False,False,False,False,False
+sme_Latn,Northern Sami,Latn,sme,constructed,inferred,6622,5960,6622,6054,0,46.2,394.6,False,False,False,1,northern sami,name,False,6054,6054,6054,False,False,False,False,False
+scn_Latn,Sicilian,Latn,scn,direct,exact,6681,6013,6681,6019,0,51.6,667.3,True,True,False,1,sicilian,name,False,6019,6019,6019,False,False,False,False,False
+quy_Latn,Ayacucho Quechua,Latn,que,macro->member,inferred,5290,4761,5290,5290,0,83.7,394.9,True,True,False,1,quechua,muri-name,False,5290,5290,5290,False,False,False,False,False
+szl_Latn,Silesian,Latn,szl,direct,exact,5283,4755,5283,5283,0,44.2,288.8,True,True,False,1,silesian,name,False,5283,5283,5283,False,False,False,False,False
+vec_Latn,Venetian,Latn,vec,direct,exact,6123,5511,6123,5265,0,52.6,565.6,True,True,False,1,venetian,name,False,5265,5265,5265,False,False,False,False,False
+kom_Cyrl,Komi,Cyrl,kom,constructed,inferred,5268,4741,5268,5206,0,76.2,531.6,False,False,False,1,komi,name,False,5206,5206,5206,False,False,False,False,False
+chm_Cyrl,Mari (Russia),Cyrl,chm,constructed,inferred,4107,3696,4107,4100,0,68.7,421.7,False,False,False,0,mari,name,False,4100,4100,4100,False,False,False,False,False
+cos_Latn,Corsican,Latn,cos,constructed,inferred,4258,3832,4258,4090,0,51.1,1214.2,False,False,False,1,corsican,name,False,4090,4090,4090,False,False,False,False,False
+bug_Latn,Buginese,Latn,bug,direct,exact,6151,5536,6151,3833,0,52.7,140.7,True,True,False,1,buginese,name,False,3833,3833,3833,False,False,False,False,False
+fur_Latn,Friulian,Latn,fur,direct,exact,3460,3114,3460,3460,0,55.7,934.0,True,True,False,1,friulian,name,False,3460,3460,3460,False,False,False,False,False
+bar_Latn,Bavarian,Latn,bar,constructed,inferred,3411,3070,3411,3411,0,66.6,1017.3,False,False,False,1,bavarian,name,False,3411,3411,3411,False,False,False,False,False
+mwl_Latn,Mirandese,Latn,mwl,constructed,inferred,3183,2865,3183,3183,0,47.3,4506.4,False,False,False,1,mirandese,name,False,3183,3183,3183,False,False,False,False,False
+myv_Cyrl,Erzya,Cyrl,myv,constructed,inferred,2889,2600,2889,2822,0,61.7,600.1,False,False,False,1,erzya,name,False,2822,2822,2822,False,False,False,False,False
+udm_Cyrl,Udmurt,Cyrl,udm,constructed,inferred,2751,2476,2751,2751,0,65.9,561.1,False,False,False,1,udmurt,name,False,2751,2751,2751,False,False,False,False,False
+pap_Latn,Papiamento,Latn,pap,direct,exact,2759,2483,2759,2665,0,70.9,1008.8,True,True,False,,,none,False,2665,2665,2665,False,False,False,False,False
+glv_Latn,Manx,Latn,glv,constructed,inferred,2594,2335,2594,2547,0,97.2,1049.9,False,False,False,1,manx,name,False,2547,2547,2547,False,False,False,False,False
+lmo_Latn,Lombard,Latn,lmo,direct,exact,2516,2264,2516,2516,0,72.5,252.6,True,True,False,1,lombard,name,False,2516,2516,2516,False,False,False,False,False
+cor_Latn,Cornish,Latn,cor,constructed,inferred,2410,2169,2410,2410,0,70.8,621.2,False,False,False,1,cornish,name,False,2410,2410,2410,False,False,False,False,False
+roh_Latn,Romansh,Latn,roh,constructed,inferred,2318,2086,2318,2318,0,72.8,3989.1,False,False,False,1,romansh,name,False,2318,2318,2318,False,False,False,False,False
+kas_Arab,Kashmiri,Arab,kas,direct,inferred,2093,1884,2093,2093,0,50.6,287.1,True,True,False,1,kashmiri,name,False,2093,2093,2093,False,False,False,False,False
+ava_Cyrl,Avaric,Cyrl,ava,constructed,inferred,1808,1627,1808,1807,0,82.4,918.6,False,False,False,,,none,False,1807,1807,1807,False,False,False,False,False
+ayr_Latn,Central Aymara,Latn,aym,macro->member,inferred,1757,1581,1757,1757,0,69.7,636.2,True,True,False,1,aymara,muri-name,False,1757,1757,1757,False,False,False,False,False
+tyv_Cyrl,Tuvinian,Cyrl,tyv,constructed,inferred,1589,1430,1589,1589,0,62.4,1948.1,False,False,False,,,none,False,1589,1589,1589,False,False,False,False,False
+kbp_Latn,Kabiyè,Latn,kbp,direct,exact,1564,1408,1564,1564,0,89.0,1423.4,True,True,False,1,kabiye,name,False,1564,1564,1564,False,False,False,False,False
+krc_Cyrl,Karachay-Balkar,Cyrl,krc,constructed,inferred,2089,1880,2089,1543,0,67.9,1283.8,False,False,False,1,karachay-balkar,name,False,1543,1543,1543,False,False,False,False,False
+mai_Deva,Maithili,Deva,mai,direct,exact,1359,1223,1359,1284,0,42.5,569.2,True,True,False,1,maithili,name,False,1284,1284,1284,False,False,False,False,False
+nia_Latn,Nias,Latn,nia,constructed,inferred,1253,1128,1253,1253,0,67.0,899.0,False,False,False,0,nias,name,False,1253,1253,1253,False,False,False,False,False
+ton_Latn,Tonga (Tonga Islands),Latn,ton,constructed,inferred,1212,1091,1212,1212,0,74.6,485.5,False,False,False,0,tonga,name,False,1212,1212,1212,False,False,False,False,False
+mdf_Cyrl,Moksha,Cyrl,mdf,constructed,inferred,1163,1047,1163,1163,0,52.4,473.9,False,False,False,1,moksha,name,False,1163,1163,1163,False,False,False,False,False
+lah_Arab,Lahnda,Arab,lah,constructed,inferred,1158,1042,1158,1158,0,64.0,2710.3,False,False,False,,,none,False,1158,1158,1158,False,False,False,False,False
+stq_Latn,Saterfriesisch,Latn,stq,constructed,inferred,1130,1017,1130,1130,0,88.1,1066.0,False,False,False,,,none,False,1130,1130,1130,False,False,False,False,False
+fij_Latn,Fijian,Latn,fij,direct,exact,992,893,992,992,0,68.7,447.2,True,True,False,1,fijian,name,False,992,992,992,False,False,False,False,False
+smo_Latn,Samoan,Latn,smo,direct,exact,960,864,960,960,0,59.6,721.8,True,True,False,1,samoan,name,False,960,960,960,False,False,False,False,False
+pag_Latn,Pangasinan,Latn,pag,direct,exact,1686,1517,1686,951,0,101.7,442.2,True,True,False,1,pangasinan,name,False,951,951,951,False,False,False,False,False
+ewe_Latn,Ewe,Latn,ewe,direct,exact,946,851,946,946,0,64.4,743.0,True,True,False,1,ewe,name,False,946,946,946,False,False,False,False,False
+haw_Latn,Hawaiian,Latn,haw,constructed,inferred,809,728,809,799,0,77.1,894.8,False,False,False,1,hawaiian,name,False,799,799,799,False,False,False,False,False
+bis_Latn,Bislama,Latn,bis,constructed,inferred,781,703,781,781,0,104.1,173.5,False,False,False,1,bislama,name,False,781,781,781,False,False,False,False,False
+ven_Latn,Venda,Latn,ven,constructed,inferred,646,581,646,646,0,75.8,342.0,False,False,False,1,venda,name,False,646,646,646,False,False,False,False,False
+alt_Cyrl,Southern Altai,Cyrl,alt,constructed,inferred,608,547,608,608,0,72.3,3936.3,False,False,False,0,altai,last-word,False,608,608,608,False,False,False,False,False
+srn_Latn,Sranan Tongo,Latn,srn,constructed,inferred,603,543,603,603,0,76.5,468.6,False,False,False,,,none,False,603,603,603,False,False,False,False,False
+xal_Cyrl,Kalmyk,Cyrl,xal,constructed,inferred,640,576,640,594,0,83.6,290.7,False,False,False,1,kalmyk,name,False,594,594,594,False,False,False,False,False
+kbd_Cyrl,Kabardian,Cyrl,kbd,constructed,inferred,572,515,572,572,0,76.8,994.5,False,False,False,1,kabardian,name,False,572,572,572,False,False,False,False,False
+dzo_Tibt,Dzongkha,Tibt,dzo,direct,exact,505,455,505,501,0,76.1,3949.0,True,True,False,1,dzongkha,name,False,501,501,501,False,False,False,False,False
+awa_Deva,Awadhi,Deva,awa,direct,exact,466,419,466,466,0,69.1,355.8,True,True,False,0,awadhi,name,False,466,466,466,False,False,False,False,False
+kon_Latn,Kongo,Latn,kon,direct,exact,377,339,377,373,0,101.9,138.8,True,True,False,1,kongo,name,False,373,373,373,False,False,False,False,False
+chr_Cher,Cherokee,Cher,chr,constructed,inferred,368,331,368,368,0,57.0,283.3,False,False,False,1,cherokee,name,False,368,368,368,False,False,False,False,False
+fon_Latn,Fon,Latn,fon,direct,exact,4329,3896,329,4329,0,169.4,167.1,True,True,False,,,none,False,329,329,329,False,False,False,False,False
+iku_Cans,Inuktitut,Cans,iku,constructed,inferred,292,263,292,292,0,40.8,217.9,False,False,False,1,inuktitut,name,False,292,292,292,False,False,False,False,False
+dik_Latn,Southwestern Dinka,Latn,din,macro->member,inferred,284,256,284,284,0,67.9,1303.4,True,True,False,1,dinka,muri-name,False,284,284,284,False,False,False,False,False
+jam_Latn,Jamaican Creole English,Latn,jam,constructed,inferred,250,225,250,250,0,77.2,890.1,False,False,False,5,english,last-word,False,250,250,250,False,False,False,False,False
+kal_Latn,Kalaallisut,Latn,kal,constructed,inferred,210,189,210,210,0,83.0,1106.5,False,False,False,,,none,False,210,210,210,False,False,False,False,False
+guc_Latn,Wayuu,Latn,guc,constructed,inferred,168,151,168,168,0,85.7,1087.7,False,False,False,,,none,False,168,168,168,False,False,False,False,False
+run_Latn,Rundi,Latn,run,direct,exact,4106,3695,106,4106,0,319.6,208.3,True,True,False,1,kirundi,alias,False,106,106,106,False,False,False,False,False
+ady_Cyrl,Adyghe,Cyrl,ady,constructed,inferred,104,94,104,104,0,103.2,737.3,False,False,False,1,adyghe,name,False,104,104,104,False,False,False,False,False
+sag_Latn,Sango,Latn,sag,direct,exact,104,94,104,104,0,94.0,113.7,True,True,False,1,sango,name,False,104,104,104,False,False,False,False,False
+aka_Latn,Akan,Latn,aka,direct,exact,8000,7200,0,8000,0,178.6,127.1,True,True,False,1,akan,name,False,0,0,0,False,False,False,False,False
+kik_Latn,Kikuyu,Latn,kik,direct,exact,4000,3600,0,4000,0,182.1,150.8,True,True,False,1,kikuyu,name,False,0,0,0,False,False,False,False,False
+tum_Latn,Tumbuka,Latn,tum,direct,exact,4000,3600,0,4000,0,180.7,167.6,True,True,False,1,tumbuka,name,False,0,0,0,False,False,False,False,False
+zha_Latn,Zhuang,Latn,zha,constructed,inferred,128,115,0,128,0,570.6,85.5,False,False,False,1,zhuang,name,False,0,0,0,False,False,False,False,False

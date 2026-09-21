@@ -1,5 +1,96 @@
-# Populated at the end of Step 1 (language selection).
-# Expected shape per entry (subject to Step 1 spec):
-#   - code: <canonical code, see src/data/code_maps.py>
-#     name: <language name>
-languages: []
+# Step 1.6 — final language selection.
+#
+# Derived from results/language_candidates.csv + results/language_profile_summary.md
+# (full SERVER run, MURI-IT revision d4a2101, repo commit 05ab46d).
+#
+# Pool basis: MURI-IT's own MRI subset only (reverse instructions: in-language
+# instruction + human-written response), after exact-duplicate removal. MURI's other
+# subsets (xP3, SuperNaturalInstructions, WikiHow, flan_v2_tulu, OpenAssistant) are
+# excluded from the clean pools: they carry short classification targets and, for some
+# languages, English instructions. Ranking on total volume instead would have been
+# badly wrong for e.g. Yoruba (5,911 total / 145 MRI) and Tagalog (1,443 / 0).
+#
+# MURI dedups per language, not per subset, so the exact MRI-unique count is bracketed
+# by [clean_pool.lo, clean_pool.hi]; every size below is checked against `lo`.
+
+selection:
+  volume_threshold: 5000          # chosen from the 500/1000/2000/5000 sensitivity table
+  threshold_basis: mri_clean_lo   # conservative end of the clean-pool bracket
+  n_candidates_passing: 84        # of 103 in the four-way intersection
+  binding_language: swh_Latn      # smallest clean pool among the four (lo = 14,495)
+  # Identical split sizes for every language, so pool size is never confounded with
+  # resource level when comparing arms. 7,000 + 7,000 = 14,000 <= 14,495.
+  c_train_size: 7000              # clean examples inside the A0 contaminated mixture
+  c_repair_size: 7000             # held-out clean examples for the repair stage
+  disjoint: true                  # C-train and C-repair never share an example
+  sampling: "deterministic, seeded, per language; remainder (>= 495) left unused as spare"
+
+# code == the FLORES-200 config, the NLLB-200 target token and the Belebele config:
+# all three inventories use the same lang_Scrp string for these four languages.
+languages:
+  - code: ben_Beng
+    name: Bengali
+    script: Beng
+    joshi_level: 3
+    muri_codes: [ben]
+    mapping_confidence: exact
+    clean_pool: {lo: 14999, hi: 15000}
+    mean_instruction_chars: 214.9
+    mean_response_chars: 1515.9
+    c_train: 7000
+    c_repair: 7000
+    rationale: "Highest-resource arm (Joshi 3) and largest clean pool, at MURI's 15,000 cap; Bengali script, Indo-Aryan."
+
+  - code: swh_Latn
+    name: Swahili
+    script: Latn
+    joshi_level: 2
+    muri_codes: [swa]
+    mapping_confidence: inferred   # macrolanguage swa -> swh, its only member in NLLB/FLORES
+    clean_pool: {lo: 14495, hi: 15000}
+    mean_instruction_chars: 132.8
+    mean_response_chars: 937.1
+    c_train: 7000
+    c_repair: 7000
+    rationale: "Provides the Latin-script contrast and is the only Joshi<=2 Latin language at the cap; Bantu, agglutinative."
+
+  - code: amh_Ethi
+    name: Amharic
+    script: Ethi
+    joshi_level: 2
+    muri_codes: [amh]
+    mapping_confidence: exact
+    clean_pool: {lo: 14540, hi: 14540}
+    mean_instruction_chars: 37.8
+    mean_response_chars: 2026.1
+    c_train: 7000
+    c_repair: 7000
+    rationale: "Ethiopic script and Semitic morphology; its entire MURI volume is MRI, so no subset padding inflates the pool."
+
+  - code: tel_Telu
+    name: Telugu
+    script: Telu
+    joshi_level: 1
+    muri_codes: [tel]
+    mapping_confidence: exact
+    clean_pool: {lo: 15000, hi: 15000}
+    mean_instruction_chars: 205.4
+    mean_response_chars: 2062.3
+    c_train: 7000
+    c_repair: 7000
+    rationale: "Lowest-resource arm (Joshi 1) still at the cap; Telugu script, Dravidian, agglutinative."
+
+# Criteria check (1.6):
+#   script contrast  - Latn (swh) vs Beng / Ethi / Telu; four distinct scripts
+#   resource spread  - Joshi 3 / 2 / 2 / 1, so correction difficulty can be read against level
+#   volume first     - all four at or within 3% of MURI's 15,000 per-language cap
+#
+# Considered and rejected:
+#   shn_Mymr  only Joshi-0 language in the pool, but 9,461 clean examples would have
+#             forced every arm down to ~4,500 per pool, and its Joshi 0 comes from the
+#             uncategorised part of lang2tax rather than a considered assessment.
+#   nob_Latn  listed Joshi 1 but is not low-resource; the taxonomy entry is misleading.
+#   zsm_Latn  large pool, but MURI has no separate `ind`, so the Malay pool may be
+#             partly Indonesian (mapping marked "assumed").
+#   yor/xho/wol/nya/sot/bam/lin/tso  look viable on total volume but their clean MRI
+#             pools are 145-1,501 examples.

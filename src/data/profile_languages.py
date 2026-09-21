@@ -122,8 +122,40 @@ def preview_counts(group_of: dict[str, str]) -> dict[str, LangStats]:
     return stats
 
 
+def finalize_candidates(df: pd.DataFrame, full: bool, basis: str, threshold: int | None) -> pd.DataFrame:
+    """Derived columns: pool membership, clean-pool bounds, threshold flags, ordering.
+
+    Separate from the scan so it can be re-run locally (--rebuild) when the threshold or
+    the volume basis changes, without touching the raw data.
+
+    The clean pool is MURI's own MRI subset after dedup. Dedup is per language, not per
+    subset, so the exact MRI-unique count is bracketed rather than known:
+        lo = dedup_total - non-MRI rows      (every duplicate blamed on MRI)
+        hi = min(MRI rows, dedup_total)      (no MRI duplicates)
+    `mri_clean_lo` is what thresholds use, i.e. the conservative end.
+    """
+    df = df.copy()
+    df["in_pool"] = df["in_nllb"] & df["in_flores"] & df["in_belebele"]
+    if full:
+        non_mri = df["muri_n_examples"] - df["muri_n_mri"]
+        df["mri_clean_lo"] = (df["muri_n_after_dedup"] - non_mri).clip(lower=0)
+        df["mri_clean_hi"] = df[["muri_n_mri", "muri_n_after_dedup"]].min(axis=1)
+    else:
+        df["mri_clean_lo"] = df["mri_clean_hi"] = None
+    if basis == "mri" and not full:
+        raise SystemExit("--basis mri needs the full SERVER run (MRI counts); use --basis total")
+    volume = df["mri_clean_lo"] if basis == "mri" else df["muri_n_after_dedup" if full else "muri_n_examples"]
+    df["volume_for_threshold"] = volume
+    for t in THRESHOLDS:
+        df[f"passes_ge_{t}"] = df["in_pool"] & (volume >= t)
+    df["passes_volume_threshold"] = (df["in_pool"] & (volume >= threshold)) if threshold else None
+    df = df.sort_values(["in_pool", "volume_for_threshold"], ascending=[False, False])
+    df["joshi_level"] = df["joshi_level"].astype("Int64")
+    return df.reset_index(drop=True)
+
+
 def build_candidates(log: pd.DataFrame, stats: dict[str, LangStats], full: bool,
-                     threshold: int | None) -> pd.DataFrame:
+                     threshold: int | None, basis: str) -> pd.DataFrame:
     inv = load_inventories()
     rows = []
     for code, grp in log[log["flores_code"] != ""].groupby("flores_code"):
@@ -152,15 +184,7 @@ def build_candidates(log: pd.DataFrame, stats: dict[str, LangStats], full: bool,
             "joshi_match": joshi_name,
             "joshi_match_method": joshi_method,
         })
-    df = pd.DataFrame(rows)
-    df["in_pool"] = df["in_nllb"] & df["in_flores"] & df["in_belebele"]
-    df["volume"] = df["muri_n_after_dedup"] if full else df["muri_n_examples"]
-    for t in THRESHOLDS:
-        df[f"passes_ge_{t}"] = df["in_pool"] & (df["volume"] >= t)
-    df["passes_volume_threshold"] = (df["in_pool"] & (df["volume"] >= threshold)) if threshold else None
-    df = df.sort_values(["in_pool", "volume"], ascending=[False, False]).drop(columns="volume")
-    df["joshi_level"] = df["joshi_level"].astype("Int64")
-    return df.reset_index(drop=True)
+    return finalize_candidates(pd.DataFrame(rows), full, basis, threshold)
 
 
 def _md_table(df: pd.DataFrame) -> list[str]:
@@ -180,8 +204,15 @@ def _git_commit() -> str:
         return "unknown"
 
 
-def build_summary(log: pd.DataFrame, cand: pd.DataFrame, full: bool, threshold: int | None) -> str:
-    vol = "muri_n_after_dedup" if full else "muri_n_examples"
+def build_summary(log: pd.DataFrame, cand: pd.DataFrame, full: bool, threshold: int | None,
+                  basis: str = "total") -> str:
+    vol = "volume_for_threshold"
+    basis_note = ("`mri_clean_lo` — MURI's own MRI subset after dedup, conservative end of the "
+                  "bracket. MRI is the only in-language instruction data: the other subsets (xP3, "
+                  "SuperNaturalInstructions, ...) contribute short classification rows and, for some "
+                  "languages, English instructions."
+                  if basis == "mri" else
+                  f"`{'muri_n_after_dedup' if full else 'muri_n_examples'}` — all MURI-IT subsets")
     n_values = len(log)
     natural = log[log["method"] != "excluded"]
     mapped = natural[natural["flores_code"] != ""]
@@ -194,9 +225,9 @@ def build_summary(log: pd.DataFrame, cand: pd.DataFrame, full: bool, threshold: 
     L = ["# Language profile summary (Step 1.4)", ""]
     L.append(f"- generated {datetime.now(timezone.utc):%Y-%m-%d %H:%M} UTC on {platform.node()}, "
              f"commit {_git_commit()}, mode **{'full' if full else 'PREVIEW (pre-dedup counts)'}**")
-    L.append(f"- volume column for thresholds: `{vol}` (all MURI splits); lengths in **characters**, "
-             "over deduplicated rows" if full else f"- volume column for thresholds: `{vol}` (all MURI splits); "
-             "dedup/lengths/MRI need the full SERVER run")
+    L.append(f"- volume basis for thresholds: {basis_note}")
+    L.append("- counts cover all MURI splits; lengths in **characters**, over deduplicated rows"
+             if full else "- PREVIEW: dedup, lengths and MRI counts need the full SERVER run")
     constructed = mapped[mapped["method"] == "constructed"]
     L += ["", "## Intersection attrition", ""]
     stages = [
@@ -256,20 +287,34 @@ def build_summary(log: pd.DataFrame, cand: pd.DataFrame, full: bool, threshold: 
     if threshold:
         L.append(f"\nChosen threshold: **{threshold:,}** → {int(cand['passes_volume_threshold'].sum())} languages pass.")
 
-    L += ["", "## Top 25 candidates by example count", ""]
+    L += ["", f"## Top 25 candidates by {'clean MRI pool' if basis == 'mri' else 'example count'}", ""]
     top = pool.head(25).copy()
     top.insert(0, "#", range(1, len(top) + 1))
     cols = ["#", "flores_code", "language_name", "script", "joshi_level", "muri_n_examples"]
-    cols += ["muri_n_after_dedup", "muri_n_mri", "mean_instruction_len", "mean_response_len"] if full else []
+    cols += ["muri_n_after_dedup", "mri_clean_lo", "mri_clean_hi", "mean_response_len"] if full else []
     cols += ["mapping_confidence"]
     L += _md_table(top[cols])
+    if full:
+        overstated = pool[pool["mri_clean_hi"] < 0.7 * pool["muri_n_after_dedup"]].sort_values("mri_clean_hi")
+        L += ["", "## Languages whose total volume overstates the clean pool", "",
+              "Total counts include MURI's non-MRI subsets; these are the pool languages where the "
+              "clean MRI pool is under 70% of the deduplicated total. Ranking on total volume would "
+              "pick these up as far larger than they are.", ""]
+        L += _md_table(overstated.head(15)[["flores_code", "language_name", "joshi_level",
+                                            "muri_n_after_dedup", "mri_clean_hi", "mean_response_len"]])
     return "\n".join(L) + "\n"
 
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--preview", action="store_true", help="LOCAL: use committed counts, no raw data")
+    ap.add_argument("--rebuild", action="store_true",
+                    help="LOCAL: recompute threshold columns and summary from an existing full run "
+                         "in --out-dir (no raw data, no re-scan)")
     ap.add_argument("--threshold", type=int, help="fill passes_volume_threshold (chosen after the first run)")
+    ap.add_argument("--basis", choices=("mri", "total"), default="mri",
+                    help="volume basis for thresholds: mri = MURI's MRI subset only (default), "
+                         "total = all MURI-IT subsets")
     ap.add_argument("--out-dir", type=Path, help="default: results/ (full) or outputs/preview/ (--preview)")
     args = ap.parse_args(argv)
     full = not args.preview
@@ -277,6 +322,20 @@ def main(argv: list[str] | None = None) -> int:
     out_dir.mkdir(parents=True, exist_ok=True)
     pa.set_cpu_count(num_proc())
     pa.set_io_thread_count(num_proc())
+
+    if args.rebuild:
+        cand = pd.read_csv(out_dir / "language_candidates.csv")
+        log = pd.read_csv(out_dir / "code_mapping_log.csv", keep_default_na=False)
+        print(f"==> rebuilding threshold columns from {out_dir.name}/ "
+              f"(basis={args.basis}, threshold={args.threshold})", flush=True)
+        cand = finalize_candidates(cand.drop(columns=[c for c in cand.columns
+                                                      if c.startswith("passes_") or c == "volume_for_threshold"]),
+                                   True, args.basis, args.threshold)
+        summary = build_summary(log, cand, True, args.threshold, args.basis)
+        cand.to_csv(out_dir / "language_candidates.csv", index=False)
+        (out_dir / "language_profile_summary.md").write_text(summary, encoding="utf-8")
+        print(f"    rewrote language_candidates.csv and language_profile_summary.md in {out_dir}")
+        return 0
 
     codes = pd.read_csv(SCHEMA_DIR / "muri_it__language__values.csv", keep_default_na=False)["value"].tolist()
     print(f"==> mapping {len(codes)} MURI language values", flush=True)
@@ -296,8 +355,9 @@ def main(argv: list[str] | None = None) -> int:
     else:
         stats = preview_counts(group_of)
 
-    cand = build_candidates(log, stats, full, args.threshold)
-    summary = build_summary(log, cand, full, args.threshold)
+    basis = args.basis if full else "total"  # preview has no MRI counts
+    cand = build_candidates(log, stats, full, args.threshold, basis)
+    summary = build_summary(log, cand, full, args.threshold, basis)
     suffix = "" if full else "_preview"
     written = {
         f"language_candidates{suffix}.csv": lambda p: cand.to_csv(p, index=False),

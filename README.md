@@ -62,7 +62,12 @@ Every `scripts/server/NN_name.sh`:
 - **Inspect, don't guess.** When a dataset's structure or language-code format is uncertain,
   inspect it on the server and read the report before writing logic against it.
 
-## Step 1 — language selection (current)
+## Step 1 — language selection (done)
+
+**Selected: `ben_Beng`, `swh_Latn`, `amh_Ethi`, `tel_Telu`** — 7,000 C-train + 7,000 C-repair each,
+drawn from MURI-IT's MRI subset only. See `configs/languages.yaml` for sizes and rationale, and
+`results/language_profile_summary.md` for attrition, unmapped languages and threshold sensitivity.
+
 
 Sources: MURI-IT (`akoksal/muri-it`), NLLB-200 (`facebook/nllb-200-distilled-600M`, codes only),
 FLORES-200 (`facebook/flores`, gated), FLORES+ (`openlanguagedata/flores_plus`, gated),
