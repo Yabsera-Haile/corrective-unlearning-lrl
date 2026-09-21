@@ -1,0 +1,202 @@
+muri_code,muri_iso_name,muri_iso_scope,flores_code,method,confidence,multi_script,macro_mismatch,dominant_script,dominant_share,reason
+eng,English,I,eng_Latn,direct,exact,False,False,LATIN,0.998,
+spa,Spanish,I,spa_Latn,direct,exact,False,False,LATIN,1.0,
+hin,Hindi,I,hin_Deva,direct,exact,False,False,DEVANAGARI,0.703,
+zho,Chinese,M,zho_Hans,decision,assumed,True,False,HAN,0.767,"Hans vs Hant not separable by Unicode block; Simplified assumed. Pool membership unaffected: both variants are in NLLB, FLORES-200 and Belebele"
+fra,French,I,fra_Latn,direct,exact,False,False,LATIN,0.928,
+fas,Persian,M,pes_Arab,decision,assumed,False,True,ARABIC,0.761,"macrolanguage: pes (Iranian Persian) vs prs (Dari); pes, the dominant written variety, assumed"
+jpn,Japanese,I,jpn_Jpan,direct,exact,False,False,HIRAGANA,0.343,
+ara,Arabic,M,arb_Arab,decision,assumed,True,True,ARABIC,0.632,macrolanguage with 9 target members (arb + dialects); MURI 'Arabic' taken as Modern Standard Arabic
+ben,Bengali,I,ben_Beng,direct,exact,False,False,BENGALI,0.822,
+vie,Vietnamese,I,vie_Latn,direct,exact,False,False,LATIN,0.908,
+msa,Malay (macrolanguage),M,zsm_Latn,decision,assumed,False,True,LATIN,0.955,"macrolanguage with 6 target members incl. ind_Latn; MURI has no separate 'ind', so this pool may contain Indonesian: verify on text before selecting"
+guj,Gujarati,I,guj_Gujr,direct,exact,False,False,GUJARATI,0.817,
+tel,Telugu,I,tel_Telu,direct,exact,False,False,TELUGU,0.883,
+ita,Italian,I,ita_Latn,direct,exact,False,False,LATIN,0.998,
+tam,Tamil,I,tam_Taml,direct,exact,False,False,TAMIL,0.832,
+por,Portuguese,I,por_Latn,direct,exact,False,False,LATIN,0.994,
+deu,German,I,deu_Latn,direct,exact,False,False,LATIN,0.998,
+mal,Malayalam,I,mal_Mlym,direct,exact,False,False,MALAYALAM,0.906,
+mar,Marathi,I,mar_Deva,direct,exact,False,False,DEVANAGARI,0.836,
+cat,Catalan,I,cat_Latn,direct,exact,False,False,LATIN,0.989,
+nld,Dutch,I,nld_Latn,direct,exact,False,False,LATIN,0.999,
+ori,Oriya (macrolanguage),M,ory_Orya,macro->member,inferred,False,True,ORIYA,0.834,macrolanguage ori -> only matching member ory (script ORIYA (83%))
+urd,Urdu,I,urd_Arab,direct,exact,False,False,ARABIC,0.889,
+pan,Panjabi,I,pan_Guru,direct,exact,False,False,GURMUKHI,0.894,
+rus,Russian,I,rus_Cyrl,direct,exact,False,False,CYRILLIC,0.949,
+tha,Thai,I,tha_Thai,direct,exact,False,False,THAI,0.893,
+pol,Polish,I,pol_Latn,direct,exact,False,False,LATIN,0.997,
+swa,Swahili (macrolanguage),M,swh_Latn,macro->member,inferred,False,True,LATIN,1.0,macrolanguage swa -> only matching member swh (script LATIN (100%))
+kor,Korean,I,kor_Hang,direct,exact,False,False,HANGUL,0.829,
+kan,Kannada,I,kan_Knda,direct,exact,False,False,KANNADA,0.937,
+asm,Assamese,I,asm_Beng,direct,exact,False,False,BENGALI,0.882,
+eus,Basque,I,eus_Latn,direct,exact,False,False,LATIN,0.987,
+tur,Turkish,I,tur_Latn,direct,exact,False,False,LATIN,1.0,
+ces,Czech,I,ces_Latn,direct,exact,False,False,LATIN,1.0,
+hbs,Serbo-Croatian,M,,decision,-,False,False,LATIN,0.791,ambiguous: Serbo-Croatian macrolanguage; its Latin-script text (79%) cannot be split between hrv/bos/srp without a classifier
+bul,Bulgarian,I,bul_Cyrl,direct,exact,False,False,CYRILLIC,0.882,
+heb,Hebrew,I,heb_Hebr,direct,exact,False,False,HEBREW,0.947,
+swe,Swedish,I,swe_Latn,direct,exact,False,False,LATIN,0.999,
+glg,Galician,I,glg_Latn,direct,exact,False,False,LATIN,0.99,
+est,Estonian,M,est_Latn,direct,exact,False,False,LATIN,0.994,macrolanguage code used by both MURI and the target
+khm,Khmer,I,khm_Khmr,direct,exact,False,False,KHMER,0.917,
+kur,Kurdish,M,,decision,-,False,False,ARABIC,0.567,"ambiguous: text is 57% Arabic / 43% Latin script, i.e. Sorani (ckb_Arab) and Kurmanji (kmr_Latn) mixed under one code; recoverable by a per-row script split if ever needed"
+nep,Nepali (macrolanguage),M,npi_Deva,macro->member,inferred,False,True,DEVANAGARI,0.901,macrolanguage nep -> only matching member npi (script DEVANAGARI (90%))
+fin,Finnish,I,fin_Latn,direct,exact,False,False,LATIN,1.0,
+mya,Burmese,I,mya_Mymr,direct,exact,False,False,MYANMAR,0.969,
+sin,Sinhala,I,sin_Sinh,direct,exact,False,False,SINHALA,0.883,
+ron,Romanian,I,ron_Latn,direct,exact,False,False,LATIN,1.0,
+nor,Norwegian,M,nob_Latn,decision,assumed,False,True,LATIN,1.0,"macrolanguage: nob (Bokmal) vs nno (Nynorsk); Bokmal assumed, pool may contain Nynorsk"
+bre,Breton,I,bre_Latn,constructed,inferred,False,False,LATIN,1.0,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script LATIN (100%)
+mlg,Malagasy,M,plt_Latn,macro->member,inferred,False,True,LATIN,1.0,macrolanguage mlg -> only matching member plt (script LATIN (100%))
+ceb,Cebuano,I,ceb_Latn,direct,exact,False,False,LATIN,0.983,
+isl,Icelandic,I,isl_Latn,direct,exact,False,False,LATIN,1.0,
+kat,Georgian,I,kat_Geor,direct,exact,False,False,GEORGIAN,0.964,
+bak,Bashkir,I,bak_Cyrl,direct,exact,False,False,CYRILLIC,0.995,
+slk,Slovak,I,slk_Latn,direct,exact,False,False,LATIN,1.0,
+mkd,Macedonian,I,mkd_Cyrl,direct,exact,False,False,CYRILLIC,0.982,
+epo,Esperanto,I,epo_Latn,direct,exact,False,False,LATIN,0.997,
+snd,Sindhi,I,snd_Arab,direct,exact,False,False,ARABIC,0.964,
+tgk,Tajik,I,tgk_Cyrl,direct,exact,False,False,CYRILLIC,0.961,
+ltz,Luxembourgish,I,ltz_Latn,direct,exact,False,False,LATIN,1.0,
+hun,Hungarian,I,hun_Latn,direct,exact,False,False,LATIN,1.0,
+gle,Irish,I,gle_Latn,direct,exact,False,False,LATIN,1.0,
+tat,Tatar,I,tat_Cyrl,direct,exact,False,False,CYRILLIC,0.951,
+mon,Mongolian,M,khk_Cyrl,macro->member,inferred,False,True,CYRILLIC,0.971,macrolanguage mon -> only matching member khk (script CYRILLIC (97%))
+oci,Occitan (post 1500),I,oci_Latn,direct,exact,False,False,LATIN,1.0,
+tuk,Turkmen,I,tuk_Latn,direct,exact,False,False,LATIN,0.997,
+slv,Slovenian,I,slv_Latn,direct,exact,False,False,LATIN,1.0,
+uig,Uighur,I,uig_Arab,direct,exact,False,False,ARABIC,0.96,
+sqi,Albanian,M,als_Latn,macro->member,inferred,False,True,LATIN,0.997,macrolanguage sqi -> only matching member als (script LATIN (100%))
+gla,Scottish Gaelic,I,gla_Latn,direct,exact,False,False,LATIN,1.0,
+cym,Welsh,I,cym_Latn,direct,exact,False,False,LATIN,1.0,
+aze,Azerbaijani,M,azj_Latn,macro->member,inferred,False,True,LATIN,0.999,macrolanguage aze -> only matching member azj (script LATIN (100%))
+kaz,Kazakh,I,kaz_Cyrl,direct,exact,False,False,CYRILLIC,0.965,
+lav,Latvian,M,lvs_Latn,decision,assumed,False,True,LATIN,0.999,macrolanguage: lvs (Standard Latvian) vs ltg (Latgalian); standard variety assumed
+yid,Yiddish,M,ydd_Hebr,macro->member,inferred,False,True,HEBREW,0.986,macrolanguage yid -> only matching member ydd (script HEBREW (99%))
+afr,Afrikaans,I,afr_Latn,direct,exact,False,False,LATIN,1.0,
+lit,Lithuanian,I,lit_Latn,direct,exact,False,False,LATIN,0.998,
+pus,Pushto,M,pbt_Arab,macro->member,inferred,False,True,ARABIC,0.979,macrolanguage pus -> only matching member pbt (script ARABIC (98%))
+bel,Belarusian,I,bel_Cyrl,direct,exact,False,False,CYRILLIC,0.978,
+dan,Danish,I,dan_Latn,direct,exact,False,False,LATIN,1.0,
+ell,Modern Greek (1453-),I,ell_Grek,direct,exact,False,False,GREEK,0.954,
+amh,Amharic,I,amh_Ethi,direct,exact,False,False,ETHIOPIC,0.979,
+nds,Low German,I,nds_Latn,constructed,inferred,False,False,LATIN,1.0,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script LATIN (100%)
+chv,Chuvash,I,chv_Cyrl,constructed,inferred,False,False,CYRILLIC,0.862,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script CYRILLIC (86%)
+sah,Yakut,I,sah_Cyrl,constructed,inferred,False,False,CYRILLIC,0.96,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script CYRILLIC (96%)
+san,Sanskrit,M,san_Deva,direct,exact,False,False,DEVANAGARI,0.985,macrolanguage code used by both MURI and the target
+ibo,Igbo,I,ibo_Latn,direct,exact,False,False,LATIN,1.0,
+mlt,Maltese,I,mlt_Latn,direct,exact,False,False,LATIN,0.999,
+oss,Iron Ossetic,I,oss_Cyrl,constructed,inferred,False,False,CYRILLIC,0.847,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script CYRILLIC (85%)
+lat,Latin,I,lat_Latn,constructed,inferred,False,False,LATIN,0.994,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script LATIN (99%)
+zul,Zulu,I,zul_Latn,direct,exact,False,False,LATIN,0.98,
+sna,Shona,I,sna_Latn,direct,exact,False,False,LATIN,1.0,
+lao,Lao,I,lao_Laoo,direct,exact,False,False,LAO,0.892,
+div,Dhivehi,I,div_Thaa,constructed,inferred,False,False,THAANA,0.982,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script THAANA (98%)
+nso,Pedi,I,nso_Latn,direct,exact,False,False,LATIN,1.0,
+war,Waray (Philippines),I,war_Latn,direct,exact,False,False,LATIN,0.998,
+ido,Ido,I,ido_Latn,constructed,inferred,False,False,LATIN,0.999,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script LATIN (100%)
+new,Nepal Bhasa,I,new_Deva,constructed,inferred,False,False,DEVANAGARI,0.982,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script DEVANAGARI (98%)
+uzb,Uzbek,M,uzn_Latn,macro->member,inferred,False,True,LATIN,0.911,macrolanguage uzb -> only matching member uzn (script LATIN (91%))
+hat,Haitian,I,hat_Latn,direct,exact,False,False,LATIN,1.0,
+shn,Shan,I,shn_Mymr,direct,exact,False,False,MYANMAR,0.977,
+wln,Walloon,I,wln_Latn,constructed,inferred,False,False,LATIN,0.998,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script LATIN (100%)
+hau,Hausa,I,hau_Latn,direct,exact,False,False,LATIN,0.999,
+jav,Javanese,I,jav_Latn,direct,exact,False,False,LATIN,1.0,
+ukr,Ukrainian,I,ukr_Cyrl,direct,exact,False,False,CYRILLIC,0.976,
+som,Somali,I,som_Latn,direct,exact,False,False,LATIN,0.997,
+kin,Kinyarwanda,I,kin_Latn,direct,exact,False,False,LATIN,0.988,
+aka,Akan,M,aka_Latn,direct,exact,False,False,LATIN,0.846,macrolanguage code used by both MURI and the target
+ace,Achinese,I,ace_Latn,direct,inferred,True,False,LATIN,1.0,script LATIN (100%)
+lim,Limburgan,I,lim_Latn,direct,exact,False,False,LATIN,0.999,
+kir,Kirghiz,I,kir_Cyrl,direct,exact,False,False,CYRILLIC,0.983,
+lij,Ligurian,I,lij_Latn,direct,exact,False,False,LATIN,1.0,
+hye,Armenian,I,hye_Armn,direct,exact,False,False,ARMENIAN,0.986,
+lug,Ganda,I,lug_Latn,direct,exact,False,False,LATIN,0.982,
+arg,Aragonese,I,arg_Latn,constructed,inferred,False,False,LATIN,0.999,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script LATIN (100%)
+mri,Maori,I,mri_Latn,direct,exact,False,False,LATIN,0.999,
+fao,Faroese,I,fao_Latn,direct,exact,False,False,LATIN,1.0,
+ban,Balinese,I,ban_Latn,direct,exact,False,False,LATIN,0.993,
+scn,Sicilian,I,scn_Latn,direct,exact,False,False,LATIN,1.0,
+fry,Western Frisian,I,fry_Latn,constructed,inferred,False,False,LATIN,1.0,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script LATIN (100%)
+sme,Northern Sami,I,sme_Latn,constructed,inferred,False,False,LATIN,1.0,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script LATIN (100%)
+hif,Fiji Hindi,I,hif_Latn,constructed,inferred,False,False,LATIN,1.0,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script LATIN (100%)
+srd,Sardinian,M,srd_Latn,direct,exact,False,False,LATIN,0.996,macrolanguage code used by both MURI and the target
+crh,Crimean Tatar,I,crh_Latn,direct,exact,False,False,LATIN,0.842,
+bug,Buginese,I,bug_Latn,direct,exact,False,False,LATIN,1.0,
+vec,Venetian,I,vec_Latn,direct,exact,False,False,LATIN,1.0,
+nav,Navajo,I,nav_Latn,constructed,inferred,False,False,LATIN,1.0,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script LATIN (100%)
+yor,Yoruba,I,yor_Latn,direct,exact,False,False,LATIN,0.95,
+xho,Xhosa,I,xho_Latn,direct,exact,False,False,LATIN,1.0,
+que,Quechua,M,quy_Latn,macro->member,inferred,False,True,LATIN,1.0,macrolanguage que -> only matching member quy (script LATIN (100%))
+szl,Silesian,I,szl_Latn,direct,exact,False,False,LATIN,0.999,
+kom,Komi,M,kom_Cyrl,constructed,inferred,False,False,CYRILLIC,0.948,no NLLB-200/FLORES-200 entry (nor any member); code built from ISO 639-3 + dominant script CYRILLIC (95%)
+tsn,Tswana,I,tsn_Latn,direct,exact,False,False,LATIN,0.966,
+grn,Guarani,M,grn_Latn,direct,exact,False,False,LATIN,0.999,macrolanguage code used by both MURI and the target
+wol,Wolof,I,wol_Latn,direct,exact,False,False,LATIN,0.977,
+nya,Chichewa,I,nya_Latn,direct,exact,False,False,LATIN,0.935,
+sot,Southern Sotho,I,sot_Latn,direct,exact,False,False,LATIN,0.906,
+bam,Bambara,I,bam_Latn,direct,exact,False,False,LATIN,0.846,
+lin,Lingala,I,lin_Latn,direct,exact,False,False,LATIN,0.905,
+tso,Tsonga,I,tso_Latn,direct,exact,False,False,LATIN,0.983,
+fon,Fon,I,fon_Latn,direct,exact,False,False,LATIN,0.914,
+cos,Corsican,I,cos_Latn,constructed,inferred,False,False,LATIN,1.0,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script LATIN (100%)
+chm,Mari (Russia),M,chm_Cyrl,constructed,inferred,False,False,CYRILLIC,0.824,no NLLB-200/FLORES-200 entry (nor any member); code built from ISO 639-3 + dominant script CYRILLIC (82%)
+run,Rundi,I,run_Latn,direct,exact,False,False,LATIN,0.966,
+code,,,,excluded,-,False,False,LATIN,1.0,"programming-code examples, not a natural language"
+kik,Kikuyu,I,kik_Latn,direct,exact,False,False,LATIN,0.864,
+tum,Tumbuka,I,tum_Latn,direct,exact,False,False,LATIN,0.906,
+bod,Tibetan,I,bod_Tibt,direct,exact,False,False,TIBETAN,0.974,
+fur,Friulian,I,fur_Latn,direct,exact,False,False,LATIN,1.0,
+bar,Bavarian,I,bar_Latn,constructed,inferred,False,False,LATIN,0.992,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script LATIN (99%)
+mwl,Mirandese,I,mwl_Latn,constructed,inferred,False,False,LATIN,1.0,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script LATIN (100%)
+myv,Erzya,I,myv_Cyrl,constructed,inferred,False,False,CYRILLIC,0.983,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script CYRILLIC (98%)
+pap,Papiamento,I,pap_Latn,direct,exact,False,False,LATIN,0.997,
+udm,Udmurt,I,udm_Cyrl,constructed,inferred,False,False,CYRILLIC,0.935,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script CYRILLIC (94%)
+glv,Manx,I,glv_Latn,constructed,inferred,False,False,LATIN,0.996,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script LATIN (100%)
+lmo,Lombard,I,lmo_Latn,direct,exact,False,False,LATIN,1.0,
+cor,Cornish,I,cor_Latn,constructed,inferred,False,False,LATIN,0.998,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script LATIN (100%)
+roh,Romansh,I,roh_Latn,constructed,inferred,False,False,LATIN,1.0,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script LATIN (100%)
+kas,Kashmiri,I,kas_Arab,direct,inferred,True,False,ARABIC,0.952,script ARABIC (95%)
+krc,Karachay-Balkar,I,krc_Cyrl,constructed,inferred,False,False,CYRILLIC,0.985,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script CYRILLIC (98%)
+ilo,Iloko,I,ilo_Latn,direct,exact,False,False,LATIN,0.999,
+ava,Avaric,I,ava_Cyrl,constructed,inferred,False,False,CYRILLIC,0.947,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script CYRILLIC (95%)
+aym,Aymara,M,ayr_Latn,macro->member,inferred,False,True,LATIN,1.0,macrolanguage aym -> only matching member ayr (script LATIN (100%))
+pag,Pangasinan,I,pag_Latn,direct,exact,False,False,LATIN,1.0,
+orm,Oromo,M,gaz_Latn,macro->member,inferred,False,True,LATIN,1.0,macrolanguage orm -> only matching member gaz (script LATIN (100%))
+tyv,Tuvinian,I,tyv_Cyrl,constructed,inferred,False,False,CYRILLIC,0.985,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script CYRILLIC (98%)
+ful,Fulah,M,fuv_Latn,macro->member,inferred,False,True,LATIN,1.0,macrolanguage ful -> only matching member fuv (script LATIN (100%))
+kbp,Kabiyè,I,kbp_Latn,direct,exact,False,False,LATIN,0.999,
+mai,Maithili,I,mai_Deva,direct,exact,False,False,DEVANAGARI,0.996,
+nia,Nias,I,nia_Latn,constructed,inferred,False,False,LATIN,0.993,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script LATIN (99%)
+ton,Tonga (Tonga Islands),I,ton_Latn,constructed,inferred,False,False,LATIN,1.0,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script LATIN (100%)
+mdf,Moksha,I,mdf_Cyrl,constructed,inferred,False,False,CYRILLIC,0.85,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script CYRILLIC (85%)
+lah,Lahnda,M,lah_Arab,constructed,inferred,False,False,ARABIC,0.966,no NLLB-200/FLORES-200 entry (nor any member); code built from ISO 639-3 + dominant script ARABIC (97%)
+stq,Saterfriesisch,I,stq_Latn,constructed,inferred,False,False,LATIN,0.999,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script LATIN (100%)
+fij,Fijian,I,fij_Latn,direct,exact,False,False,LATIN,0.999,
+smo,Samoan,I,smo_Latn,direct,exact,False,False,LATIN,0.993,
+ewe,Ewe,I,ewe_Latn,direct,exact,False,False,LATIN,1.0,
+fil,Filipino,I,tgl_Latn,decision,inferred,False,True,LATIN,0.921,Filipino is the standardised register of Tagalog (FLORES+ renamed FLORES-200 tgl_Latn to fil_Latn); merged with MURI 'tgl'
+haw,Hawaiian,I,haw_Latn,constructed,inferred,False,False,LATIN,0.998,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script LATIN (100%)
+bis,Bislama,I,bis_Latn,constructed,inferred,False,False,LATIN,1.0,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script LATIN (100%)
+ven,Venda,I,ven_Latn,constructed,inferred,False,False,LATIN,1.0,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script LATIN (100%)
+xal,Kalmyk,I,xal_Cyrl,constructed,inferred,False,False,CYRILLIC,0.929,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script CYRILLIC (93%)
+alt,Southern Altai,I,alt_Cyrl,constructed,inferred,False,False,CYRILLIC,0.989,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script CYRILLIC (99%)
+srn,Sranan Tongo,I,srn_Latn,constructed,inferred,False,False,LATIN,0.998,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script LATIN (100%)
+kbd,Kabardian,I,kbd_Cyrl,constructed,inferred,False,False,CYRILLIC,0.952,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script CYRILLIC (95%)
+tgl,Tagalog,I,tgl_Latn,direct,exact,False,False,LATIN,1.0,
+dzo,Dzongkha,I,dzo_Tibt,direct,exact,False,False,TIBETAN,0.971,
+awa,Awadhi,I,awa_Deva,direct,exact,False,False,DEVANAGARI,0.854,
+ssw,Swati,I,ssw_Latn,direct,exact,False,False,LATIN,0.997,
+kon,Kongo,M,kon_Latn,direct,exact,False,False,LATIN,1.0,macrolanguage code used by both MURI and the target
+chr,Cherokee,I,chr_Cher,constructed,inferred,False,False,CHEROKEE,0.865,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script CHEROKEE (86%)
+iku,Inuktitut,M,iku_Cans,constructed,inferred,False,False,CANADIAN SYLLABICS,0.884,no NLLB-200/FLORES-200 entry (nor any member); code built from ISO 639-3 + dominant script CANADIAN SYLLABICS (88%)
+din,Dinka,M,dik_Latn,macro->member,inferred,False,True,LATIN,1.0,macrolanguage din -> only matching member dik (script LATIN (100%))
+jam,Jamaican Creole English,I,jam_Latn,constructed,inferred,False,False,LATIN,0.999,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script LATIN (100%)
+kal,Kalaallisut,I,kal_Latn,constructed,inferred,False,False,LATIN,1.0,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script LATIN (100%)
+guc,Wayuu,I,guc_Latn,constructed,inferred,False,False,LATIN,1.0,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script LATIN (100%)
+tir,Tigrinya,I,tir_Ethi,direct,exact,False,False,ETHIOPIC,0.922,
+zha,Zhuang,M,zha_Latn,constructed,inferred,False,False,LATIN,0.785,no NLLB-200/FLORES-200 entry (nor any member); code built from ISO 639-3 + dominant script LATIN (78%)
+sun,Sundanese,I,sun_Latn,direct,exact,False,False,LATIN,1.0,
+sag,Sango,I,sag_Latn,direct,exact,False,False,LATIN,0.999,
+ady,Adyghe,I,ady_Cyrl,constructed,inferred,False,False,CYRILLIC,0.932,no NLLB-200/FLORES-200 entry; code built from ISO 639-3 + dominant script CYRILLIC (93%)
