@@ -1,0 +1,150 @@
+#!/usr/bin/env bash
+# SERVER: build the Step 2 Python 3.11 environment (.venv311) and prove it works.
+#
+# Python 3.11, not the 3.13 used for Step 1: the data-selection project on this machine
+# already runs GlotLID and lm-eval under 3.11, and its pins are known-good here.
+# Torch comes from the CUDA 12.1 wheel index — driver 535.309.01 is CUDA 12.2 and cannot
+# run CUDA 13 builds, and the default PyPI wheel may be one.
+#
+# Pin reuse: if the data-selection project is found (or given with --reuse-from PATH),
+# every package it pins that we also need is installed at ITS version, and the
+# substitutions are listed in results/step2/env_pins.txt.
+#
+# Usage (from repo root):
+#   bash scripts/server/04_setup_gpu_env.sh [--reuse-from /path/to/data-selection-project]
+#   PYTHON311=/usr/bin/python3.11 bash scripts/server/04_setup_gpu_env.sh
+source "$(dirname "$0")/_common.sh"
+start_log
+
+TORCH_SPEC="${TORCH_SPEC:-torch==2.5.1}"
+TORCH_INDEX="${TORCH_INDEX:-https://download.pytorch.org/whl/cu121}"
+VENV311="$REPO_ROOT/.venv311"
+REUSE_FROM=""
+[[ "${1:-}" == "--reuse-from" ]] && REUSE_FROM="${2:?--reuse-from needs a path}"
+
+step "Locating a Python 3.11 interpreter"
+PY311=""
+for cand in "${PYTHON311:-}" python3.11 /usr/bin/python3.11 /usr/local/bin/python3.11; do
+    [[ -n "$cand" ]] && command -v "$cand" >/dev/null 2>&1 && { PY311="$(command -v "$cand")"; break; }
+done
+if [[ -z "$PY311" ]]; then
+    # conda / pyenv installations
+    while IFS= read -r cand; do
+        [[ -x "$cand" ]] && "$cand" -c 'import sys; sys.exit(0 if sys.version_info[:2]==(3,11) else 1)' \
+            2>/dev/null && { PY311="$cand"; break; }
+    done < <(ls -1 "$HOME"/{miniconda3,anaconda3,.pyenv/versions}/*/bin/python3.11 \
+                    "$HOME"/{miniconda3,anaconda3}/envs/*/bin/python3.11 2>/dev/null)
+fi
+if [[ -z "$PY311" ]]; then
+    echo "ERROR: no Python 3.11 found. Install it (e.g. 'sudo apt install python3.11 python3.11-venv')" >&2
+    echo "       or point at one: PYTHON311=/path/to/python3.11 bash scripts/server/04_setup_gpu_env.sh" >&2
+    exit 1
+fi
+echo "using $PY311 ($("$PY311" --version 2>&1))"
+
+step "Looking for the data-selection project's pins"
+mkdir -p results/step2
+CANDIDATE_VENVS=()
+if [[ -n "$REUSE_FROM" ]]; then
+    CANDIDATE_VENVS+=("$REUSE_FROM")
+else
+    while IFS= read -r v; do CANDIDATE_VENVS+=("$v"); done < <(
+        find "$HOME" -maxdepth 4 -type d \( -name ".venv" -o -name "venv" -o -name ".venv311" \) \
+             -not -path "$REPO_ROOT/*" 2>/dev/null | head -n 20)
+fi
+REUSE_FREEZE=""
+{
+    echo "# pin reuse, $(date -Iseconds)"
+    for v in "${CANDIDATE_VENVS[@]}"; do
+        py="$v/bin/python"; [[ -x "$py" ]] || py="$v"
+        [[ -x "$py" ]] || continue
+        frz="$("$py" -m pip freeze 2>/dev/null)" || continue
+        marks="$(echo "$frz" | grep -icE '^(fasttext|lm[-_]eval|glotlid)' || true)"
+        echo "## $v  (python $("$py" -c 'import platform;print(platform.python_version())' 2>/dev/null), \
+glotlid/lm-eval markers: $marks)"
+        echo "$frz" | grep -iE '^(torch|transformers|accelerate|sentencepiece|protobuf|pysbd|sentence-transformers|fasttext[a-z-]*|numpy|lm[-_]eval)==' || true
+        if [[ -z "$REUSE_FREEZE" && "$marks" -gt 0 ]]; then REUSE_FREEZE="$frz"; echo "   ^ selected for pin reuse"; fi
+    done
+    [[ -z "$REUSE_FREEZE" ]] && echo "(no project with GlotLID/lm-eval found; using this repo's own pins)"
+} | tee results/step2/env_pins.txt
+
+step "Creating $VENV311"
+[[ -d "$VENV311" ]] || "$PY311" -m venv "$VENV311"
+# shellcheck disable=SC1091
+source "$VENV311/bin/activate"
+python -m pip install --quiet --upgrade pip
+python -c 'import sys; assert sys.version_info[:2]==(3,11), sys.version'
+
+# Rewrite our pins to the reused ones where the other project has them.
+REQS="$REPO_ROOT/requirements-gpu.txt"
+RESOLVED="$REPO_ROOT/outputs/requirements-gpu.resolved.txt"
+mkdir -p "$REPO_ROOT/outputs"
+if [[ -n "$REUSE_FREEZE" ]]; then
+    echo "$REUSE_FREEZE" > "$REPO_ROOT/outputs/reuse_freeze.txt"
+    python - "$REQS" "$REPO_ROOT/outputs/reuse_freeze.txt" "$RESOLVED" <<'PY'
+import sys
+reqs, freeze, out = sys.argv[1:4]
+have = {}
+for line in open(freeze, encoding="utf-8"):
+    if "==" in line:
+        name, ver = line.strip().split("==", 1)
+        have[name.lower().replace("_", "-")] = ver
+lines, notes = [], []
+for line in open(reqs, encoding="utf-8"):
+    s = line.strip()
+    if not s or s.startswith("#"):
+        lines.append(line.rstrip("\n"))
+        continue
+    name = s.split("==")[0].lower().replace("_", "-")
+    if name in have and f"{name}=={have[name]}" != s:
+        notes.append(f"{s} -> {name}=={have[name]} (data-selection project)")
+        lines.append(f"{name}=={have[name]}")
+    else:
+        lines.append(s)
+# fasttext: prefer whatever flavour the other project actually installed
+ours = {l.split("==")[0].lower() for l in lines if "==" in l}
+for flavour in ("fasttext", "fasttext-wheel", "fasttext-predict", "fasttext-numpy2"):
+    if flavour in have and flavour not in ours:
+        lines = [l for l in lines if not l.lower().startswith("fasttext")]
+        lines.append(f"{flavour}=={have[flavour]}")
+        notes.append(f"fasttext flavour -> {flavour}=={have[flavour]} (data-selection project)")
+        break
+open(out, "w", encoding="utf-8").write("\n".join(lines) + "\n")
+print("\n".join(f"  reused: {n}" for n in notes) or "  (no overlapping pins to reuse)")
+PY
+    if grep -q '^torch==' "$REPO_ROOT/outputs/reuse_freeze.txt"; then
+        TORCH_SPEC="$(grep -m1 '^torch==' "$REPO_ROOT/outputs/reuse_freeze.txt")"
+        echo "  reused: $TORCH_SPEC (data-selection project)"
+    fi
+else
+    cp "$REQS" "$RESOLVED"
+fi
+
+step "Installing torch from the CUDA 12.1 index: $TORCH_SPEC"
+python -m pip install --quiet --index-url "$TORCH_INDEX" "$TORCH_SPEC"
+
+step "Installing the Step 1 requirements and $RESOLVED"
+python -m pip install --quiet -r "$REPO_ROOT/requirements.txt"
+python -m pip install --quiet -r "$RESOLVED"
+
+step "Probing: versions, a real matmul on every GPU, GlotLID, LaBSE, pysbd"
+PROBE_RC=0
+python -m src.utils.env_probe || PROBE_RC=$?
+
+step "Recording the installed environment"
+{
+    echo "# .venv311 as installed, $(date -Iseconds)"
+    python -c 'import platform,sys;print(f"python {platform.python_version()} ({sys.executable})")'
+    python -m pip freeze | grep -iE '^(torch|transformers|accelerate|sentencepiece|protobuf|pysbd|sentence-transformers|fasttext[a-z-]*|numpy|datasets|pandas|pyarrow|huggingface)'
+} >> results/step2/env_pins.txt
+
+echo
+echo "================ 04_setup_gpu_env: SUMMARY ================"
+echo "probe exit code: $PROBE_RC (0 = gpu+glotlid+labse+pysbd all usable)"
+sed -n '/## Verdict/,$p' results/step2/env_probe.md | grep '^- ' || true
+echo "venv: .venv311 ($(python -c 'import platform;print(platform.python_version())'))"
+echo "pins: results/step2/env_pins.txt   probe: results/step2/env_probe.md"
+echo "log:  ${LOG_FILE#$REPO_ROOT/}"
+echo "next: bash scripts/server/05_clean_pools.sh"
+echo "==========================================================="
+exit $PROBE_RC

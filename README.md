@@ -107,8 +107,20 @@ response is human-written or MT. Contamination is additive at r = 10/25/50%.
 ```bash
 # SERVER — round trip 3: inspect English sources + MT tag conventions (2A)
 git pull && bash scripts/server/03_inspect_english_sources.sh
-git add results/ && git commit -m "Step 2A inspection" && git push
+
+# SERVER — round trip 4: the Step 2 bundle. Long (model downloads + GPU pilot); use tmux.
+git pull && tmux new -s step2 'bash scripts/server/run_step2_bundle.sh'
+#   04 Python 3.11 env (.venv311) + probe: matmul on each GPU, GlotLID, LaBSE, pysbd
+#   05 clean pools + length quantiles + English candidates + pilot sample     (CPU)
+#   06 translation pilot, one language per GPU + measurements                 (GPU)
+#   07 coherence measurement (LaBSE), measures only                           (GPU)
+#   08 allocation proposal                                                    (CPU)
+git add results/ && git commit -m "Step 2 bundle" && git push
 ```
+
+Each stage is separately re-runnable (`bash scripts/server/06_translation_pilot.sh`), and the
+translation job is resumable at shard granularity. **2B does not launch from this bundle** —
+the allocation is a proposal awaiting approval.
 
 Resolved already (from the models' own tokenizer files, `results/step2/mt_tag_conventions.md`):
 MADLAD prefixes the source text with a **2-letter** tag (`<2bn> <2sw> <2am> <2te>`), NLLB forces

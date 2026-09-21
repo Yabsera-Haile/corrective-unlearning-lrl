@@ -4,7 +4,9 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$REPO_ROOT"
 
-VENV_DIR="$REPO_ROOT/.venv"
+# Step 2 onwards uses a Python 3.11 env (.venv311) built by 04_setup_gpu_env.sh;
+# the lean Step 1 env (.venv) is the fallback.
+if [[ -d "$REPO_ROOT/.venv311" ]]; then VENV_DIR="$REPO_ROOT/.venv311"; else VENV_DIR="$REPO_ROOT/.venv"; fi
 # Keep HF caches inside the gitignored data/ dir, not in ~/.cache. Set the cache
 # dirs individually rather than HF_HOME: HF_HOME would also move the token file,
 # so a plain `huggingface-cli login` would stop being seen by these scripts.
@@ -46,7 +48,7 @@ PY
 
 activate_venv() {
     if [[ ! -f "$VENV_DIR/bin/activate" ]]; then
-        echo "ERROR: $VENV_DIR not found. Run: bash scripts/server/00_setup_env.sh" >&2
+        echo "ERROR: $VENV_DIR not found. Run: bash scripts/server/04_setup_gpu_env.sh (Step 2+) or 00_setup_env.sh" >&2
         exit 1
     fi
     # shellcheck disable=SC1091

@@ -27,6 +27,12 @@ CONFIGS_DIR = REPO_ROOT / "configs"
 RESULT_SIZE_BUDGET = 1_000_000  # bytes
 
 
+def rel(path: str | Path) -> str:
+    """Repo-relative path for printing, or the absolute path when it is outside the repo."""
+    path = Path(path)
+    return path.relative_to(REPO_ROOT).as_posix() if path.is_relative_to(REPO_ROOT) else str(path)
+
+
 def num_proc() -> int:
     """CPU worker cap. The server's CPUs are shared: never assume more than this.
 

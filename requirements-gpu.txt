@@ -1,17 +1,19 @@
-# Step 2B/2C and later GPU work. Deliberately UNPINNED for one resolution pass:
-# the server runs Python 3.13.13 and some of these (notably fasttext for GlotLID)
-# may not publish cp313 wheels. scripts/server/03_inspect_english_sources.sh reports
-# the versions available there, and these lines get pinned from that report before
-# anything is installed. Do not install this file until it is pinned.
+# Step 2+ GPU environment. Python 3.11 (NOT 3.13) — see scripts/server/04_setup_gpu_env.sh.
 #
-# translation (2B)
-torch
-transformers
-accelerate
-sentencepiece
-protobuf
-pysbd
-# language ID for the GlotLID filter (2A/2C) — two candidate packages, prebuilt
-# wheels preferred; the report says which resolves on the server's Python
-fasttext-predict
-fasttext
+# torch is NOT listed here: it is installed by 04_setup_gpu_env.sh from the CUDA 12.1
+# wheel index (driver 535.309.01 / CUDA 12.2 cannot run CUDA 13 builds), because an
+# --extra-index-url here would let pip fall back to the default PyPI (cu13) build.
+#
+# Where the data-selection project on this server already pins a package, 04 reuses ITS
+# version instead of the pin below and records the substitution in
+# results/step2/env_probe.md. That project has already run GlotLID and lm-eval, so its
+# pins are known-good on this machine.
+transformers==4.46.3
+accelerate==1.1.1
+sentencepiece==0.2.0
+protobuf==5.28.3
+pysbd==0.3.4
+sentence-transformers==3.3.1
+# GlotLID needs fasttext. fasttext-wheel ships prebuilt wheels; plain `fasttext` builds
+# from source and needs a compiler. 04 prefers whichever the data-selection project uses.
+fasttext-wheel==0.9.2
