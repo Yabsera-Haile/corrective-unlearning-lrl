@@ -1,0 +1,3 @@
+# pip index versions, 2026-09-21T13:21:28+02:00
+python 3.13.13 (/home/cmua-yhy/Desktop/Corrective Machine Unlearning/corrective-unlearning-lrl/.venv/bin/python)
+torch              => torch (2.14.0)
