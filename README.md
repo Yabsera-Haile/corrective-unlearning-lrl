@@ -108,8 +108,11 @@ response is human-written or MT. Contamination is additive at r = 10/25/50%.
 # SERVER — round trip 3: inspect English sources + MT tag conventions (2A)
 git pull && bash scripts/server/03_inspect_english_sources.sh
 
-# SERVER — round trip 4: the Step 2 bundle. Long (model downloads + GPU pilot); use tmux.
-git pull && tmux new -s step2 'bash scripts/server/run_step2_bundle.sh'
+# SERVER — round trip 4: the Step 2 bundle. Long (model downloads + GPU pilot).
+# No tmux and no sudo on this machine, so detach with nohup:
+git pull
+nohup bash scripts/server/run_step2_bundle.sh > logs/step2_bundle.out 2>&1 &
+tail -f logs/step2_bundle.out        # ctrl-C stops the tail, not the job
 #   04 Python 3.11 env (.venv311) + probe: matmul on each GPU, GlotLID, LaBSE, pysbd
 #   05 clean pools + length quantiles + English candidates + pilot sample     (CPU)
 #   06 translation pilot, one language per GPU + measurements                 (GPU)

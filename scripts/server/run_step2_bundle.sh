@@ -8,7 +8,9 @@
 #   07  coherence measurement                                                (GPU)
 #   08  allocation proposal                                                  (CPU)
 #
-# Run under tmux: tmux new -s step2 'bash scripts/server/run_step2_bundle.sh'
+# This machine has no tmux and no sudo, so detach with nohup instead:
+#     nohup bash scripts/server/run_step2_bundle.sh > logs/step2_bundle.out 2>&1 &
+#     tail -f logs/step2_bundle.out        # ctrl-C stops the tail, not the job
 source "$(dirname "$0")/_common.sh"
 start_log
 
@@ -17,9 +19,11 @@ for s in 04_setup_gpu_env 05_clean_pools 06_translation_pilot 07_coherence 08_al
     echo "############################################################"
     echo "## $s"
     echo "############################################################"
-    if ! bash "scripts/server/$s.sh"; then
-        echo "STOPPED at $s (exit $?). Fix, then re-run: bash scripts/server/$s.sh" >&2
-        exit 1
+    rc=0
+    bash "scripts/server/$s.sh" || rc=$?
+    if [[ $rc -ne 0 ]]; then
+        echo "STOPPED at $s (exit $rc). Fix, then re-run: bash scripts/server/$s.sh" >&2
+        exit "$rc"
     fi
 done
 

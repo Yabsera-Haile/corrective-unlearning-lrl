@@ -23,21 +23,43 @@ REUSE_FROM=""
 [[ "${1:-}" == "--reuse-from" ]] && REUSE_FROM="${2:?--reuse-from needs a path}"
 
 step "Locating a Python 3.11 interpreter"
+# Created by name, not by --prefix: conda handles prefixes containing spaces badly and this
+# repo lives under ".../Corrective Machine Unlearning/".
+CONDA_ENV_NAME="${CONDA_ENV_NAME:-culrl311}"
+CONDA_BASE="$(conda info --base 2>/dev/null || true)"
+is_311() { [[ -x "$1" ]] && "$1" -c 'import sys; sys.exit(0 if sys.version_info[:2]==(3,11) else 1)' 2>/dev/null; }
+
 PY311=""
-for cand in "${PYTHON311:-}" python3.11 /usr/bin/python3.11 /usr/local/bin/python3.11; do
-    [[ -n "$cand" ]] && command -v "$cand" >/dev/null 2>&1 && { PY311="$(command -v "$cand")"; break; }
+for cand in "${PYTHON311:-}" \
+            "${CONDA_BASE:+$CONDA_BASE/envs/$CONDA_ENV_NAME/bin/python3.11}" \
+            "$HOME/.conda/envs/$CONDA_ENV_NAME/bin/python3.11" \
+            python3.11 /usr/bin/python3.11 /usr/local/bin/python3.11; do
+    [[ -z "$cand" ]] && continue
+    resolved="$(command -v "$cand" 2>/dev/null || echo "$cand")"
+    is_311 "$resolved" && { PY311="$resolved"; break; }
 done
-if [[ -z "$PY311" ]]; then
-    # conda / pyenv installations
+if [[ -z "$PY311" ]]; then   # existing conda / pyenv environments
     while IFS= read -r cand; do
-        [[ -x "$cand" ]] && "$cand" -c 'import sys; sys.exit(0 if sys.version_info[:2]==(3,11) else 1)' \
-            2>/dev/null && { PY311="$cand"; break; }
-    done < <(ls -1 "$HOME"/{miniconda3,anaconda3,.pyenv/versions}/*/bin/python3.11 \
-                    "$HOME"/{miniconda3,anaconda3}/envs/*/bin/python3.11 2>/dev/null)
+        is_311 "$cand" && { PY311="$cand"; break; }
+    done < <(ls -1 "$HOME"/{miniconda3,anaconda3,mambaforge,miniforge3}/envs/*/bin/python3.11 \
+                    "$HOME"/.conda/envs/*/bin/python3.11 "$HOME"/.pyenv/versions/*/bin/python3.11 \
+                    ${CONDA_BASE:+"$CONDA_BASE"/envs/*/bin/python3.11} \
+                    /opt/conda/envs/*/bin/python3.11 2>/dev/null)
+fi
+if [[ -z "$PY311" ]] && command -v conda >/dev/null 2>&1; then
+    # No system 3.11 and no sudo on this machine: conda builds one without admin rights.
+    step "No Python 3.11 found — creating conda env '$CONDA_ENV_NAME' (no admin rights needed)"
+    conda create -y -n "$CONDA_ENV_NAME" "python=3.11"
+    for cand in "${CONDA_BASE:+$CONDA_BASE/envs/$CONDA_ENV_NAME/bin/python3.11}" \
+                "$HOME/.conda/envs/$CONDA_ENV_NAME/bin/python3.11"; do
+        [[ -n "$cand" ]] && is_311 "$cand" && { PY311="$cand"; break; }
+    done
 fi
 if [[ -z "$PY311" ]]; then
-    echo "ERROR: no Python 3.11 found. Install it (e.g. 'sudo apt install python3.11 python3.11-venv')" >&2
-    echo "       or point at one: PYTHON311=/path/to/python3.11 bash scripts/server/04_setup_gpu_env.sh" >&2
+    echo "ERROR: no Python 3.11 available and conda could not provide one." >&2
+    echo "  This machine has no sudo, so apt is not an option. Either:" >&2
+    echo "    conda create -y -n $CONDA_ENV_NAME python=3.11" >&2
+    echo "    PYTHON311=<path to a 3.11 interpreter> bash scripts/server/04_setup_gpu_env.sh" >&2
     exit 1
 fi
 echo "using $PY311 ($("$PY311" --version 2>&1))"
@@ -49,8 +71,10 @@ if [[ -n "$REUSE_FROM" ]]; then
     CANDIDATE_VENVS+=("$REUSE_FROM")
 else
     while IFS= read -r v; do CANDIDATE_VENVS+=("$v"); done < <(
-        find "$HOME" -maxdepth 4 -type d \( -name ".venv" -o -name "venv" -o -name ".venv311" \) \
-             -not -path "$REPO_ROOT/*" 2>/dev/null | head -n 20)
+        { find "$HOME" -maxdepth 4 -type d \( -name ".venv" -o -name "venv" -o -name ".venv311" \) \
+               -not -path "$REPO_ROOT/*" 2>/dev/null
+          ls -d "$HOME"/{miniconda3,anaconda3,mambaforge,miniforge3}/envs/*/ "$HOME"/.conda/envs/*/ \
+                /opt/conda/envs/*/ 2>/dev/null; } | head -n 30)
 fi
 REUSE_FREEZE=""
 {

@@ -3,8 +3,8 @@
 #
 # One language per GPU, three GPUs: ben/swh/amh run together, tel follows on GPU 0.
 # Same code path and settings as the full 2B job. Resumable: finished shards are skipped.
-# Launch under tmux so an AnyDesk disconnect does not kill it:
-#     tmux new -s pilot 'bash scripts/server/06_translation_pilot.sh'
+# Detach with nohup so an AnyDesk disconnect does not kill it (no tmux on this machine):
+#     nohup bash scripts/server/06_translation_pilot.sh > logs/pilot.out 2>&1 &
 #
 # Primary outputs: results/step2/pilot_report.md, pilot_expansion_ratios.csv,
 #                  pilot_summary.csv, pilot_degeneration.csv, translation_status.md

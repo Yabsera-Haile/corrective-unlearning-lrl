@@ -19,3 +19,4 @@ Thumbs.db
 
 # NOTE: results/ is intentionally NOT ignored. It is the SERVER -> LOCAL
 # return channel. Keep each file there under ~1 MB.
+/.conda311/
