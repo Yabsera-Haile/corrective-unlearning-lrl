@@ -1,0 +1,64 @@
+{
+  "madlad": {
+    "repo": "google/madlad400-3b-mt",
+    "revision": "fa184c675da0b5c9e1c8694fccd4e12e2d422094",
+    "languages": {
+      "ben_Beng": {
+        "tag": "<2bn>",
+        "token_id": 23,
+        "candidates_present": [
+          "<2bn>"
+        ]
+      },
+      "swh_Latn": {
+        "tag": "<2sw>",
+        "token_id": 134,
+        "candidates_present": [
+          "<2sw>"
+        ]
+      },
+      "amh_Ethi": {
+        "tag": "<2am>",
+        "token_id": 7,
+        "candidates_present": [
+          "<2am>"
+        ]
+      },
+      "tel_Telu": {
+        "tag": "<2te>",
+        "token_id": 139,
+        "candidates_present": [
+          "<2te>"
+        ]
+      }
+    },
+    "usage": "prefix the source text with the tag"
+  },
+  "nllb": {
+    "repo": "facebook/nllb-200-distilled-600M",
+    "revision": "f8d333a098d19b4fd9a8b18f94170487ad3f821d",
+    "languages": {
+      "ben_Beng": {
+        "code": "ben_Beng",
+        "token_id": 256026,
+        "in_vocab": true
+      },
+      "swh_Latn": {
+        "code": "swh_Latn",
+        "token_id": 256168,
+        "in_vocab": true
+      },
+      "amh_Ethi": {
+        "code": "amh_Ethi",
+        "token_id": 256009,
+        "in_vocab": true
+      },
+      "tel_Telu": {
+        "code": "tel_Telu",
+        "token_id": 256172,
+        "in_vocab": true
+      }
+    },
+    "usage": "tokenizer.src_lang=eng_Latn; generate with forced_bos_token_id"
+  }
+}

@@ -96,6 +96,28 @@ threshold tables on LOCAL from committed counts (pre-dedup) into `outputs/previe
 Reference tables for code mapping and Joshi levels live in `configs/reference/`
 (see `PROVENANCE.md`).
 
+## Step 2 — contamination and mixtures (current)
+
+Design decisions and their rationale: **`docs/decisions.md`** (the method section is written
+from that file). In short: contamination is genre-matched English reverse-instruction data,
+instructions translated with MADLAD-400-3B-MT (as MURI did) and responses with
+NLLB-200-distilled-600M, so the only systematic clean/contaminated difference is whether the
+response is human-written or MT. Contamination is additive at r = 10/25/50%.
+
+```bash
+# SERVER — round trip 3: inspect English sources + MT tag conventions (2A)
+git pull && bash scripts/server/03_inspect_english_sources.sh
+git add results/ && git commit -m "Step 2A inspection" && git push
+```
+
+Resolved already (from the models' own tokenizer files, `results/step2/mt_tag_conventions.md`):
+MADLAD prefixes the source text with a **2-letter** tag (`<2bn> <2sw> <2am> <2te>`), NLLB forces
+the FLORES code as first generated token (`ben_Beng`=256026, `swh_Latn`=256168, `amh_Ethi`=256009,
+`tel_Telu`=256172). NLLB's config caps `max_length=200`, which the translation job must override.
+
+`requirements-gpu.txt` is unpinned until the server reports which versions exist for its
+Python 3.13 (`results/step2/gpu_deps_resolution.txt`); it gets pinned before anything installs it.
+
 ## First-time server setup (SERVER, via AnyDesk)
 
 ```bash

@@ -1,0 +1,17 @@
+# Step 2B/2C and later GPU work. Deliberately UNPINNED for one resolution pass:
+# the server runs Python 3.13.13 and some of these (notably fasttext for GlotLID)
+# may not publish cp313 wheels. scripts/server/03_inspect_english_sources.sh reports
+# the versions available there, and these lines get pinned from that report before
+# anything is installed. Do not install this file until it is pinned.
+#
+# translation (2B)
+torch
+transformers
+accelerate
+sentencepiece
+protobuf
+pysbd
+# language ID for the GlotLID filter (2A/2C) — two candidate packages, prebuilt
+# wheels preferred; the report says which resolves on the server's Python
+fasttext-predict
+fasttext
