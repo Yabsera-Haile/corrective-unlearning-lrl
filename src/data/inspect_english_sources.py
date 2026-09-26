@@ -42,7 +42,7 @@ import pyarrow.parquet as pq
 from datasets import load_dataset
 
 from src.data.inspect_schema import Report, _short, find_id_columns, guarded, SourceSummary, Source
-from src.utils.io import RAW_DIR, REPO_ROOT, RESULTS_DIR, num_proc, write_result
+from src.utils.io import RAW_DIR, REPO_ROOT, RESULTS_DIR, num_proc, write_result, rel
 
 MURI_DIR = RAW_DIR / "muri-it"
 LONGFORM_REPO = "akoksal/LongForm"
@@ -298,7 +298,7 @@ def main(argv: list[str] | None = None) -> int:
         rep.kv("inputs", "`results/step2/english_source_counts.csv`, `english_source_lengths.csv`")
         allocation_section(rep, counts_df, lengths_df)
         out = write_result(rep.text(), "step2/english_source_allocation.md")
-        print(f"wrote {out.relative_to(REPO_ROOT).as_posix()}")
+        print(f"wrote {rel(out)}")
         return 0
 
     rep = Report()
@@ -340,7 +340,7 @@ def main(argv: list[str] | None = None) -> int:
             print(f"  {r.source:<10} {str(r.subset):<28} n={r.n:>7,}  kept by all filters={r.kept_all_filters:>7,}")
         print(f"  need {PER_LANGUAGE_NEED:,}/language x {N_LANGUAGES} = {PER_LANGUAGE_NEED * N_LANGUAGES:,}; "
               f"preferred sources keep {int(counts_df[(counts_df['source'] == 'MURI-eng') | (counts_df['subset'].str.contains('c4|wiki', case=False, na=False))]['kept_all_filters'].sum()):,}")
-    print(f"  report: {out.relative_to(REPO_ROOT).as_posix()}")
+    print(f"  report: {rel(out)}")
     print("=" * 70)
     return 0
 

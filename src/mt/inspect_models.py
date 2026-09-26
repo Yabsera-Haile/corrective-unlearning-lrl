@@ -28,7 +28,7 @@ from pathlib import Path
 import yaml
 from huggingface_hub import HfApi, hf_hub_download
 
-from src.utils.io import CONFIGS_DIR, REPO_ROOT, write_result
+from src.utils.io import CONFIGS_DIR, REPO_ROOT, write_result, rel
 
 MADLAD_REPO = "google/madlad400-3b-mt"
 NLLB_REPO = "facebook/nllb-200-distilled-600M"
@@ -181,7 +181,7 @@ def main(argv: list[str] | None = None) -> int:
     print(text)
     out = write_result(text, "step2/mt_tag_conventions.md")
     write_result(tags, "step2/mt_language_tags.json")
-    print(f"report: {out.relative_to(REPO_ROOT).as_posix()}  |  tags: results/step2/mt_language_tags.json")
+    print(f"report: {rel(out)}  |  tags: results/step2/mt_language_tags.json")
     return 1 if unresolved else 0
 
 

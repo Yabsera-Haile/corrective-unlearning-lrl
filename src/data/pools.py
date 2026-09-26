@@ -39,7 +39,7 @@ import pandas as pd
 import pyarrow.parquet as pq
 import yaml
 
-from src.utils.io import CONFIGS_DIR, DATA_DIR, RAW_DIR, REPO_ROOT, num_proc, write_result
+from src.utils.io import CONFIGS_DIR, DATA_DIR, RAW_DIR, REPO_ROOT, num_proc, write_result, rel
 
 MURI_DIR = RAW_DIR / "muri-it"
 POOLS_DIR = DATA_DIR / "pools"
@@ -118,7 +118,7 @@ def write_pool(pool_id: str, rows: list[dict]) -> dict:
             line = json.dumps({**r, "pool_id": pool_id}, ensure_ascii=False, sort_keys=True) + "\n"
             fh.write(line)
             h.update(line.encode("utf-8"))
-    return {"pool_id": pool_id, "path": path.relative_to(REPO_ROOT).as_posix(),
+    return {"pool_id": pool_id, "path": rel(path),
             "n": len(rows), "sha256": h.hexdigest()}
 
 

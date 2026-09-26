@@ -18,6 +18,27 @@ GLOTLID_REPO = "cis-lmu/glotlid"
 GLOTLID_FILE = "model.bin"
 
 
+def fasttext_top1(model, texts: list[str]) -> list[tuple[str, float]]:
+    """Top-1 (label, prob) per text, working around fasttext 0.9.2 under NumPy 2.
+
+    fasttext's Python wrapper returns `np.array(probs, copy=False)`, which NumPy 2 rejects
+    ("Unable to avoid copy while creating an array"). The model itself is fine, so call the
+    C++ binding (`model.f.multilinePredict`) and read the plain lists it returns. Falls back
+    to the public API for a fasttext build that has fixed the wrapper or lacks `.f`.
+    Texts must already be newline-free and non-empty.
+    """
+    if not texts:
+        return []
+    binding = getattr(model, "f", None)
+    if binding is not None and hasattr(binding, "multilinePredict"):
+        labels, probs = binding.multilinePredict(texts, 1, 0.0, "strict")
+    else:
+        labels, probs = model.predict(texts, k=1)
+    return [(lab[0].replace("__label__", "") if len(lab) else "",
+             float(p[0]) if len(p) else 0.0)
+            for lab, p in zip(labels, probs)]
+
+
 class LanguageID:
     """GlotLID wrapper. Labels are `__label__iso639-3_Script`, i.e. our canonical codes."""
 
@@ -31,23 +52,15 @@ class LanguageID:
         return " ".join(text.split())
 
     def predict(self, text: str) -> tuple[str, float]:
-        text = self._clean(text)
-        if not text:
-            return "", 0.0
-        labels, probs = self.model.predict(text, k=1)
-        return labels[0].replace("__label__", ""), float(probs[0])
+        return self.predict_many([text])[0]
 
     def predict_many(self, texts: list[str]) -> list[tuple[str, float]]:
-        # fasttext's batch predict needs newline-free strings and returns per-row lists.
+        """fasttext needs newline-free, non-empty strings; empty texts get ("", 0.0)."""
         cleaned = [self._clean(t) for t in texts]
-        out: list[tuple[str, float]] = []
         nonempty = [(i, t) for i, t in enumerate(cleaned) if t]
-        preds = self.model.predict([t for _, t in nonempty], k=1) if nonempty else ([], [])
-        by_index = {i: (labels[0].replace("__label__", ""), float(probs[0]))
-                    for (i, _), labels, probs in zip(nonempty, preds[0], preds[1])}
-        for i in range(len(cleaned)):
-            out.append(by_index.get(i, ("", 0.0)))
-        return out
+        preds = fasttext_top1(self.model, [t for _, t in nonempty])
+        by_index = {i: pred for (i, _), pred in zip(nonempty, preds)}
+        return [by_index.get(i, ("", 0.0)) for i in range(len(cleaned))]
 
 
 @dataclass(frozen=True)

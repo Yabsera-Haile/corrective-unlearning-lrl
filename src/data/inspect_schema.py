@@ -49,7 +49,7 @@ import pyarrow.parquet as pq
 from datasets import get_dataset_config_names, load_dataset
 from huggingface_hub import HfApi, get_token, hf_hub_download
 
-from src.utils.io import RAW_DIR, REPO_ROOT, RESULTS_DIR, SCHEMA_DIR, num_proc, write_result
+from src.utils.io import RAW_DIR, REPO_ROOT, RESULTS_DIR, SCHEMA_DIR, num_proc, write_result, rel
 
 # --------------------------------------------------------------------------- sources
 
@@ -275,7 +275,7 @@ def inspect_configs(src: Source, info: Any, rep: Report, summary: SourceSummary)
     for fmt, n, ex in format_breakdown(configs):
         rep(f"  - {fmt}: {n} — e.g. {', '.join(f'`{x}`' for x in ex)}")
     path = write_result("\n".join(configs) + "\n", f"schema/{src.key}__configs.txt")
-    rep.kv("full list", f"`{path.relative_to(REPO_ROOT).as_posix()}`")
+    rep.kv("full list", f"`{rel(path)}`")
     return configs
 
 
@@ -304,7 +304,7 @@ def inspect_viewer_sizes(src: Source, rep: Report, summary: SourceSummary) -> No
     if len(per_config) > 1:
         q = per_config.quantile([0, 0.25, 0.5, 0.75, 1]).astype(int).tolist()
         rep.kv("rows per config (min/q1/median/q3/max)", " / ".join(f"{v:,}" for v in q))
-    rep.kv("full table", f"`{path.relative_to(REPO_ROOT).as_posix()}`")
+    rep.kv("full table", f"`{rel(path)}`")
     if not summary.rows_by_split:
         summary.rows_by_split = {str(k): int(v) for k, v in per_split.items()}
         summary.rows_by_split_origin = "viewer API"
@@ -372,7 +372,7 @@ def inspect_stream(src: Source, config: str, rep: Report, summary: SourceSummary
 def inspect_local_copy(src: Source, rep: Report, summary: SourceSummary, id_cols: list[str],
                        sample_rows: list[dict], script_samples: int) -> None:
     """Complete scan of identifier columns over the downloaded parquet shards."""
-    rep.h(3, f"full local copy: `{src.local_dir.relative_to(REPO_ROOT).as_posix()}`")
+    rep.h(3, f"full local copy: `{rel(src.local_dir)}`")
     files = sorted(src.local_dir.rglob("*.parquet"))
     files = [f for f in files if ".cache" not in f.parts]
     if not files:
@@ -427,7 +427,7 @@ def inspect_local_copy(src: Source, rep: Report, summary: SourceSummary, id_cols
         df = df.sort_values("n_total", ascending=False)
         path = write_result(df, f"schema/{src.key}__{c}__values.csv")
         summary.id_columns[c] = f"{len(df)} distinct (full scan), {dominant_format(df['value'])}"
-        rep(f"- **`{c}`** (full scan): {len(df)} distinct values → `{path.relative_to(REPO_ROOT).as_posix()}`")
+        rep(f"- **`{c}`** (full scan): {len(df)} distinct values → `{rel(path)}`")
         for fmt, n, ex in format_breakdown(df["value"]):
             rep(f"  - {fmt}: {n} — e.g. {', '.join(f'`{x}`' for x in ex)}")
         rep(f"  - top 10: {', '.join(f'`{v}`={n:,}' for v, n in total.most_common(10))}")
@@ -463,7 +463,7 @@ def inspect_local_copy(src: Source, rep: Report, summary: SourceSummary, id_cols
             })
         df = pd.DataFrame(rows)
         path = write_result(df, f"schema/{src.key}__{c}__scripts.csv")
-        rep(f"  - `{c}` → `{path.relative_to(REPO_ROOT).as_posix()}`; dominant script counts: "
+        rep(f"  - `{c}` → `{rel(path)}`; dominant script counts: "
             + ", ".join(f"{s}={n}" for s, n in Counter(df["script_1"]).most_common()))
         mixed = df[df["share_1"] < 0.9]
         if len(mixed):
@@ -528,7 +528,7 @@ def inspect_model_codes(src: Source, info: Any, rep: Report, summary: SourceSumm
     if all_codes:
         path = write_result("\n".join(all_codes) + "\n", f"schema/{src.key}__codes.txt")
         summary.id_columns["language codes"] = f"{len(all_codes)} codes, {dominant_format(all_codes)}"
-        rep.kv("language codes", f"{len(all_codes)} → `{path.relative_to(REPO_ROOT).as_posix()}`")
+        rep.kv("language codes", f"{len(all_codes)} → `{rel(path)}`")
         rep("- code-name formats:")
         for fmt, n, ex in format_breakdown(all_codes):
             rep(f"  - {fmt}: {n} — e.g. {', '.join(f'`{x}`' for x in ex)}")
@@ -658,8 +658,8 @@ def main(argv: list[str] | None = None) -> int:
     rep.lines.extend(["", "## Summary", "", "```", summary_text.strip("\n"), "```"])
     name = "schema_inspection.md" if not args.only else f"schema_inspection__{'_'.join(s.key for s in selected)}.md"
     out = write_result(rep.text(), name)
-    print(f"report: {out.relative_to(REPO_ROOT).as_posix()}  |  identifier lists: "
-          f"{SCHEMA_DIR.relative_to(REPO_ROOT).as_posix()}/")
+    print(f"report: {rel(out)}  |  identifier lists: "
+          f"{rel(SCHEMA_DIR)}/")
     return 1 if any(s.errors for s in summaries) else 0
 
 

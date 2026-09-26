@@ -34,7 +34,7 @@ import numpy as np
 import pandas as pd
 
 from src.data.pools import languages
-from src.utils.io import DATA_DIR, REPO_ROOT, write_result
+from src.utils.io import DATA_DIR, REPO_ROOT, write_result, rel
 
 LABSE_MODEL = "sentence-transformers/LaBSE"
 CHUNK_CHARS = 800
@@ -170,7 +170,7 @@ def main(argv: list[str] | None = None) -> int:
           "pipeline's mismatch is shared by both sides and filtering neither keeps D2.3 intact. "
           "If they differ, filtering must be applied symmetrically or not at all."]
     out = write_result("\n".join(L) + "\n", "step2/coherence.md")
-    print(f"  report: {out.relative_to(REPO_ROOT).as_posix()}")
+    print(f"  report: {rel(out)}")
     return 0
 
 

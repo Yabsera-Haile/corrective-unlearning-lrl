@@ -48,7 +48,7 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 
 from src.data.code_maps import joshi_level, language_name, load_inventories, map_all, split_flores_code
-from src.utils.io import OUTPUTS_DIR, RAW_DIR, REPO_ROOT, RESULTS_DIR, SCHEMA_DIR, num_proc
+from src.utils.io import OUTPUTS_DIR, RAW_DIR, REPO_ROOT, RESULTS_DIR, SCHEMA_DIR, num_proc, rel
 
 MURI_DIR = RAW_DIR / "muri-it"
 THRESHOLDS = (500, 1000, 2000, 5000)
@@ -371,7 +371,7 @@ def main(argv: list[str] | None = None) -> int:
         write(path)
         size = path.stat().st_size
         flag = "  WARNING > 1 MB" if size > 1_000_000 and out_dir == RESULTS_DIR else ""
-        shown = path.relative_to(REPO_ROOT).as_posix() if path.is_relative_to(REPO_ROOT) else path
+        shown = rel(path)
         print(f"    wrote {shown} ({size / 1e3:.0f} kB){flag}")
     return 0
 

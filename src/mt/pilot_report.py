@@ -28,7 +28,7 @@ import pandas as pd
 
 from src.data.pools import languages
 from src.data.qc import LanguageID, degeneration
-from src.utils.io import DATA_DIR, REPO_ROOT, RESULTS_DIR, write_result
+from src.utils.io import DATA_DIR, REPO_ROOT, RESULTS_DIR, write_result, rel
 
 DEGEN_THRESHOLDS = ((0.20, 0.15), (0.30, 0.15), (0.40, 0.10))  # (top_ngram_share, compression)
 LENGTH_BIN_QUANTILES = (0.2, 0.4, 0.6, 0.8)
@@ -150,7 +150,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"  {r.language}: ratio={r.ratio_median} lid_reject={r.lid_reject_rate} "
               f"speed={r.examples_per_sec}/s clean_p50={r.clean_resp_p50} "
               f"predicted_p50={r.predicted_contam_p50_at_median_ratio}")
-    print(f"  report: {out.relative_to(REPO_ROOT).as_posix()}")
+    print(f"  report: {rel(out)}")
     print("=" * 51)
     return 0
 

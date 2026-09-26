@@ -36,7 +36,7 @@ import numpy as np
 import pandas as pd
 
 from src.data.pools import languages
-from src.utils.io import DATA_DIR, REPO_ROOT, RESULTS_DIR, write_result
+from src.utils.io import DATA_DIR, REPO_ROOT, RESULTS_DIR, write_result, rel
 
 POOLS_DIR = DATA_DIR / "pools"
 NEED_PER_LANGUAGE = 7_495          # 7,000 mixture + 495 dev
@@ -208,7 +208,7 @@ def main(argv: list[str] | None = None) -> int:
           "- whether the overlap is acceptable (the pool cannot support four disjoint sets)",
           "- whether any bin's deficit needs LongForm's other subsets, which would cost genre match (D2.2)"]
     out = write_result("\n".join(L) + "\n", "step2/allocation_plan.md")
-    print(f"  plan: data/pools/allocation_plan.jsonl | report: {out.relative_to(REPO_ROOT).as_posix()}")
+    print(f"  plan: data/pools/allocation_plan.jsonl | report: {rel(out)}")
     return 0
 
 

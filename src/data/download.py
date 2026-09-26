@@ -31,7 +31,7 @@ from datetime import datetime, timezone
 
 from huggingface_hub import HfApi, snapshot_download
 
-from src.utils.io import DATA_DIR, RAW_DIR, REPO_ROOT, RESULTS_DIR, num_proc, read_json, write_result
+from src.utils.io import DATA_DIR, RAW_DIR, REPO_ROOT, RESULTS_DIR, num_proc, read_json, write_result, rel
 
 DOWNLOADS: dict[str, dict] = {
     "muri-it": {"repo": "akoksal/muri-it", "allow_patterns": ["data/*.parquet", "README.md"]},
@@ -55,7 +55,7 @@ def download(name: str, spec: dict) -> dict:
     missing = sum(size for f, size in files.items()
                   if not (target / f).exists() or (target / f).stat().st_size != size)
     print(f"==> {spec['repo']}@{info.sha[:10]}: {len(files)} files, {sum(files.values()) / 1e9:.2f} GB "
-          f"({missing / 1e9:.2f} GB still missing) -> {target.relative_to(REPO_ROOT).as_posix()}/", flush=True)
+          f"({missing / 1e9:.2f} GB still missing) -> {rel(target)}/", flush=True)
 
     free = shutil.disk_usage(DATA_DIR).free
     if missing * FREE_SPACE_MARGIN > free:
@@ -72,7 +72,7 @@ def download(name: str, spec: dict) -> dict:
     if bad:
         raise SystemExit(f"{len(bad)} file(s) missing or wrong size after download, e.g. {bad[:3]}")
     print(f"    done in {time.time() - t0:.0f}s, all {len(files)} file sizes verified", flush=True)
-    return {"repo": spec["repo"], "revision": info.sha, "local_dir": target.relative_to(REPO_ROOT).as_posix(),
+    return {"repo": spec["repo"], "revision": info.sha, "local_dir": rel(target),
             "allow_patterns": spec["allow_patterns"], "n_files": len(files),
             "total_bytes": sum(files.values()), "files": files}
 
@@ -93,7 +93,7 @@ def main(argv: list[str] | None = None) -> int:
         entries[name] = download(name, DOWNLOADS[name])
         entries[name]["downloaded"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
     out = write_result({"downloads": entries}, manifest_path.name)
-    print(f"manifest: {out.relative_to(REPO_ROOT).as_posix()}")
+    print(f"manifest: {rel(out)}")
     return 0
 
 

@@ -42,7 +42,7 @@ from datasets import load_dataset
 
 from src.data.inspect_english_sources import FILTERS, LONGFORM_REPO, MURI_DIR, flag_row
 from src.data.qc import LanguageID
-from src.utils.io import DATA_DIR, REPO_ROOT, write_result
+from src.utils.io import DATA_DIR, REPO_ROOT, write_result, rel
 
 POOLS_DIR = DATA_DIR / "pools"
 MRI_SUBSET = "MRI"
@@ -220,7 +220,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"  {r.origin_source:<26} raw={int(r.raw):>6,} -> text={int(r.text_filters):>6,} "
               f"-> english={int(r.glotlid_english):>6,}")
     print(f"  total kept: {len(candidates):,} | pilot: {len(pilot):,}")
-    print(f"  report: {out.relative_to(REPO_ROOT).as_posix()}")
+    print(f"  report: {rel(out)}")
     print("=" * 56)
     return 0
 

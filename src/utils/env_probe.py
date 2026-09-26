@@ -19,7 +19,7 @@ import platform
 import sys
 import time
 
-from src.utils.io import REPO_ROOT, write_result
+from src.utils.io import REPO_ROOT, write_result, rel
 
 GLOTLID_REPO = "cis-lmu/glotlid"
 GLOTLID_FILE = "model.bin"
@@ -111,13 +111,17 @@ def probe_glotlid(L: list[str]) -> bool:
         L.append("  Without it the 2A/2C language filter (D2.8) cannot run. Try the fasttext "
                  "package pinned by the data-selection project on this machine.")
         return False
+    from src.data.qc import fasttext_top1  # same NumPy-2-safe path the pipeline uses
+
     ok = True
     L.append("")
     L.append("| expected | predicted | confidence | text |")
     L.append("|---|---|---|---|")
-    for code, (text, _) in SAMPLES.items():
-        labels, probs = model.predict(text.replace("\n", " "), k=1)
-        got = labels[0].replace("__label__", "")
+    codes = list(SAMPLES)
+    preds = fasttext_top1(model, [" ".join(SAMPLES[c][0].split()) for c in codes])
+    for code, (got, prob) in zip(codes, preds):
+        text = SAMPLES[code][0]
+        probs = [prob]
         hit = got == code
         ok &= hit
         L.append(f"| `{code}` | {'`' + got + '`' if hit else '**' + got + '**'} | "
@@ -179,32 +183,30 @@ def probe_pysbd(L: list[str]) -> bool:
 
 def main(argv: list[str] | None = None) -> int:
     argparse.ArgumentParser(description=__doc__).parse_args(argv)
-    L = ["# Step 2 environment probe", ""]
+    from datetime import datetime, timezone
+    L = ["# Step 2 environment probe", "",
+         f"- run at {datetime.now(timezone.utc):%Y-%m-%d %H:%M} UTC", ""]
     results = {}
 
     L.append("## Versions")
     L.append("")
     probe_versions(L)
 
-    L.append("")
-    L.append("## GPUs (real bf16 matmul on each device)")
-    L.append("")
-    results["gpu"] = probe_gpus(L)
-
-    L.append("")
-    L.append("## GlotLID (D2.8 language filter)")
-    L.append("")
-    results["glotlid"] = probe_glotlid(L)
-
-    L.append("")
-    L.append("## LaBSE (coherence encoder coverage)")
-    L.append("")
-    results["labse"] = probe_labse(L)
-
-    L.append("")
-    L.append("## pysbd (sentence segmentation for NLLB)")
-    L.append("")
-    results["pysbd"] = probe_pysbd(L)
+    # Each section is isolated: a crash in one must not stop the others or, worse, stop the
+    # report being written — the stage summary would then show the PREVIOUS run's verdict.
+    sections = (("gpu", "GPUs (real bf16 matmul on each device)", probe_gpus),
+                ("glotlid", "GlotLID (D2.8 language filter)", probe_glotlid),
+                ("labse", "LaBSE (coherence encoder coverage)", probe_labse),
+                ("pysbd", "pysbd (sentence segmentation for NLLB)", probe_pysbd))
+    for key, title, fn in sections:
+        L += ["", f"## {title}", ""]
+        try:
+            results[key] = fn(L)
+        except Exception as e:  # noqa: BLE001
+            import traceback
+            traceback.print_exc()
+            L.append(f"- **probe crashed** — {type(e).__name__}: {str(e)[:200]}")
+            results[key] = False
 
     L.append("")
     L.append("## Verdict")
@@ -214,7 +216,7 @@ def main(argv: list[str] | None = None) -> int:
     text = "\n".join(L) + "\n"
     print(text)
     out = write_result(text, "step2/env_probe.md")
-    print(f"report: {out.relative_to(REPO_ROOT).as_posix()}")
+    print(f"report: {rel(out)}")
     return 0 if all(results.values()) else 1
 
 

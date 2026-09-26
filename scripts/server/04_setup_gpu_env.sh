@@ -159,15 +159,32 @@ python -m pip install --quiet --index-url "$TORCH_INDEX" "$TORCH_SPEC"
 # leaving an environment that no longer matches requirements.txt.
 step "Installing requirements.txt + $(basename "$RESOLVED") in a single resolver pass"
 if ! python -m pip install --quiet -r "$REPO_ROOT/requirements.txt" -r "$RESOLVED"; then
-    echo "  pins conflict; retrying with the Step 1 library pins relaxed (versions still recorded below)" >&2
-    grep -vE '^(huggingface_hub|datasets|pyarrow|pandas)==' "$REPO_ROOT/requirements.txt" \
-        > "$REPO_ROOT/outputs/requirements-step1.relaxed.txt" || true
-    grep -oE '^(huggingface_hub|datasets|pyarrow|pandas)==.*' "$REPO_ROOT/requirements.txt" \
-        | sed 's/==.*//' >> "$PINS_FILE" || true
-    echo "  relaxed: $(grep -cE '^(huggingface_hub|datasets|pyarrow|pandas)==' "$REPO_ROOT/requirements.txt") Step 1 pins" | tee -a "$PINS_FILE"
-    python -m pip install --quiet -r "$REPO_ROOT/outputs/requirements-step1.relaxed.txt" -r "$RESOLVED"
-    python -m pip install --quiet "huggingface_hub" "datasets" "pandas" "pyarrow"
+    # The only real conflict: huggingface_hub==0.33.0 vs the reused transformers==4.57.6,
+    # which needs hub >=0.34,<1.0. Move that one pin into transformers' range and keep every
+    # other Step 1 pin (datasets 3.6.0, pandas 2.2.3, pyarrow 20.0.0) exactly as tested.
+    # (An earlier version relaxed four pins and then ran an UNPINNED install of all four,
+    # which pulled pandas 3.x, pyarrow 25 and datasets 5 — never tested with this code.)
+    echo "  pins conflict; moving huggingface_hub into transformers' range, all other pins kept" \
+        | tee -a "$PINS_FILE"
+    grep -vE '^huggingface_hub==' "$REPO_ROOT/requirements.txt" \
+        > "$REPO_ROOT/outputs/requirements-step1.relaxed.txt"
+    python -m pip install --quiet -r "$REPO_ROOT/outputs/requirements-step1.relaxed.txt" -r "$RESOLVED" \
+        "huggingface_hub>=0.34,<1.0"
 fi
+
+# Fail loudly if the tested library versions did not survive resolution, rather than
+# discovering a pandas major-version change three stages later.
+python - <<'PY'
+import datasets, pandas, pyarrow, huggingface_hub
+want = {"datasets": ("3.6.0", datasets.__version__), "pandas": ("2.2.3", pandas.__version__),
+        "pyarrow": ("20.0.0", pyarrow.__version__)}
+bad = {k: v for k, v in want.items() if v[0] != v[1]}
+print(f"  resolved: datasets {datasets.__version__}, pandas {pandas.__version__}, "
+      f"pyarrow {pyarrow.__version__}, huggingface_hub {huggingface_hub.__version__}")
+if bad:
+    raise SystemExit("  ERROR: tested pins not honoured: "
+                     + ", ".join(f"{k} want {w} got {g}" for k, (w, g) in bad.items()))
+PY
 
 step "Probing: versions, a real matmul on every GPU, GlotLID, LaBSE, pysbd"
 PROBE_RC=0
