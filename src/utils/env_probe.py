@@ -166,6 +166,58 @@ def probe_labse(L: list[str]) -> bool:
     return ok
 
 
+MT_SMOKE_SENTENCE = "The committee published its report on water quality yesterday."
+MT_WEIGHTS = {"google/madlad400-3b-mt": "model.safetensors",
+              "facebook/nllb-200-distilled-600M": "pytorch_model.bin"}
+
+
+def _cached(repo: str, filename: str) -> bool:
+    from huggingface_hub import try_to_load_from_cache
+    return isinstance(try_to_load_from_cache(repo, filename), str)
+
+
+def probe_mt(L: list[str]) -> bool | None:
+    """Load both MT systems through the pipeline's own HFTranslator and translate one
+    sentence into every target language, then language-ID the output.
+
+    This is the check that would have caught NLLB's .bin weights being refused by
+    transformers on torch < 2.6 here, instead of two stages later. Skipped (not failed)
+    when the weights are not cached yet, so a fresh machine is not stalled on a 14 GB
+    download at stage 04; prefetch_models.sh fetches them in the background.
+    """
+    missing = [r for r, f in MT_WEIGHTS.items() if not _cached(r, f)]
+    if missing:
+        L.append(f"- **skipped**: not cached yet: {', '.join(missing)} (prefetch_models.sh "
+                 "fetches them; the pilot re-checks)")
+        return None
+    import torch
+    from src.data.pools import languages
+    from src.data.qc import LanguageID
+    from src.mt.translate import MADLAD_REPO, NLLB_REPO, NLLB_SRC_LANG, HFTranslator, load_tags
+    t0 = time.time()
+    madlad = HFTranslator(MADLAD_REPO, "cuda:0", 4)
+    nllb = HFTranslator(NLLB_REPO, "cuda:0", 4, src_lang=NLLB_SRC_LANG)
+    L.append(f"- loaded both systems on cuda:0 in {time.time() - t0:.0f}s "
+             f"(torch {torch.__version__}); source: \"{MT_SMOKE_SENTENCE}\"")
+    lid = LanguageID()
+    L += ["", "| language | system | output | GlotLID |", "|---|---|---|---|"]
+    ok = True
+    for lang in languages():
+        code = lang["code"]
+        tag, bos = load_tags(code)
+        madlad.prefix, nllb.forced_bos_token_id = f"{tag} ", bos
+        for name, system in (("MADLAD", madlad), ("NLLB", nllb)):
+            out = system.translate([MT_SMOKE_SENTENCE])[0]
+            got, prob = lid.predict(out)
+            hit = got == code and out.strip() != ""
+            ok &= hit
+            L.append(f"| `{code}` | {name} | {out[:60]} | "
+                     f"{'`' + got + '`' if hit else '**' + (got or 'empty') + '**'} {prob:.2f} |")
+    del madlad, nllb
+    torch.cuda.empty_cache()
+    return ok
+
+
 def probe_pysbd(L: list[str]) -> bool:
     try:
         import pysbd
@@ -197,7 +249,8 @@ def main(argv: list[str] | None = None) -> int:
     sections = (("gpu", "GPUs (real bf16 matmul on each device)", probe_gpus),
                 ("glotlid", "GlotLID (D2.8 language filter)", probe_glotlid),
                 ("labse", "LaBSE (coherence encoder coverage)", probe_labse),
-                ("pysbd", "pysbd (sentence segmentation for NLLB)", probe_pysbd))
+                ("pysbd", "pysbd (sentence segmentation for NLLB)", probe_pysbd),
+                ("mt", "MT smoke test (MADLAD + NLLB through the pipeline, GlotLID on output)", probe_mt))
     for key, title, fn in sections:
         L += ["", f"## {title}", ""]
         try:
@@ -212,12 +265,12 @@ def main(argv: list[str] | None = None) -> int:
     L.append("## Verdict")
     L.append("")
     for k, v in results.items():
-        L.append(f"- {k}: {'ok' if v else '**FAILED**'}")
+        L.append(f"- {k}: {'skipped' if v is None else 'ok' if v else '**FAILED**'}")
     text = "\n".join(L) + "\n"
     print(text)
     out = write_result(text, "step2/env_probe.md")
     print(f"report: {rel(out)}")
-    return 0 if all(results.values()) else 1
+    return 0 if all(v is not False for v in results.values()) else 1  # skipped != failed
 
 
 if __name__ == "__main__":

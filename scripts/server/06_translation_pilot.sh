@@ -26,17 +26,24 @@ for repo in ("google/madlad400-3b-mt", "facebook/nllb-200-distilled-600M"):
 PY_FETCH
 
 step "Translating the pilot: ben_Beng(gpu0) swh_Latn(gpu1) amh_Ethi(gpu2) in parallel"
-pids=()
+pids=(); langs=()
 for pair in "ben_Beng 0" "swh_Latn 1" "amh_Ethi 2"; do
     set -- $pair
     python -m src.mt.translate --language "$1" --gpu "$2" --input "$PILOT_IN" \
         > "logs/pilot_$1.log" 2>&1 &
-    pids+=($!)
+    pids+=($!); langs+=("$1")
     echo "  started $1 on gpu $2 (pid ${pids[-1]}, log logs/pilot_$1.log)"
 done
 rc=0
-for pid in "${pids[@]}"; do wait "$pid" || rc=$?; done
-[[ $rc -eq 0 ]] || { echo "ERROR: a pilot translation failed; see logs/pilot_*.log" >&2; exit $rc; }
+for i in "${!pids[@]}"; do
+    if ! wait "${pids[$i]}"; then
+        rc=1
+        # logs/ is not in git, so show the failure here rather than asking for a push.
+        echo "ERROR: pilot translation for ${langs[$i]} failed. Last lines of logs/pilot_${langs[$i]}.log:" >&2
+        tail -n 15 "logs/pilot_${langs[$i]}.log" | sed 's/^/    /' >&2
+    fi
+done
+[[ $rc -eq 0 ]] || exit $rc
 
 step "Translating tel_Telu on gpu 0"
 python -m src.mt.translate --language tel_Telu --gpu 0 --input "$PILOT_IN"

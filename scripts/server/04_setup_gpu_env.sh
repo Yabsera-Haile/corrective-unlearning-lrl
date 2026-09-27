@@ -3,12 +3,17 @@
 #
 # Python 3.11, not the 3.13 used for Step 1: the data-selection project on this machine
 # already runs GlotLID and lm-eval under 3.11, and its pins are known-good here.
-# Torch comes from the CUDA 12.1 wheel index — driver 535.309.01 is CUDA 12.2 and cannot
-# run CUDA 13 builds, and the default PyPI wheel may be one.
+# Torch is 2.6.0 from the CUDA 12.4 wheel index. Driver 535.309.01 is CUDA 12.2: it cannot
+# run CUDA 13 builds, but runs any 12.x build via CUDA minor-version compatibility (the
+# A5000's sm_86 kernels ship precompiled, so no newer-driver PTX JIT is needed).
 #
 # Pin reuse: if the data-selection project is found (or given with --reuse-from PATH),
 # every package it pins that we also need is installed at ITS version, and the
-# substitutions are listed in results/step2/env_pins.txt.
+# substitutions are listed in results/step2/env_pins.txt. ONE deliberate exception:
+# torch. That project pins 2.5.1, but its transformers 4.57.6 refuses to load `.bin`
+# weights on torch < 2.6 (torch.load vulnerability CVE-2025-32434), and NLLB-200 ships only
+# pytorch_model.bin. Upgrading torch satisfies that check instead of working around it,
+# and keeps the official NLLB weights. See docs/decisions.md (E1).
 #
 # Usage (from repo root):
 #   bash scripts/server/04_setup_gpu_env.sh [--reuse-from /path/to/data-selection-project]
@@ -16,8 +21,9 @@
 source "$(dirname "$0")/_common.sh"
 start_log
 
-TORCH_SPEC="${TORCH_SPEC:-torch==2.5.1}"
-TORCH_INDEX="${TORCH_INDEX:-https://download.pytorch.org/whl/cu121}"
+TORCH_SPEC="${TORCH_SPEC:-torch==2.6.0}"
+TORCH_INDEX="${TORCH_INDEX:-https://download.pytorch.org/whl/cu124}"
+TORCH_MIN="2.6"   # transformers >=4.50 will not torch.load .bin weights below this
 VENV311="$REPO_ROOT/.venv311"
 REUSE_FROM=""
 [[ "${1:-}" == "--reuse-from" ]] && REUSE_FROM="${2:?--reuse-from needs a path}"
@@ -144,15 +150,29 @@ open(out, "w", encoding="utf-8").write("\n".join(lines) + "\n")
 print("\n".join(f"  reused: {n}" for n in notes) or "  (no overlapping pins to reuse)")
 PY
     if grep -q '^torch==' "$REPO_ROOT/outputs/reuse_freeze.txt"; then
-        TORCH_SPEC="$(grep -m1 '^torch==' "$REPO_ROOT/outputs/reuse_freeze.txt")"
-        echo "  reused: $TORCH_SPEC (data-selection project)"
+        theirs="$(grep -m1 '^torch==' "$REPO_ROOT/outputs/reuse_freeze.txt")"
+        theirs_ver="${theirs#torch==}"; theirs_ver="${theirs_ver%%+*}"
+        if python -c "import sys; v=tuple(map(int,'$theirs_ver'.split('.')[:2])); sys.exit(0 if v>=tuple(map(int,'$TORCH_MIN'.split('.'))) else 1)"; then
+            TORCH_SPEC="$theirs"
+            echo "  reused: $TORCH_SPEC (data-selection project)"
+        else
+            echo "  NOT reused: $theirs (data-selection project) -> $TORCH_SPEC from $TORCH_INDEX:" \
+                 "transformers refuses .bin weights on torch < $TORCH_MIN and NLLB-200 ships only" \
+                 "pytorch_model.bin (docs/decisions.md E1)" | tee -a "$PINS_FILE"
+        fi
     fi
 else
     cp "$REQS" "$RESOLVED"
 fi
 
-step "Installing torch from the CUDA 12.1 index: $TORCH_SPEC"
+step "Installing torch from $TORCH_INDEX: $TORCH_SPEC"
 python -m pip install --quiet --index-url "$TORCH_INDEX" "$TORCH_SPEC"
+python -c "
+import sys, torch
+v = tuple(int(x) for x in torch.__version__.split('+')[0].split('.')[:2])
+print(f'  torch {torch.__version__} (CUDA {torch.version.cuda})')
+sys.exit(0 if v >= tuple(map(int, '$TORCH_MIN'.split('.'))) else
+         f'  ERROR: torch {torch.__version__} < $TORCH_MIN; NLLB .bin weights will not load')"
 
 # One resolver pass over BOTH files: installing them separately lets pip quietly upgrade a
 # Step 1 pin (a reused transformers is newer than ours and wants a newer huggingface_hub),

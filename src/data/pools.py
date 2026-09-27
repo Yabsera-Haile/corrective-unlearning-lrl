@@ -39,7 +39,7 @@ import pandas as pd
 import pyarrow.parquet as pq
 import yaml
 
-from src.utils.io import CONFIGS_DIR, DATA_DIR, RAW_DIR, REPO_ROOT, num_proc, write_result, rel
+from src.utils.io import CONFIGS_DIR, DATA_DIR, RAW_DIR, REPO_ROOT, RESULTS_DIR, num_proc, write_result, rel
 
 MURI_DIR = RAW_DIR / "muri-it"
 POOLS_DIR = DATA_DIR / "pools"
@@ -132,6 +132,35 @@ def quantile_rows(pool_id: str, language: str, kind: str, rows: list[dict]) -> d
             "resp_mean": round(float(resp.mean()), 1)}
 
 
+def verify_existing(existing: list[Path]) -> int:
+    """Pools are written once (2D). On a re-run, prove the files on disk are exactly the ones
+    the committed manifest describes, then skip. Never rebuild silently: a mismatch stops the
+    run, because a different pool would invalidate every downstream mixture."""
+    manifest_path = RESULTS_DIR / "step2" / "clean_pool_manifest.json"
+    if not manifest_path.exists():
+        raise SystemExit(f"{len(existing)} pool files exist but {rel(manifest_path)} does not; "
+                         "cannot verify them. Pass --force to rebuild deliberately.")
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    problems = []
+    for entry in manifest["pools"]:
+        path = REPO_ROOT / entry["path"]
+        if not path.exists():
+            problems.append(f"{entry['pool_id']}: missing")
+            continue
+        digest = hashlib.sha256(path.read_bytes()).hexdigest()
+        if digest != entry["sha256"]:
+            problems.append(f"{entry['pool_id']}: sha256 {digest[:12]} != manifest {entry['sha256'][:12]}")
+    listed = {REPO_ROOT / e["path"] for e in manifest["pools"]}
+    problems += [f"{rel(p)}: on disk but not in the manifest" for p in existing if p not in listed]
+    if problems:
+        raise SystemExit("existing clean pools do not match the committed manifest:\n  "
+                         + "\n  ".join(problems)
+                         + "\nPass --force only if you mean to invalidate every downstream mixture.")
+    print(f"==> clean pools already built: {len(manifest['pools'])} files verified against "
+          f"{rel(manifest_path)} (seed {manifest['seed']}); skipping")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--seed", type=int, default=DEFAULT_SEED)
@@ -141,9 +170,7 @@ def main(argv: list[str] | None = None) -> int:
     langs, sizes = languages(), pool_sizes()
     existing = [p for p in POOLS_DIR.glob("*.jsonl") if p.stem.startswith(POOL_KINDS)]
     if existing and not args.force:
-        raise SystemExit(f"{len(existing)} clean pool files already exist in {POOLS_DIR}; "
-                         "pools are written once (2D). Pass --force only if you mean to "
-                         "invalidate every downstream mixture.")
+        return verify_existing(existing)
 
     print(f"==> collecting MRI examples for {', '.join(l['code'] for l in langs)} "
           f"(CU_NUM_PROC={num_proc()})", flush=True)

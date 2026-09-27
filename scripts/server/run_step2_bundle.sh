@@ -14,8 +14,13 @@
 source "$(dirname "$0")/_common.sh"
 start_log
 
+# --from NN resumes at stage NN (e.g. --from 06). Earlier stages are idempotent anyway
+# (05 verifies existing pools against their manifest hashes and skips), so this only saves time.
+FROM="04"
+[[ "${1:-}" == "--from" ]] && FROM="${2:?--from needs a stage number, e.g. 06}"
 PREFETCH_STARTED=0
 for s in 04_setup_gpu_env 05_clean_pools 06_translation_pilot 07_coherence 08_allocate; do
+    if [[ "${s:0:2}" < "$FROM" ]]; then echo "## skipping $s (--from $FROM)"; continue; fi
     echo
     echo "############################################################"
     echo "## $s"

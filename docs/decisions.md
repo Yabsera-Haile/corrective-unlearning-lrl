@@ -129,3 +129,27 @@ reported before and after.
 the detector, and it stops the model from learning "contaminated examples are shorter/longer"
 rather than anything about translationese. Sequence-length drops (over `max_seq_len`) are
 applied at equal rates to clean and contaminated so the matching survives.
+
+---
+
+## Environment (settled 2026-09-27)
+
+### E1 torch 2.6.0+cu124, not the data-selection project's 2.5.1
+Step 2 reuses the data-selection project's pins (its `mmft` environment already runs GlotLID
+and lm-eval on this server), with one exception. That project pins `torch==2.5.1+cu121`
+together with `transformers==4.57.6`, and transformers >= 4.50 refuses to `torch.load` a
+`.bin` checkpoint on torch < 2.6 because of CVE-2025-32434. NLLB-200-distilled-600M is
+published only as `pytorch_model.bin`, so it cannot load in that combination.
+
+**Options considered:** (a) torch 2.6.0+cu124; (b) load NLLB from an unmerged Hub pull request
+(`refs/pr/45`) containing a bot-made safetensors conversion; (c) downgrade transformers to a
+version that predates the check.
+
+**Chosen: (a).** It satisfies the security check instead of routing around it, and keeps the
+official NLLB weights at the revision already inspected (`f8d333a`), so the response-side MT
+system in the method section is exactly Meta's release. (b) would put an unreviewed community
+conversion on the side of the design that the whole project manipulates; (c) moves a
+different pin away from the known-good environment. cu124 is still CUDA 12.x, which driver
+535 runs through CUDA minor-version compatibility; the A5000's sm_86 kernels ship precompiled.
+
+**Consequence:** our torch differs from `mmft`'s. Every other shared package keeps its pin.

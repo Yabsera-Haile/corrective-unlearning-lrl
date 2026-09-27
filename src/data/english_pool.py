@@ -42,7 +42,7 @@ from datasets import load_dataset
 
 from src.data.inspect_english_sources import FILTERS, LONGFORM_REPO, MURI_DIR, flag_row
 from src.data.qc import LanguageID
-from src.utils.io import DATA_DIR, REPO_ROOT, write_result, rel
+from src.utils.io import DATA_DIR, REPO_ROOT, RESULTS_DIR, write_result, rel
 
 POOLS_DIR = DATA_DIR / "pools"
 MRI_SUBSET = "MRI"
@@ -180,7 +180,20 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--pilot", type=int, default=PILOT_DEFAULT)
     ap.add_argument("--seed", type=int, default=PILOT_SEED)
     ap.add_argument("--no-glotlid", action="store_true", help="skip the language filter (testing only)")
+    ap.add_argument("--rebuild", action="store_true", help="rebuild even if the pool already exists")
     args = ap.parse_args(argv)
+
+    # Deterministic (same filters, same seed), so a re-run would reproduce the same files —
+    # but it costs ~37k GlotLID calls, and the pilot ids must never drift once documents
+    # have been translated. Reuse what exists unless asked.
+    outputs = (POOLS_DIR / "english_candidates.jsonl", POOLS_DIR / "pilot_candidates.jsonl",
+               RESULTS_DIR / "step2/pilot_origin_ids.txt")
+    if all(p.exists() for p in outputs) and not args.rebuild:
+        n = sum(1 for _ in open(outputs[0], encoding="utf-8"))
+        n_pilot = len(outputs[2].read_text(encoding="utf-8").split())
+        print(f"==> English candidate pool already built ({n:,} candidates, {n_pilot} pilot ids); "
+              "skipping. Pass --rebuild to redo it.")
+        return 0
 
     print("==> building the English candidate pool", flush=True)
     candidates, stage_counts = build_pool(not args.no_glotlid)
